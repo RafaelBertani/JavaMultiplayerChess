@@ -75,7 +75,123 @@ public class Queries {
             return false;
         }finally{Database.closeConnection(c);}
         
-    }    
+    }
+
+    public static String getRankingWins(){
+        
+        String response = "";
+
+        Connection c = Database.getConnection();
+        PreparedStatement pstm = null;
+        ResultSet resultQUERY = null;
+        try{
+            
+            pstm = c.prepareStatement("SELECT id, username, wins, games, joined FROM Users ORDER BY wins DESC LIMIT 100;");
+            resultQUERY=pstm.executeQuery();
+            while(resultQUERY.next()){
+                response+=
+                    resultQUERY.getInt(1)+"|"
+                    +resultQUERY.getString(2)+"|"
+                    +resultQUERY.getInt(3)+"|"
+                    +resultQUERY.getInt(4)+"|"
+                    +(""+resultQUERY.getDate(5)).replace('-', '/');
+
+                response+="*"; //quebra de item
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }finally{Database.closeConnection(c);}
+        
+        return response;
+    }
+
+    public static String getRankingGames(){
+        
+        String response = "";
+
+        Connection c = Database.getConnection();
+        PreparedStatement pstm = null;
+        ResultSet resultQUERY = null;
+        try{
+            
+            pstm = c.prepareStatement("SELECT id, username, wins, games, joined FROM Users ORDER BY games DESC LIMIT 100;");
+            resultQUERY=pstm.executeQuery();
+            while(resultQUERY.next()){
+                response+=
+                    resultQUERY.getInt(1)+"|"
+                    +resultQUERY.getString(2)+"|"
+                    +resultQUERY.getInt(3)+"|"
+                    +resultQUERY.getInt(4)+"|"
+                    +(""+resultQUERY.getDate(5)).replace('-', '/');
+
+                response+="*"; //quebra de item
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }finally{Database.closeConnection(c);}
+        
+        return response;
+    }
+
+    public static String getRankingWinrate(){
+        
+        String response = "";
+
+        Connection c = Database.getConnection();
+        PreparedStatement pstm = null;
+        ResultSet resultQUERY = null;
+        try{
+            
+            pstm = c.prepareStatement("SELECT id, username, wins, games, joined, (wins * 1.0 / games) AS win_rate FROM Users ORDER BY win_rate DESC LIMIT 100;");
+            resultQUERY=pstm.executeQuery();
+            while(resultQUERY.next()){
+                response+=
+                    resultQUERY.getInt(1)+"|"
+                    +resultQUERY.getString(2)+"|"
+                    +resultQUERY.getInt(3)+"|"
+                    +resultQUERY.getInt(4)+"|"
+                    +(""+resultQUERY.getDate(5)).replace('-', '/');
+
+                response+="*"; //quebra de item
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }finally{Database.closeConnection(c);}
+        
+        return response;
+    }
+
+    public static String getRankingDate(){
+        
+        String response = "";
+
+        Connection c = Database.getConnection();
+        PreparedStatement pstm = null;
+        ResultSet resultQUERY = null;
+        try{
+            
+            pstm = c.prepareStatement("SELECT id, username, wins, games, joined FROM Users ORDER BY joined DESC;");
+            resultQUERY=pstm.executeQuery();
+            while(resultQUERY.next()){
+                response+=
+                    resultQUERY.getInt(1)+"|"
+                    +resultQUERY.getString(2)+"|"
+                    +resultQUERY.getInt(3)+"|"
+                    +resultQUERY.getInt(4)+"|"
+                    +(""+resultQUERY.getDate(5)).replace('-', '/');
+
+                response+="*"; //quebra de item
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }finally{Database.closeConnection(c);}
+        
+        return response;
+    }
 
     // public static boolean addItem(Item i){
 

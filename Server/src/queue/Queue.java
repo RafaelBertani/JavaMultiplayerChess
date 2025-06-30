@@ -50,6 +50,69 @@ public class Queue{
     
     }
 
+    public void remove(Node n) {
+
+        if (n == null || this.QueueLength == 0) return;
+
+        if (n == this.head) {
+            this.head = n.after;
+            if (this.head != null) this.head.before = null;
+        } else if (n == this.tail) {
+            this.tail = n.before;
+            if (this.tail != null) this.tail.after = null;
+        } else {
+            if (n.before != null) n.before.after = n.after;
+            if (n.after != null) n.after.before = n.before;
+        }
+
+        n.before = null;
+        n.after = null;
+
+        this.QueueLength--;
+
+        if (this.QueueLength == 0) {
+            this.head = null;
+            this.tail = null;
+        }
+    }
+
+    public boolean removeByPlayer(Player p) {
+        if (p == null || this.QueueLength == 0) return false;
+
+        Node atual = this.head;
+        while (atual != null) {
+            if (atual.player.equals(p)) {
+                // Reutiliza a lógica de remoção direta
+                if (atual == this.head) {
+                    this.head = atual.after;
+                    if (this.head != null) this.head.before = null;
+                } else if (atual == this.tail) {
+                    this.tail = atual.before;
+                    if (this.tail != null) this.tail.after = null;
+                } else {
+                    if (atual.before != null) atual.before.after = atual.after;
+                    if (atual.after != null) atual.after.before = atual.before;
+                }
+
+                atual.before = null;
+                atual.after = null;
+                this.QueueLength--;
+
+                // Se a fila ficou vazia
+                if (this.QueueLength == 0) {
+                    this.head = null;
+                    this.tail = null;
+                }
+
+                return true; // Remoção feita
+            }
+
+            atual = atual.after;
+        }
+
+        return false; // Player não encontrado
+    }
+
     public void print_queue(){
         if(this.QueueLength==0){System.out.println("\nEmpty List");}
         System.out.print("Queue start: ");

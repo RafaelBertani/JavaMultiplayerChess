@@ -76,6 +76,44 @@ public class ClientHandler implements Runnable{
             }
             
         }
+        else if(data.get(0).equals("LOGOUT")){
+            clientHandlers.remove(this);
+            System.out.println(this.clientUsername+" has left");
+        }
+        else if(data.get(0).equals("RANKING")){
+            if(data.get(1).equals("WINS")){
+                String response = Queries.getRankingWins();
+                try {
+                    this.bufferedWriter.write("RANKING-"+response+"- ");
+                    this.bufferedWriter.newLine();
+                    this.bufferedWriter.flush();
+                } catch (IOException e) {}
+            }
+            else if (data.get(1).equals("GAMES")) {
+                String response = Queries.getRankingGames();
+                try {
+                    this.bufferedWriter.write("RANKING-"+response+"- ");
+                    this.bufferedWriter.newLine();
+                    this.bufferedWriter.flush();
+                } catch (IOException e) {}
+            }
+            else if (data.get(1).equals("WINRATE")) {
+                String response = Queries.getRankingWinrate();
+                try {
+                    this.bufferedWriter.write("RANKING-"+response+"- ");
+                    this.bufferedWriter.newLine();
+                    this.bufferedWriter.flush();
+                } catch (IOException e) {}
+            }
+            else if (data.get(1).equals("JOINED")) {
+                String response = Queries.getRankingDate();
+                try {
+                    this.bufferedWriter.write("RANKING-"+response+"- ");
+                    this.bufferedWriter.newLine();
+                    this.bufferedWriter.flush();
+                } catch (IOException e) {}
+            }
+        }
         else if(data.get(0).equals("DEQUEUE")){
             Server.q.dequeue();
             sendMessage("DEQUEUE SUCCESSFUL- - ");
@@ -96,9 +134,12 @@ public class ClientHandler implements Runnable{
                     p2.getClientHandler().getBufferedWriter().newLine();
                     p2.getClientHandler().getBufferedWriter().flush();
                 }catch(Exception e){}
+                
                 Server.roomLIST.add(new Room(p1,p2,Server.rooms));
                 Server.movementLIST.add(new Movement("","",Server.rooms));
+                
                 Server.rooms++;
+                
                 Server.printROOMS();
                 
             }
@@ -108,97 +149,97 @@ public class ClientHandler implements Runnable{
             
             //pode substituir todo data[1] por this.clientUsername
             
-            // Server.markMOVEMENT(data[1], data[2]);
+            Server.markMOVEMENT(data.get(1), data.get(2));
             
-            // int ID=-1;
-            // int v=0;
-            // for(Room room : Server.roomLIST){
-            //     if(room.p1.getName().equals(data[1]) || room.p2.getName().equals(data[1])){
-            //         ID=room.ID;
-            //         p1=room.p1;
-            //         p2=room.p2;
-            //         v=room.vez;
-            //     }
-            // }
+            int ID=-1;
+            int v=0;
+            for(Room room : Server.roomLIST){
+                if(room.p1.getName().equals(data.get(1)) || room.p2.getName().equals(data.get(1))){
+                    ID=room.ID;
+                    p1=room.p1;
+                    p2=room.p2;
+                    v=room.vez;
+                }
+            }
 
-            // for(Movement movement : Server.movementLIST){
-            //     if(movement.ID==ID){
-            //         if( (!movement.mv1.equals("") && v==1) ){
-            //             //AÇÃO
-            //             System.out.println("Player 1: "+movement.mv1+" "+"Player 2: "+movement.mv2);
-            //             //MANDA RETORNO PARA OS PLAYERS
-            //             try{
-            //                 p1.getClientHandler().getBufferedWriter().write("FLIPTURN- - ");
-            //                 p1.getClientHandler().getBufferedWriter().newLine();
-            //                 p1.getClientHandler().getBufferedWriter().flush();
-            //                 p2.getClientHandler().getBufferedWriter().write("MOVEMENT-"+movement.mv1+"- ");
-            //                 p2.getClientHandler().getBufferedWriter().newLine();
-            //                 p2.getClientHandler().getBufferedWriter().flush();
-            //             }catch(Exception e){}
-            //             movement.clear(); //limpa para a próxima
-            //             //flip turn
-            //             for(Room room : Server.roomLIST){
-            //                 if(room.p1.getName().equals(data[1]) || room.p2.getName().equals(data[1])){room.vez=2;}
-            //             }
-            //         }
-            //         else if( (!movement.mv2.equals("") && v==2) ){
-            //             //AÇÃO
-            //             System.out.println("Player 1: "+movement.mv1+" "+"Player 2: "+movement.mv2);
-            //             //MANDA RETORNO PARA OS PLAYERS
-            //             try{
-            //                 p1.getClientHandler().getBufferedWriter().write("MOVEMENT-"+movement.mv2+"- ");
-            //                 p1.getClientHandler().getBufferedWriter().newLine();
-            //                 p1.getClientHandler().getBufferedWriter().flush();
-            //                 p2.getClientHandler().getBufferedWriter().write("FLIPTURN- - ");
-            //                 p2.getClientHandler().getBufferedWriter().newLine();
-            //                 p2.getClientHandler().getBufferedWriter().flush();
-            //             }catch(Exception e){}
-            //             movement.clear(); //limpa para a próxima
-            //             //flip turn
-            //             for(Room room : Server.roomLIST){
-            //                 if(room.p1.getName().equals(data[1]) || room.p2.getName().equals(data[1])){room.vez=1;}
-            //             }
-            //         }
-            //     }
+            for(Movement movement : Server.movementLIST){
+                if(movement.ID==ID){
+                    if( (!movement.mv1.equals("") && v==1) ){
+                        //AÇÃO
+                        System.out.println("Player 1: "+movement.mv1+" "+"Player 2: "+movement.mv2);
+                        //MANDA RETORNO PARA OS PLAYERS
+                        try{
+                            p1.getClientHandler().getBufferedWriter().write("FLIPTURN- - ");
+                            p1.getClientHandler().getBufferedWriter().newLine();
+                            p1.getClientHandler().getBufferedWriter().flush();
+                            p2.getClientHandler().getBufferedWriter().write("MOVEMENT-"+movement.mv1+"- ");
+                            p2.getClientHandler().getBufferedWriter().newLine();
+                            p2.getClientHandler().getBufferedWriter().flush();
+                        }catch(Exception e){}
+                        movement.clear(); //limpa para a próxima
+                        //flip turn
+                        for(Room room : Server.roomLIST){
+                            if(room.p1.getName().equals(data.get(1)) || room.p2.getName().equals(data.get(1))){room.vez=2;}
+                        }
+                    }
+                    else if( (!movement.mv2.equals("") && v==2) ){
+                        //AÇÃO
+                        System.out.println("Player 1: "+movement.mv1+" "+"Player 2: "+movement.mv2);
+                        //MANDA RETORNO PARA OS PLAYERS
+                        try{
+                            p1.getClientHandler().getBufferedWriter().write("MOVEMENT-"+movement.mv2+"- ");
+                            p1.getClientHandler().getBufferedWriter().newLine();
+                            p1.getClientHandler().getBufferedWriter().flush();
+                            p2.getClientHandler().getBufferedWriter().write("FLIPTURN- - ");
+                            p2.getClientHandler().getBufferedWriter().newLine();
+                            p2.getClientHandler().getBufferedWriter().flush();
+                        }catch(Exception e){}
+                        movement.clear(); //limpa para a próxima
+                        //flip turn
+                        for(Room room : Server.roomLIST){
+                            if(room.p1.getName().equals(data.get(1)) || room.p2.getName().equals(data.get(1))){room.vez=1;}
+                        }
+                    }
+                }
                 
-            // }
+            }
             
             
         }       
         else if(data.get(0).equals("END")){
             
-            // int ID=0;
+            int ID=0;
 
-            // for(Room room : Server.roomLIST){
-            //     if(room.p1.getName().equals(data[1])){
-            //         ID=room.ID;
-            //         try{
-            //             room.p1.getClientHandler().getBufferedWriter().write("WON- - ");
-            //             room.p1.getClientHandler().getBufferedWriter().newLine();
-            //             room.p1.getClientHandler().getBufferedWriter().flush();
-            //             room.p2.getClientHandler().getBufferedWriter().write("LOST- - ");
-            //             room.p2.getClientHandler().getBufferedWriter().newLine();
-            //             room.p2.getClientHandler().getBufferedWriter().flush();
-            //         }catch(Exception e){
-            //             e.printStackTrace();
-            //         }                    
-            //     }
-            //     else if(room.p2.getName().equals(data[1])){
-            //         ID=room.ID;
-            //         try{
-            //             room.p1.getClientHandler().getBufferedWriter().write("LOST- - ");
-            //             room.p1.getClientHandler().getBufferedWriter().newLine();
-            //             room.p1.getClientHandler().getBufferedWriter().flush();
-            //             room.p2.getClientHandler().getBufferedWriter().write("WON- - ");
-            //             room.p2.getClientHandler().getBufferedWriter().newLine();
-            //             room.p2.getClientHandler().getBufferedWriter().flush();    
-            //         }catch(Exception e){
-            //             e.printStackTrace();
-            //         }
+            for(Room room : Server.roomLIST){
+                if(room.p1.getName().equals(data.get(1))){
+                    ID=room.ID;
+                    try{
+                        room.p1.getClientHandler().getBufferedWriter().write("WON- - ");
+                        room.p1.getClientHandler().getBufferedWriter().newLine();
+                        room.p1.getClientHandler().getBufferedWriter().flush();
+                        room.p2.getClientHandler().getBufferedWriter().write("LOST- - ");
+                        room.p2.getClientHandler().getBufferedWriter().newLine();
+                        room.p2.getClientHandler().getBufferedWriter().flush();
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }                    
+                }
+                else if(room.p2.getName().equals(data.get(1))){
+                    ID=room.ID;
+                    try{
+                        room.p1.getClientHandler().getBufferedWriter().write("LOST- - ");
+                        room.p1.getClientHandler().getBufferedWriter().newLine();
+                        room.p1.getClientHandler().getBufferedWriter().flush();
+                        room.p2.getClientHandler().getBufferedWriter().write("WON- - ");
+                        room.p2.getClientHandler().getBufferedWriter().newLine();
+                        room.p2.getClientHandler().getBufferedWriter().flush();    
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
 
-            //     }
-            // }
-            // Server.endROOM(ID);
+                }
+            }
+            Server.endROOM(ID);
         }
     }
 

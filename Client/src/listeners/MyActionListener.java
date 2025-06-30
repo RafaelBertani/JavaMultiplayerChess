@@ -7,6 +7,7 @@ import main_panels.CreatePanel;
 import main_panels.InitialPanel;
 import main_panels.LoginPanel;
 import main_panels.MenuPanel;
+import main_panels.RankingPanel;
 import screen.Screen;
 import screen.ScreenFunctions;
 import sha256.Sha256;
@@ -33,6 +34,10 @@ public class MyActionListener implements ActionListener{
             Screen.mainPanel.removeAll();
             Screen.mainPanel.add(InitialPanel.getPanel());
             Screen.mainPanel.setVisible(true);
+
+            CreatePanel.getUsernametext().setText("");
+            CreatePanel.getPassword1text().setText("");
+            CreatePanel.getPassword2text().setText("");
         }
         else if(e.getSource()==CreatePanel.getCreate()){ //CREATEPANEL: CREATE
 
@@ -62,6 +67,9 @@ public class MyActionListener implements ActionListener{
             Screen.mainPanel.removeAll();
             Screen.mainPanel.add(InitialPanel.getPanel());
             Screen.mainPanel.setVisible(true);
+
+            LoginPanel.getUsernametext().setText("");
+            LoginPanel.getPasswordtext().setText("");
         }
         else if(e.getSource()==LoginPanel.getLogin()){ //LOGINPANEL: LOGIN
             if( //any black field
@@ -77,13 +85,59 @@ public class MyActionListener implements ActionListener{
 
         }
         else if(e.getSource()==MenuPanel.getRanking()){ //MENUPANEL: RANKING
-
+            Screen.mainPanel.setVisible(false);
+            Screen.mainPanel.removeAll();
+            Screen.mainPanel.add(RankingPanel.getPanel());
+            Screen.mainPanel.setVisible(true);
         }
-        else if(e.getSource()==MenuPanel.getPlay()){ //MENUPANEL: PLAY
-
+        else if(e.getSource()==MenuPanel.getPlay() && !MenuPanel.getLoadingLabel().isVisible()){ //MENUPANEL: PLAY
+            //envia
+            Screen.client.sendMessage("QUEUE- - ");
+            // MenuPanel.getLoadingLabel().setVisible(true);
+            // MenuPanel.getLoadingBar().setVisible(true);
+            // MenuPanel.getLoadingBar().setValue(0);
+            // MenuPanel.getStop().setVisible(true);
         }
         else if(e.getSource()==MenuPanel.getLeave()){ //MENUPANEL: LEAVE
+            Screen.mainPanel.setVisible(false);
+            Screen.mainPanel.removeAll();
+            Screen.mainPanel.add(InitialPanel.getPanel());
+            Screen.mainPanel.setVisible(true);
 
+            //envia
+            Screen.client.sendMessage("LOGOUT- - ");
+
+        }
+        else if(e.getSource()==MenuPanel.getStop()){ //MENUPANEL: STOP
+
+            //envia
+            Screen.client.sendMessage("DEQUEUE- - ");
+            // MenuPanel.getLoadingLabel().setVisible(false);
+            // MenuPanel.getLoadingBar().setVisible(false);
+            // MenuPanel.getStop().setVisible(false);
+
+        }
+        else if(e.getSource()==RankingPanel.getBack()){ //RANKINGPANEL: BACK
+            Screen.mainPanel.setVisible(false);
+            Screen.mainPanel.removeAll();
+            Screen.mainPanel.add(MenuPanel.getPanel());
+            Screen.mainPanel.setVisible(true);
+        }
+        else if(e.getSource()==RankingPanel.getWins()){ //RANKINGPANEL: WINS
+            //envia
+            Screen.client.sendMessage("RANKING-WINS- ");
+        }
+        else if(e.getSource()==RankingPanel.getGames()){ //RANKINGPANEL: GAMES
+            //envia
+            Screen.client.sendMessage("RANKING-GAMES- ");
+        }
+        else if(e.getSource()==RankingPanel.getWinrate()){ //RANKINGPANEL: WINRATE
+            //envia
+            Screen.client.sendMessage("RANKING-WINRATE- ");
+        }
+        else if(e.getSource()==RankingPanel.getJoined()){ //RANKINGPANEL: JOINED
+            //envia
+            Screen.client.sendMessage("RANKING-JOINED- ");
         }
 
     }

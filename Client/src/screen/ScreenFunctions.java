@@ -279,6 +279,15 @@ public class ScreenFunctions{
 
     }
 
+    public static void image_setup_no_resize(JLabel label_name, String complete_path, int x, int y, int width, int height, JPanel label_panel) {
+
+        label_name.setBounds(x, y, width, height);
+        label_name.setIcon(new ImageIcon(complete_path));
+
+        label_panel.add(label_name);
+
+    }
+
     public static void image_setup(JLabel label_name, String complete_path, int x, int y, int width, int height, JPanel label_panel) {
         // Define os limites do JLabel
         label_name.setBounds(x, y, width, height);

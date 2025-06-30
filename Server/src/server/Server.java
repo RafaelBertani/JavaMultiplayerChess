@@ -5,7 +5,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-
 import queue.Queue;
 import room.Movement;
 import room.Room;
@@ -18,6 +17,7 @@ public class Server{
 
     public static List<Room> roomLIST = new ArrayList<>();
 
+    //counter for id
     public static int rooms=0;
 
     public static boolean endROOM(int ID){
@@ -35,7 +35,7 @@ public class Server{
         }
     }
     
-    public static List<Movement> movementLIST = new ArrayList<Movement>();
+    public static List<Movement> movementLIST = new ArrayList<>();
 
     public static void markMOVEMENT(String name, String action){
         

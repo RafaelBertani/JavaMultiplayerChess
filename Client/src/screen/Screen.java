@@ -5,10 +5,13 @@ import java.awt.Color;
 import javax.swing.*;
 import listeners.MyActionListener;
 import listeners.MyMouseListener;
+import listeners.MyMouseListenerDragDrop;
 import main_panels.CreatePanel;
 import main_panels.InitialPanel;
 import main_panels.LoginPanel;
 import main_panels.MenuPanel;
+import main_panels.PlayPanel;
+import main_panels.RankingPanel;
 
 public class Screen extends JFrame{
 
@@ -20,6 +23,7 @@ public class Screen extends JFrame{
 
     public static MyActionListener myActionListener = new MyActionListener();
     public static MyMouseListener myMouseListener = new MyMouseListener();
+    public static MyMouseListenerDragDrop myMouseListenerDragDrop = new MyMouseListenerDragDrop();
 
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
@@ -33,12 +37,13 @@ public class Screen extends JFrame{
         //prioridade
         //menor
 
-        //para panel ou label invisível, setOpaque(true) e setBackgorundColor(new Color(255,255,255,0));
         //inicia todos os panels
         new InitialPanel();
         new CreatePanel();
         new LoginPanel();
         new MenuPanel();
+        new RankingPanel();
+        new PlayPanel();
         
         // outros paineis não são adicionados diretamente no frame principal porque
         // ao serem chaveados requisitariam frame.setVisible(false), o que faria a tela
