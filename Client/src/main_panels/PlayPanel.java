@@ -4,6 +4,8 @@ import client.Client;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import screen.Screen;
@@ -56,6 +58,8 @@ public class PlayPanel {
     public static JLabel turn = new JLabel();
 
     public static String[][] coordinates_field = new String[8][8];
+
+    public static List<List<String>> promoted = new ArrayList<>();
 
     public static void coordinates(JLabel image, int line, String column){
         ArrayList<String> c = new ArrayList<String>(){{this.add("A");this.add("B");this.add("C");this.add("D");this.add("E");this.add("F");this.add("G");this.add("H");}};
@@ -159,22 +163,22 @@ public class PlayPanel {
         coordinates_field[0][6]="Knight_White_G";
         coordinates_field[0][7]="Rook_White_H";
 
-        coordinates_field[6][0]="Pawn_Black_H";
-        coordinates_field[6][1]="Pawn_Black_G";
-        coordinates_field[6][2]="Pawn_Black_F";
-        coordinates_field[6][3]="Pawn_Black_E";
-        coordinates_field[6][4]="Pawn_Black_D";
-        coordinates_field[6][5]="Pawn_Black_C";
-        coordinates_field[6][6]="Pawn_Black_B";
-        coordinates_field[6][7]="Pawn_Black_A";
-        coordinates_field[7][0]="Rook_Black_H";
-        coordinates_field[7][1]="Knight_Black_G";
-        coordinates_field[7][2]="Bishop_Black_F";
-        coordinates_field[7][3]="King_Black_E";
-        coordinates_field[7][4]="Queen_Black_D";
-        coordinates_field[7][5]="Bishop_Black_C";
-        coordinates_field[7][6]="Knight_Black_B";
-        coordinates_field[7][7]="Rook_Black_A";
+        coordinates_field[6][0]="Pawn_Black_A";
+        coordinates_field[6][1]="Pawn_Black_B";
+        coordinates_field[6][2]="Pawn_Black_C";
+        coordinates_field[6][3]="Pawn_Black_D";
+        coordinates_field[6][4]="Pawn_Black_E";
+        coordinates_field[6][5]="Pawn_Black_F";
+        coordinates_field[6][6]="Pawn_Black_G";
+        coordinates_field[6][7]="Pawn_Black_H";
+        coordinates_field[7][0]="Rook_Black_A";
+        coordinates_field[7][1]="Knight_Black_B";
+        coordinates_field[7][2]="Bishop_Black_C";
+        coordinates_field[7][3]="Queen_Black_D";
+        coordinates_field[7][4]="King_Black_E";
+        coordinates_field[7][5]="Bishop_Black_F";
+        coordinates_field[7][6]="Knight_Black_G";
+        coordinates_field[7][7]="Rook_Black_H";
 
         
         //terceira camada, com o tabuleiro
@@ -222,52 +226,49 @@ public class PlayPanel {
 
         //posiciona peças
 
-        coordinates(Pawn_White_A, isPlayer1?2:7, "A");
-        coordinates(Pawn_White_B, isPlayer1?2:7, "B");
-        coordinates(Pawn_White_C, isPlayer1?2:7, "C");
-        coordinates(Pawn_White_D, isPlayer1?2:7, "D");
-        coordinates(Pawn_White_E, isPlayer1?2:7, "E");
-        coordinates(Pawn_White_F, isPlayer1?2:7, "F");
-        coordinates(Pawn_White_G, isPlayer1?2:7, "G");
-        coordinates(Pawn_White_H, isPlayer1?2:7, "H");
-        coordinates(Pawn_Black_A, isPlayer1?7:2, "A");
-        coordinates(Pawn_Black_B, isPlayer1?7:2, "B");
-        coordinates(Pawn_Black_C, isPlayer1?7:2, "C");
-        coordinates(Pawn_Black_D, isPlayer1?7:2, "D");
-        coordinates(Pawn_Black_E, isPlayer1?7:2, "E");
-        coordinates(Pawn_Black_F, isPlayer1?7:2, "F");
-        coordinates(Pawn_Black_G, isPlayer1?7:2, "G");
-        coordinates(Pawn_Black_H, isPlayer1?7:2, "H");
+        coordinates(Pawn_White_A, isPlayer1?2:7, isPlayer1?"A":"H");
+        coordinates(Pawn_White_B, isPlayer1?2:7, isPlayer1?"B":"G");
+        coordinates(Pawn_White_C, isPlayer1?2:7, isPlayer1?"C":"F");
+        coordinates(Pawn_White_D, isPlayer1?2:7, isPlayer1?"D":"E");
+        coordinates(Pawn_White_E, isPlayer1?2:7, isPlayer1?"E":"D");
+        coordinates(Pawn_White_F, isPlayer1?2:7, isPlayer1?"F":"C");
+        coordinates(Pawn_White_G, isPlayer1?2:7, isPlayer1?"G":"B");
+        coordinates(Pawn_White_H, isPlayer1?2:7, isPlayer1?"H":"A");
+        coordinates(Rook_White_A, isPlayer1?1:8, isPlayer1?"A":"H");
+        coordinates(Knight_White_B, isPlayer1?1:8, isPlayer1?"B":"G");
+        coordinates(Bishop_White_C, isPlayer1?1:8, isPlayer1?"C":"F");
+        coordinates(Queen_White_D, isPlayer1?1:8, isPlayer1?"D":"E");
+        coordinates(King_White_E, isPlayer1?1:8, isPlayer1?"E":"D");
+        coordinates(Bishop_White_F, isPlayer1?1:8, isPlayer1?"F":"C");
+        coordinates(Knight_White_G, isPlayer1?1:8, isPlayer1?"G":"B");
+        coordinates(Rook_White_H, isPlayer1?1:8, isPlayer1?"H":"A");
         
-        coordinates(King_White_E, isPlayer1?1:8, "E");
-        coordinates(Queen_White_D, isPlayer1?1:8, "D");
-        coordinates(King_Black_E, isPlayer1?8:1, "E");
-        coordinates(Queen_Black_D, isPlayer1?8:1, "D");
-
-        coordinates(Bishop_White_C, isPlayer1?1:8, "C");
-        coordinates(Bishop_White_F, isPlayer1?1:8, "F");
-        coordinates(Bishop_Black_C, isPlayer1?8:1, "C");
-        coordinates(Bishop_Black_F, isPlayer1?8:1, "F");
-
-        coordinates(Knight_White_B, isPlayer1?1:8, "B");
-        coordinates(Knight_White_G, isPlayer1?1:8, "G");
-        coordinates(Knight_Black_B, isPlayer1?8:1, "B");
-        coordinates(Knight_Black_G, isPlayer1?8:1, "G");
-
-        coordinates(Rook_White_A, isPlayer1?1:8, "A");
-        coordinates(Rook_White_H, isPlayer1?1:8, "H");
-        coordinates(Rook_Black_A, isPlayer1?8:1, "A");
-        coordinates(Rook_Black_H, isPlayer1?8:1, "H");
+        coordinates(Pawn_Black_A, isPlayer1?7:2, isPlayer1?"A":"H");
+        coordinates(Pawn_Black_B, isPlayer1?7:2, isPlayer1?"B":"G");
+        coordinates(Pawn_Black_C, isPlayer1?7:2, isPlayer1?"C":"F");
+        coordinates(Pawn_Black_D, isPlayer1?7:2, isPlayer1?"D":"E");
+        coordinates(Pawn_Black_E, isPlayer1?7:2, isPlayer1?"E":"D");
+        coordinates(Pawn_Black_F, isPlayer1?7:2, isPlayer1?"F":"C");
+        coordinates(Pawn_Black_G, isPlayer1?7:2, isPlayer1?"G":"B");
+        coordinates(Pawn_Black_H, isPlayer1?7:2, isPlayer1?"H":"A");
+        coordinates(Rook_Black_A, isPlayer1?8:1, isPlayer1?"A":"H");
+        coordinates(Knight_Black_B, isPlayer1?8:1, isPlayer1?"B":"G");
+        coordinates(Bishop_Black_C, isPlayer1?8:1, isPlayer1?"C":"F");
+        coordinates(Queen_Black_D, isPlayer1?8:1, isPlayer1?"D":"E");
+        coordinates(King_Black_E, isPlayer1?8:1, isPlayer1?"E":"D");
+        coordinates(Bishop_Black_F, isPlayer1?8:1, isPlayer1?"F":"C");
+        coordinates(Knight_Black_G, isPlayer1?8:1, isPlayer1?"G":"B");
+        coordinates(Rook_Black_H, isPlayer1?8:1, isPlayer1?"H":"A");
 
 
         //posiciona tabuleiro
         for(int i=7;i>=0;i--){
             for(int j=0;j<8;j++){
                 if( ((7-i)*(j+1))%2==0 && (j*((7-i)+1))%2==0 ){ //brancas if( (i*(j+1))%2==0 && (j*(i+1))%2==0 ){
-                    ScreenFunctions.label_edit(field[7-i][j], null, isPlayer1?Color.BLACK:Color.WHITE, null);
+                    ScreenFunctions.label_edit(field[7-i][j], null, Color.BLACK, null);
                 }
                 if( ((7-i)*(j+1))%2==1 || (j*((7-i)+1))%2==1 ){ //pretas if( (i*(j+1))%2==1 || (j*(i+1))%2==1 ){
-                    ScreenFunctions.label_edit(field[7-i][j], null, isPlayer1?new Color(200,200,200):Color.BLACK, null);
+                    ScreenFunctions.label_edit(field[7-i][j], null, new Color(200,200,200), null);
                 }
             }
         }

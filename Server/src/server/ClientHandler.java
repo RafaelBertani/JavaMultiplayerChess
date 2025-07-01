@@ -192,6 +192,57 @@ public class ClientHandler implements Runnable{
                 }
             }
                         
+        }
+        else if(data.get(0).equals("PROMOTION")){
+            
+            //pode substituir todo data[1] por this.clientUsername
+            
+            int v=0;
+            for(Room room : Server.roomLIST){
+                if(room.p1.getName().equals(data.get(1)) || room.p2.getName().equals(data.get(1))){
+                    p1=room.p1;
+                    p2=room.p2;
+                    v=room.vez;
+                    
+                    if( (data.get(1).equals(this.p1.getName()) && v==1)){
+
+                        //MANDA RETORNO PARA O ADVERSÁRIO
+                        try{
+                            p1.getClientHandler().getBufferedWriter().write("FLIPTURN- - ");
+                            p1.getClientHandler().getBufferedWriter().newLine();
+                            p1.getClientHandler().getBufferedWriter().flush();
+                            p2.getClientHandler().getBufferedWriter().write("PROMOTED-"+data.get(2)+"- ");
+                            p2.getClientHandler().getBufferedWriter().newLine();
+                            p2.getClientHandler().getBufferedWriter().flush();
+                        }catch(Exception e){}
+
+                        //flip turn
+                        for(Room r : Server.roomLIST){
+                            if(r.p1.getName().equals(data.get(1)) || r.p2.getName().equals(data.get(1))){room.vez=2;}
+                        }
+                        
+                    }
+                    else if(data.get(1).equals(this.p2.getName()) && v==2){
+
+                        //MANDA RETORNO PARA O ADVERSÁRIO
+                        try{
+                            p1.getClientHandler().getBufferedWriter().write("PROMOTED-"+data.get(2)+"- ");
+                            p1.getClientHandler().getBufferedWriter().newLine();
+                            p1.getClientHandler().getBufferedWriter().flush();
+                            p2.getClientHandler().getBufferedWriter().write("FLIPTURN- - ");
+                            p2.getClientHandler().getBufferedWriter().newLine();
+                            p2.getClientHandler().getBufferedWriter().flush();
+                        }catch(Exception e){}
+                        //flip turn
+                        for(Room r : Server.roomLIST){
+                            if(r.p1.getName().equals(data.get(1)) || r.p2.getName().equals(data.get(1))){room.vez=1;}
+                        }
+
+                    }
+
+                }
+            }
+                        
         }       
         else if(data.get(0).equals("END")){
             

@@ -1,15 +1,16 @@
 package listeners;
 
+import client.Client;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.Image;
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.TransferHandler;
-
-import client.Client;
-import java.awt.Panel;
 import main_panels.PlayPanel;
 import screen.Screen;
 import screen.ScreenFunctions;
@@ -60,31 +61,73 @@ public class MyMouseListenerDragDrop implements MouseListener{
                 int linhaFIM = Integer.parseInt(""+subs.charAt(1))-1;
                 int colunaFIM = c.indexOf(""+subs.charAt(0));
               
+                //System.out.println(linhaINICIO+""+c.get(colunaINICIO)+" "+linhaFIM+""+c.get(colunaFIM)+" "+PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]);
+
+                boolean isPlayer1 = Client.player_1_or_2==1;
+
                 if(PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains("King")){Screen.client.sendMessage("END-"+Screen.client.userName+"- ");}
                 else{
 
-                    boolean isPlayer1 = Client.player_1_or_2==1;
+                    if(PlayPanel.coordinates_field[linhaINICIO][colunaINICIO].contains("Pawn") && linhaFIM==(isPlayer1?7:0)){
 
-                    troca_imagem(
-                        PlayPanel.coordinates_field[linhaINICIO][colunaINICIO],
-                        PlayPanel.coordinates_field[linhaFIM][colunaFIM],
-                        isPlayer1?linhaINICIO:7-linhaINICIO,
-                        isPlayer1?colunaINICIO:7-colunaINICIO,
-                        isPlayer1?linhaFIM:7-linhaFIM,
-                        isPlayer1?colunaFIM:7-colunaFIM
-                    );
-                    Screen.client.sendMessage("MOVEMENT-"+Screen.client.userName+"-"+PlayPanel.coordinates_field[linhaINICIO][7-colunaINICIO]+"/"+PlayPanel.coordinates_field[linhaFIM][colunaFIM]+"/"+holding+"/"+subs);
+                        troca_imagem(
+                            PlayPanel.coordinates_field[linhaINICIO][colunaINICIO],
+                            PlayPanel.coordinates_field[linhaFIM][colunaFIM],
+                            //porque o posicionamento é espelhado:
+                            isPlayer1?linhaINICIO:7-linhaINICIO,
+                            isPlayer1?colunaINICIO:7-colunaINICIO,
+                            isPlayer1?linhaFIM:7-linhaFIM,
+                            isPlayer1?colunaFIM:7-colunaFIM
+                        );
+                        //System.out.println(PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]);
+                        int option = -1;
+                        do{
+                            option = ScreenFunctions.options_message("Escolha uma peça para o peão se tornar","Promoção",new String[]{"Dama","Bispo","Torre","Cavalo"});
+                        }while(option==-1);
+                        String[] type = new String[]{"Queen","Bishop","Rook","Knight"};
+                        troca_imagem(
+                            PlayPanel.coordinates_field[linhaINICIO][colunaINICIO],
+                            PlayPanel.coordinates_field[linhaFIM][colunaFIM],
+                            //porque o posicionamento é espelhado:
+                            isPlayer1?linhaINICIO:7-linhaINICIO,
+                            isPlayer1?colunaINICIO:7-colunaINICIO,
+                            isPlayer1?linhaFIM:7-linhaFIM,
+                            isPlayer1?colunaFIM:7-colunaFIM
+                        );
+                        promotion(PlayPanel.coordinates_field[linhaINICIO][colunaINICIO], type[option]);
+                        Screen.client.sendMessage("PROMOTION-"+Screen.client.userName+"-"+PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]+"/"+PlayPanel.coordinates_field[linhaFIM][colunaFIM]+"/"+holding+"/"+subs+"/"+type[option]);
+                        PlayPanel.promoted.add(Arrays.asList(PlayPanel.coordinates_field[linhaINICIO][colunaINICIO],type[option]));
+                        PlayPanel.coordinates_field[linhaFIM][colunaFIM]=PlayPanel.coordinates_field[linhaINICIO][colunaINICIO];
+                        PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]=" ";
 
-                    PlayPanel.coordinates_field[linhaFIM][colunaFIM]=PlayPanel.coordinates_field[linhaINICIO][colunaINICIO];
-                    PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]=" ";
+                    }
+                    else{
+                        troca_imagem(
+                            PlayPanel.coordinates_field[linhaINICIO][colunaINICIO],
+                            PlayPanel.coordinates_field[linhaFIM][colunaFIM],
+                            //porque o posicionamento é espelhado:
+                            isPlayer1?linhaINICIO:7-linhaINICIO,
+                            isPlayer1?colunaINICIO:7-colunaINICIO,
+                            isPlayer1?linhaFIM:7-linhaFIM,
+                            isPlayer1?colunaFIM:7-colunaFIM
+                        );
+                        //System.out.println(PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]);
+                        Screen.client.sendMessage("MOVEMENT-"+Screen.client.userName+"-"+PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]+"/"+PlayPanel.coordinates_field[linhaFIM][colunaFIM]+"/"+holding+"/"+subs);
 
-                    for(int i=0;i<8;i++){
+                        PlayPanel.coordinates_field[linhaFIM][colunaFIM]=PlayPanel.coordinates_field[linhaINICIO][colunaINICIO];
+                        PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]=" ";
+                    }
+
+                }
+
+                for(int i=0;i<8;i++){
                         for(int j=0;j<8;j++){
                             ArrayList<String> letters = new ArrayList<String>(){{this.add("A");this.add("B");this.add("C");this.add("D");this.add("E");this.add("F");this.add("G");this.add("H");}};
+                            PlayPanel.transparent[i][j].setVisible(false);
                             PlayPanel.transparent[i][j].setName(""+letters.get(isPlayer1?j:7-j)+""+(isPlayer1?7-i+1:i+1));
                             PlayPanel.transparent[i][j].setBounds(50+(550/9)*j, 50+(550/9)*i, (550/9), (550/9));
+                            PlayPanel.transparent[i][j].setVisible(true);
                         }
-                    }
                 }
 
             }
@@ -116,24 +159,11 @@ public class MyMouseListenerDragDrop implements MouseListener{
         boolean isPlayer1 = Client.player_1_or_2==1;
         
         if(nomeINICIO.equals(" ")){return false;}
-        //se o peão avança para um espaço com um adversário ou para um espaço vazio (ou seja, se ele não avança para um aliado)
-        else if(nomeINICIO.contains("Pawn") && ( (nomeFIM.contains(isPlayer1?"Black":"White")) || nomeFIM.equals(" ") ) ){
-            
-            //se peão chegou ao fim sem comer
-            if(linhaFIM==(isPlayer1?7:0) && linhaINICIO==(isPlayer1?6:1) && PlayPanel.coordinates_field[linhaFIM][colunaFIM].equals(" ")){return true;}
-            //se peão chegou ao fim comendo
-            else if(linhaFIM==(isPlayer1?7:0) && (colunaINICIO==colunaFIM-1 || colunaINICIO==colunaFIM+1) && linhaFIM==linhaINICIO+(isPlayer1?1:-1) && PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"Black":"White")){return true;}
-            //se é a primeira jogada do peão
-            else if(linhaINICIO==(isPlayer1?1:6) && colunaINICIO==colunaFIM && (linhaFIM==linhaINICIO+(isPlayer1?1:-1) || linhaFIM==linhaINICIO+(isPlayer1?2:-2)) && PlayPanel.coordinates_field[linhaFIM][colunaFIM].equals(" ")){return true;}
-            //se é a segunda jogada do peão
-            else if(colunaINICIO==colunaFIM && linhaFIM==linhaINICIO+(isPlayer1?1:-1) && PlayPanel.coordinates_field[linhaFIM][colunaFIM].equals(" ")){return true;}
-            //se peão está comendo
-            else if( (colunaINICIO==colunaFIM-1 || colunaINICIO==colunaFIM+1) && linhaFIM==linhaINICIO+(isPlayer1?1:-1) && PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"Black":"White")){return true;}
-            else{return false;}
-
-        }
         //else if(nomeINICIO.contains("Rook") && ( (nomeFIM.contains(isPlayer1?"Black":"White")) || nomeFIM.equals(" ") )){
-        else if(nomeINICIO.contains("Rook") && !PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black")){
+        else if(
+            (nomeINICIO.contains("Rook") && !PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black")) ||
+            (nomeINICIO.contains("Pawn") && PlayPanel.promoted.contains(Arrays.asList(nomeINICIO,"Rook")) && !PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black"))       
+        ){
             
             boolean jogada1=false;
             boolean jogada2=false;
@@ -182,7 +212,10 @@ public class MyMouseListenerDragDrop implements MouseListener{
             }
             else{return false;}
         }
-        else if(nomeINICIO.contains("Knight") && !PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black")){
+        else if(
+            (nomeINICIO.contains("Knight") && !PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black")) ||
+            (nomeINICIO.contains("Pawn") && PlayPanel.promoted.contains(Arrays.asList(nomeINICIO,"Knight")) && !PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black"))
+        ){
             
             //jogada 1
             if(linhaINICIO==linhaFIM+2 && (colunaINICIO==colunaFIM+1 || colunaINICIO==colunaFIM-1) ){return true;}
@@ -195,13 +228,16 @@ public class MyMouseListenerDragDrop implements MouseListener{
             else{return false;}
         
         }
-        else if(nomeINICIO.contains("Bishop") && !PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black")){
+        else if(
+            (nomeINICIO.contains("Bishop") && !PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black")) ||
+            (nomeINICIO.contains("Pawn") && PlayPanel.promoted.contains(Arrays.asList(nomeINICIO,"Bishop")) && !PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black"))
+        ){
             
             boolean jogada1=false;
             boolean jogada2=false;
             boolean jogada3=false;
             boolean jogada4=false;
-            if(linhaINICIO-linhaFIM!=colunaINICIO-colunaFIM){return false;}
+            if(Math.abs(linhaINICIO - linhaFIM) != Math.abs(colunaINICIO - colunaFIM)){return false;}
             else if(linhaINICIO<linhaFIM && colunaINICIO<colunaFIM){jogada1=true;}
             else if(linhaINICIO>linhaFIM && colunaINICIO<colunaFIM){jogada2=true;}
             else if(linhaINICIO>linhaFIM && colunaINICIO>colunaFIM){jogada3=true;}
@@ -235,6 +271,37 @@ public class MyMouseListenerDragDrop implements MouseListener{
             else{return false;}
 
         }
+        else if(
+            (nomeINICIO.contains("Queen") && !PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black")) ||
+            (nomeINICIO.contains("Pawn") && PlayPanel.promoted.contains(Arrays.asList(nomeINICIO,"Queen")) && !PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black"))
+        ){
+
+            int deltaLinha = linhaFIM - linhaINICIO;
+            int deltaColuna = colunaFIM - colunaINICIO;
+
+            // A rainha se move na diagonal OU linha OU coluna
+            if (deltaLinha != 0 && deltaColuna != 0 && Math.abs(deltaLinha) != Math.abs(deltaColuna)) {
+                return false; // movimento inválido
+            }
+
+            // Determinar os passos (direção)
+            int passoLinha = Integer.compare(deltaLinha, 0);   // retorna -1, 0 ou 1
+            int passoColuna = Integer.compare(deltaColuna, 0); // retorna -1, 0 ou 1
+
+            int linha = linhaINICIO + passoLinha;
+            int coluna = colunaINICIO + passoColuna;
+
+            // Verifica se há peças no caminho (exceto no destino)
+            while (linha != linhaFIM || coluna != colunaFIM) {
+                if (!PlayPanel.coordinates_field[linha][coluna].equals(" ")) {
+                    return false; // obstáculo encontrado
+                }
+                linha += passoLinha;
+                coluna += passoColuna;
+            }
+
+            return true; // movimento válido
+        }
         else if(nomeINICIO.contains("King") && !PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black")){
             
             //jogada 1
@@ -256,76 +323,21 @@ public class MyMouseListenerDragDrop implements MouseListener{
             else{return false;}
         
         }
-        else if(nomeINICIO.contains("Queen") && !PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black")){
+        //se o peão avança para um espaço com um adversário ou para um espaço vazio (ou seja, se ele não avança para um aliado)
+        else if(nomeINICIO.contains("Pawn") && ( (nomeFIM.contains(isPlayer1?"Black":"White")) || nomeFIM.equals(" ") ) ){
             
-            //bishop
-            boolean jogada1=false;
-            boolean jogada2=false;
-            boolean jogada3=false;
-            boolean jogada4=false;
-            if(linhaINICIO<linhaFIM && colunaINICIO<colunaFIM){jogada1=true;}
-            else if(linhaINICIO>linhaFIM && colunaINICIO<colunaFIM){jogada2=true;}
-            else if(linhaINICIO<linhaFIM && colunaINICIO>colunaFIM){jogada3=true;}
-            else if(linhaINICIO>linhaFIM && colunaINICIO>colunaFIM){jogada4=true;}
-            //rook
-            boolean jogada5=false;
-            boolean jogada6=false;
-            boolean jogada7=false;
-            boolean jogada8=false;
-            if(linhaINICIO<linhaFIM && colunaINICIO==colunaFIM){jogada5=true;}
-            else if(linhaINICIO==linhaFIM && colunaINICIO<colunaFIM){jogada6=true;}
-            else if(linhaINICIO>linhaFIM && colunaINICIO==colunaFIM){jogada7=true;}
-            else if(linhaINICIO==linhaFIM && colunaINICIO>colunaFIM){jogada8=true;}
-            
-            //jogada 1
-            if(jogada1){
-                boolean valida=true;
-                for(int i=1;i<(linhaFIM-linhaINICIO);i++){if(!PlayPanel.coordinates_field[linhaINICIO+i][colunaINICIO+i].equals(" ")){valida=false;}}
-                return valida;
-            }
-            //jogada 2
-            else if(jogada2){
-                boolean valida=true;
-                for(int i=1;i<(colunaFIM-colunaINICIO);i++){if(!PlayPanel.coordinates_field[linhaINICIO-i][colunaINICIO+i].equals(" ")){valida=false;}}
-                return valida;
-            }
-            //jogada 3
-            else if(jogada3){
-                boolean valida=true;
-                for(int i=1;i<(linhaINICIO-linhaFIM);i++){if(!PlayPanel.coordinates_field[linhaINICIO-i][colunaINICIO-i].equals(" ")){valida=false;}}
-                return valida;
-            }
-            //jogada 4
-            else if(jogada4){
-                boolean valida=true;
-                for(int i=1;i<(linhaFIM-linhaINICIO);i++){if(!PlayPanel.coordinates_field[linhaINICIO+i][colunaINICIO-i].equals(" ")){valida=false;}}
-                return valida;
-            }
-            //jogada 5
-            else if(jogada5){
-                boolean valida=true;
-                for(int i=1;i<(linhaFIM-linhaINICIO);i++){if(!PlayPanel.coordinates_field[linhaINICIO+i][colunaINICIO].equals(" ")){valida=false;}}
-                return valida;
-            }
-            //jogada 6
-            else if(jogada6){
-                boolean valida=true;
-                for(int i=1;i<(colunaFIM-colunaINICIO);i++){if(!PlayPanel.coordinates_field[linhaINICIO][colunaINICIO+i].equals(" ")){valida=false;}}
-                return valida;
-            }
-            //jogada 7
-            else if(jogada7){
-                boolean valida=true;
-                for(int i=1;i<(linhaINICIO-linhaFIM);i++){if(!PlayPanel.coordinates_field[linhaINICIO-i][colunaINICIO].equals(" ")){valida=false;}}
-                return valida;
-            }
-            //jogada 8
-            else if(jogada8){
-                boolean valida=true;
-                for(int i=1;i<(colunaINICIO-colunaFIM);i++){if(!PlayPanel.coordinates_field[linhaINICIO][colunaINICIO-i].equals(" ")){valida=false;}}
-                return valida;
-            }
+            //se peão chegou ao fim sem comer
+            if(linhaFIM==(isPlayer1?7:0) && linhaINICIO==(isPlayer1?6:1) && PlayPanel.coordinates_field[linhaFIM][colunaFIM].equals(" ")){return true;}
+            //se peão chegou ao fim comendo
+            else if(linhaFIM==(isPlayer1?7:0) && (colunaINICIO==colunaFIM-1 || colunaINICIO==colunaFIM+1) && linhaFIM==linhaINICIO+(isPlayer1?1:-1) && PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"Black":"White")){return true;}
+            //se é a primeira jogada do peão
+            else if(linhaINICIO==(isPlayer1?1:6) && colunaINICIO==colunaFIM && (linhaFIM==linhaINICIO+(isPlayer1?1:-1) || linhaFIM==linhaINICIO+(isPlayer1?2:-2)) && PlayPanel.coordinates_field[linhaFIM][colunaFIM].equals(" ")){return true;}
+            //se é a segunda jogada do peão
+            else if(colunaINICIO==colunaFIM && linhaFIM==linhaINICIO+(isPlayer1?1:-1) && PlayPanel.coordinates_field[linhaFIM][colunaFIM].equals(" ")){return true;}
+            //se peão está comendo
+            else if( (colunaINICIO==colunaFIM-1 || colunaINICIO==colunaFIM+1) && linhaFIM==linhaINICIO+(isPlayer1?1:-1) && PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"Black":"White")){return true;}
             else{return false;}
+
         }
         else{return false;}
     }
@@ -399,6 +411,32 @@ public class MyMouseListenerDragDrop implements MouseListener{
             else if(nomeFIM.equals("Knight_Black_G")){PlayPanel.Knight_Black_G.setVisible(false);}
             else if(nomeFIM.equals("Rook_Black_H")){PlayPanel.Rook_Black_H.setVisible(false);}
         }
+    }
+
+    public static void promotion(String nomeINICIO, String option){
+        boolean isPlayer1 = nomeINICIO.contains("White");
+        if(nomeINICIO.equals("Pawn_White_A")){change(PlayPanel.Pawn_White_A,option,isPlayer1);}
+        else if(nomeINICIO.equals("Pawn_White_B")){change(PlayPanel.Pawn_White_B,option,isPlayer1);}
+        else if(nomeINICIO.equals("Pawn_White_C")){change(PlayPanel.Pawn_White_C,option,isPlayer1);}
+        else if(nomeINICIO.equals("Pawn_White_D")){change(PlayPanel.Pawn_White_D,option,isPlayer1);}
+        else if(nomeINICIO.equals("Pawn_White_E")){change(PlayPanel.Pawn_White_E,option,isPlayer1);}
+        else if(nomeINICIO.equals("Pawn_White_F")){change(PlayPanel.Pawn_White_F,option,isPlayer1);}
+        else if(nomeINICIO.equals("Pawn_White_G")){change(PlayPanel.Pawn_White_G,option,isPlayer1);}
+        else if(nomeINICIO.equals("Pawn_White_H")){change(PlayPanel.Pawn_White_H,option,isPlayer1);}
+        else if(nomeINICIO.equals("Pawn_Black_A")){change(PlayPanel.Pawn_Black_A,option,isPlayer1);}
+        else if(nomeINICIO.equals("Pawn_Black_B")){change(PlayPanel.Pawn_Black_B,option,isPlayer1);}
+        else if(nomeINICIO.equals("Pawn_Black_C")){change(PlayPanel.Pawn_Black_C,option,isPlayer1);}
+        else if(nomeINICIO.equals("Pawn_Black_D")){change(PlayPanel.Pawn_Black_D,option,isPlayer1);}
+        else if(nomeINICIO.equals("Pawn_Black_E")){change(PlayPanel.Pawn_Black_E,option,isPlayer1);}
+        else if(nomeINICIO.equals("Pawn_Black_F")){change(PlayPanel.Pawn_Black_F,option,isPlayer1);}
+        else if(nomeINICIO.equals("Pawn_Black_G")){change(PlayPanel.Pawn_Black_G,option,isPlayer1);}
+        else if(nomeINICIO.equals("Pawn_Black_H")){change(PlayPanel.Pawn_Black_H,option,isPlayer1);}
+    }
+
+    public static void change(JLabel peca, String option, boolean isPlayer1){
+            ImageIcon icon = new ImageIcon("./src/images/"+option+"_"+(isPlayer1?"White":"Black")+".png");
+            Image scaledImage = icon.getImage().getScaledInstance(550/15, 550/15, Image.SCALE_SMOOTH);
+            peca.setIcon(new ImageIcon(scaledImage));
     }
 
     public static String sufixo(String linha, int quantidadeDEcaracteres){

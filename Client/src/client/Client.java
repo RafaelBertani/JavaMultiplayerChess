@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Pattern;
+
+import listeners.MyMouseListenerDragDrop;
 import main_panels.CreatePanel;
 import main_panels.LoginPanel;
 import main_panels.MenuPanel;
@@ -155,7 +157,6 @@ public class Client{
             // else{i.vez.setText("Vez do oponente");i.tampa.setVisible(true);}
         }
         else if(data.get(0).equals("MOVEMENT")){
-            
             String[] move=line_break(data.get(1),4,'/');
             
             ArrayList<String> c=new ArrayList<String>(){{this.add("A");this.add("B");this.add("C");this.add("D");this.add("E");this.add("F");this.add("G");this.add("H");}};
@@ -168,11 +169,18 @@ public class Client{
 
             boolean isPlayer1 = Client.player_1_or_2==1;
 
-            //System.out.println("Sou o "+(isPlayer1?"A":"B")+" recebi "+linhaINICIO+" "+colunaINICIO+" "+linhaFIM+" "+colunaFIM);
+            //System.out.println("Recebi "+linhaINICIO+" "+colunaINICIO+" "+linhaFIM+" "+colunaFIM+" que é o: "+PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]);
 
             PlayPanel.getPanel().setVisible(false);
-            System.out.println(move[0]);
-            Screen.myMouseListenerDragDrop.troca_imagem(move[0], move[1], isPlayer1?linhaINICIO:7-linhaINICIO, isPlayer1?colunaINICIO:7-colunaINICIO, isPlayer1?linhaFIM:7-linhaFIM, isPlayer1?colunaFIM:7-colunaFIM); //7- porque visualmente, por coordenadas, os movimentos são espelhados
+            Screen.myMouseListenerDragDrop.troca_imagem(
+                move[0],
+                move[1],
+                isPlayer1?linhaINICIO:7-linhaINICIO,
+                isPlayer1?colunaINICIO:7-colunaINICIO,
+                isPlayer1?linhaFIM:7-linhaFIM,
+                isPlayer1?colunaFIM:7-colunaFIM
+            );
+            //7- porque visualmente, por coordenadas, os movimentos são espelhados
             PlayPanel.getPanel().setVisible(true);
             PlayPanel.coordinates_field[linhaFIM][colunaFIM]=move[0];
             PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]=" ";
@@ -181,8 +189,46 @@ public class Client{
             PlayPanel.turn.setText("Sua vez");
 
         }
-        else if(data.get(0).equals("WON")){ScreenFunctions.information_message("Você ganhou","Mensagem");}
-        else if(data.get(0).equals("LOST")){ScreenFunctions.information_message("Você perdeu","Mensagem");}
+        else if(data.get(0).equals("PROMOTED")){
+            String[] move=line_break(data.get(1),5,'/');
+            
+            ArrayList<String> c=new ArrayList<String>(){{this.add("A");this.add("B");this.add("C");this.add("D");this.add("E");this.add("F");this.add("G");this.add("H");}};
+        
+            int linhaINICIO = (Integer.parseInt(""+move[2].charAt(1))-1);
+            int colunaINICIO = c.indexOf(""+move[2].charAt(0));
+        
+            int linhaFIM = (Integer.parseInt(""+move[3].charAt(1))-1);
+            int colunaFIM = c.indexOf(""+move[3].charAt(0));            
+
+            boolean isPlayer1 = Client.player_1_or_2==1;
+
+            //System.out.println("Recebi "+linhaINICIO+" "+colunaINICIO+" "+linhaFIM+" "+colunaFIM+" que é o: "+PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]);
+
+            PlayPanel.getPanel().setVisible(false);
+            Screen.myMouseListenerDragDrop.troca_imagem(
+                move[0],
+                move[1],
+                isPlayer1?linhaINICIO:7-linhaINICIO,
+                isPlayer1?colunaINICIO:7-colunaINICIO,
+                isPlayer1?linhaFIM:7-linhaFIM,
+                isPlayer1?colunaFIM:7-colunaFIM
+            );
+            MyMouseListenerDragDrop.promotion(PlayPanel.coordinates_field[linhaINICIO][colunaINICIO],move[4]);
+            //PlayPanel.promoted.add(new String[][]{{PlayPanel.coordinates_field[linhaINICIO][colunaINICIO],move[4]}});
+            //7- porque visualmente, por coordenadas, os movimentos são espelhados
+            PlayPanel.getPanel().setVisible(true);
+            PlayPanel.coordinates_field[linhaFIM][colunaFIM]=move[0];
+            PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]=" ";
+            
+            //flipturn
+            PlayPanel.turn.setText("Sua vez");
+        }
+        else if(data.get(0).equals("WON")){
+            ScreenFunctions.information_message("Você ganhou","Mensagem");
+        }
+        else if(data.get(0).equals("LOST")){
+            ScreenFunctions.information_message("Você perdeu","Mensagem");
+        }
     }
 
         public static String[] line_break(String linha, int n_de_itens, char delimiter){
