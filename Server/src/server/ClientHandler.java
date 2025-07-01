@@ -11,8 +11,6 @@ import java.util.Arrays;
 import java.util.regex.Pattern;
 import queue.Node;
 import queue.Player;
-import room.Movement;
-import room.Room;
 import sha256.Sha256;
 
 public class ClientHandler implements Runnable{
@@ -41,7 +39,7 @@ public class ClientHandler implements Runnable{
                 clientHandlers.add(this);
                 System.out.println("Login");
                 try {
-                    this.bufferedWriter.write("LOGIN SUCCESSFUL- - ");
+                    this.bufferedWriter.write("LOGIN SUCCESSFUL-"+data.get(1)+"- ");
                     this.bufferedWriter.newLine();
                     this.bufferedWriter.flush();
                 } catch (Exception e) {}
@@ -136,7 +134,6 @@ public class ClientHandler implements Runnable{
                 }catch(Exception e){}
                 
                 Server.roomLIST.add(new Room(p1,p2,Server.rooms));
-                Server.movementLIST.add(new Movement("","",Server.rooms));
                 
                 Server.rooms++;
                 
@@ -149,62 +146,52 @@ public class ClientHandler implements Runnable{
             
             //pode substituir todo data[1] por this.clientUsername
             
-            Server.markMOVEMENT(data.get(1), data.get(2));
-            
-            int ID=-1;
             int v=0;
             for(Room room : Server.roomLIST){
                 if(room.p1.getName().equals(data.get(1)) || room.p2.getName().equals(data.get(1))){
-                    ID=room.ID;
                     p1=room.p1;
                     p2=room.p2;
                     v=room.vez;
-                }
-            }
+                    
+                    if( (data.get(1).equals(this.p1.getName()) && v==1)){
 
-            for(Movement movement : Server.movementLIST){
-                if(movement.ID==ID){
-                    if( (!movement.mv1.equals("") && v==1) ){
-                        //AÇÃO
-                        System.out.println("Player 1: "+movement.mv1+" "+"Player 2: "+movement.mv2);
-                        //MANDA RETORNO PARA OS PLAYERS
+                        //MANDA RETORNO PARA O ADVERSÁRIO
                         try{
                             p1.getClientHandler().getBufferedWriter().write("FLIPTURN- - ");
                             p1.getClientHandler().getBufferedWriter().newLine();
                             p1.getClientHandler().getBufferedWriter().flush();
-                            p2.getClientHandler().getBufferedWriter().write("MOVEMENT-"+movement.mv1+"- ");
+                            p2.getClientHandler().getBufferedWriter().write("MOVEMENT-"+data.get(2)+"- ");
                             p2.getClientHandler().getBufferedWriter().newLine();
                             p2.getClientHandler().getBufferedWriter().flush();
                         }catch(Exception e){}
-                        movement.clear(); //limpa para a próxima
+
                         //flip turn
-                        for(Room room : Server.roomLIST){
-                            if(room.p1.getName().equals(data.get(1)) || room.p2.getName().equals(data.get(1))){room.vez=2;}
+                        for(Room r : Server.roomLIST){
+                            if(r.p1.getName().equals(data.get(1)) || r.p2.getName().equals(data.get(1))){room.vez=2;}
                         }
+                        
                     }
-                    else if( (!movement.mv2.equals("") && v==2) ){
-                        //AÇÃO
-                        System.out.println("Player 1: "+movement.mv1+" "+"Player 2: "+movement.mv2);
-                        //MANDA RETORNO PARA OS PLAYERS
+                    else if(data.get(1).equals(this.p2.getName()) && v==2){
+
+                        //MANDA RETORNO PARA O ADVERSÁRIO
                         try{
-                            p1.getClientHandler().getBufferedWriter().write("MOVEMENT-"+movement.mv2+"- ");
+                            p1.getClientHandler().getBufferedWriter().write("MOVEMENT-"+data.get(2)+"- ");
                             p1.getClientHandler().getBufferedWriter().newLine();
                             p1.getClientHandler().getBufferedWriter().flush();
                             p2.getClientHandler().getBufferedWriter().write("FLIPTURN- - ");
                             p2.getClientHandler().getBufferedWriter().newLine();
                             p2.getClientHandler().getBufferedWriter().flush();
                         }catch(Exception e){}
-                        movement.clear(); //limpa para a próxima
                         //flip turn
-                        for(Room room : Server.roomLIST){
-                            if(room.p1.getName().equals(data.get(1)) || room.p2.getName().equals(data.get(1))){room.vez=1;}
+                        for(Room r : Server.roomLIST){
+                            if(r.p1.getName().equals(data.get(1)) || r.p2.getName().equals(data.get(1))){room.vez=1;}
                         }
+
                     }
+
                 }
-                
             }
-            
-            
+                        
         }       
         else if(data.get(0).equals("END")){
             

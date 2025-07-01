@@ -22,7 +22,7 @@ public class Client{
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
-    public String userName;
+    public static String userName;
     public static Screen screen;
 
     public Client(Socket socket){
@@ -68,7 +68,7 @@ public class Client{
     //     }
     // }
     
-    private static int player_1_or_2 = 0;
+    public static int player_1_or_2 = 0;
 
     public void dealer(ArrayList<String> data){ //recebe a mensagem e age de acordo
         if(data.get(0).equals("LOGIN SUCCESSFUL")){
@@ -77,6 +77,9 @@ public class Client{
             Screen.mainPanel.add(MenuPanel.getPanel());
             Screen.mainPanel.setVisible(true);
         
+            //set nome do usuário
+            Client.userName=data.get(1);
+
             LoginPanel.getUsernametext().setText("");
             LoginPanel.getPasswordtext().setText("");
         }
@@ -132,8 +135,9 @@ public class Client{
         else if(data.get(0).equals("QUEUE SUCCESSFUL")){
             
             player_1_or_2=Integer.parseInt(data.get(1));
-            if(player_1_or_2==1){PlayPanel.vez.setText("Sua vez");}
-            else if(player_1_or_2==2){PlayPanel.vez.setText("Vez do oponente");}
+            if(player_1_or_2==1){PlayPanel.turn.setText("Sua vez");}
+            else if(player_1_or_2==2){PlayPanel.turn.setText("Vez do oponente");}
+            PlayPanel.position(player_1_or_2==1);
             
             MenuPanel.getLoadingLabel().setVisible(false);
             MenuPanel.getLoadingBar().setVisible(false);
@@ -146,7 +150,7 @@ public class Client{
         
         }
         else if(data.get(0).equals("FLIPTURN")){
-            PlayPanel.vez.setText("Vez do oponente");
+            PlayPanel.turn.setText("Vez do oponente");
             // if(i.tampa.isVisible()){i.vez.setText("Sua vez");i.tampa.setVisible(false);}
             // else{i.vez.setText("Vez do oponente");i.tampa.setVisible(true);}
         }
@@ -156,19 +160,25 @@ public class Client{
             
             ArrayList<String> c=new ArrayList<String>(){{this.add("A");this.add("B");this.add("C");this.add("D");this.add("E");this.add("F");this.add("G");this.add("H");}};
         
-            int linhaINICIO = 7-(Integer.parseInt(""+move[2].charAt(1))-1);
+            int linhaINICIO = (Integer.parseInt(""+move[2].charAt(1))-1);
             int colunaINICIO = c.indexOf(""+move[2].charAt(0));
         
-            int linhaFIM = 7-(Integer.parseInt(""+move[3].charAt(1))-1);
+            int linhaFIM = (Integer.parseInt(""+move[3].charAt(1))-1);
             int colunaFIM = c.indexOf(""+move[3].charAt(0));            
 
-            Screen.myMouseListenerDragDrop.troca_imagem("ADV_"+move[0],prefixo(move[1],4),linhaINICIO,colunaINICIO,linhaFIM,colunaFIM);
-            PlayPanel.campo_coordenadas[linhaFIM][colunaFIM]="ADV_"+move[0];
-            PlayPanel.campo_coordenadas[linhaINICIO][colunaINICIO]=" ";
-            //i.campo_coordenadas[linhaINICIO-1][colunaINICIO]=" ";
+            boolean isPlayer1 = Client.player_1_or_2==1;
+
+            //System.out.println("Sou o "+(isPlayer1?"A":"B")+" recebi "+linhaINICIO+" "+colunaINICIO+" "+linhaFIM+" "+colunaFIM);
+
+            PlayPanel.getPanel().setVisible(false);
+            System.out.println(move[0]);
+            Screen.myMouseListenerDragDrop.troca_imagem(move[0], move[1], isPlayer1?linhaINICIO:7-linhaINICIO, isPlayer1?colunaINICIO:7-colunaINICIO, isPlayer1?linhaFIM:7-linhaFIM, isPlayer1?colunaFIM:7-colunaFIM); //7- porque visualmente, por coordenadas, os movimentos são espelhados
+            PlayPanel.getPanel().setVisible(true);
+            PlayPanel.coordinates_field[linhaFIM][colunaFIM]=move[0];
+            PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]=" ";
             
             //flipturn
-            PlayPanel.vez.setText("Sua vez");
+            PlayPanel.turn.setText("Sua vez");
 
         }
         else if(data.get(0).equals("WON")){ScreenFunctions.information_message("Você ganhou","Mensagem");}

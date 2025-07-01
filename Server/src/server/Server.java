@@ -6,8 +6,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import queue.Queue;
-import room.Movement;
-import room.Room;
 
 public class Server{
     
@@ -35,26 +33,6 @@ public class Server{
         }
     }
     
-    public static List<Movement> movementLIST = new ArrayList<>();
-
-    public static void markMOVEMENT(String name, String action){
-        
-        int ID=-1;
-        int p=-1;
-        for(Room room : roomLIST){
-            if(room.p1.getName().equals(name)){ID=room.ID;p=1;}
-            else if(room.p2.getName().equals(name)){ID=room.ID;p=2;}
-        }
-
-        for(Movement movement : movementLIST){
-            if(movement.ID==ID){
-                if(p==1){movement.mv1=action;}
-                else if(p==2){movement.mv2=action;}
-            }
-        }
-
-    }
-
     public Server(ServerSocket serverSocket){
         this.serverSocket = serverSocket;
     }

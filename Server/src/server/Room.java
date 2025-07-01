@@ -1,4 +1,4 @@
-package room;
+package server;
 
 import queue.Player;
 
