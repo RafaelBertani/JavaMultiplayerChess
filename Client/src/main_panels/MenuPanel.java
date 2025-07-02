@@ -33,7 +33,7 @@ public class MenuPanel {
     public MenuPanel(){
 
         int WIDTH = Screen.getWIDTH();
-        int HEIGHT = Screen.getHEIGHT();
+        int HEIGHT = Screen.getHEIGHT()+200;
 
         //maior
         //prioridade
@@ -44,7 +44,7 @@ public class MenuPanel {
         panel.setOpaque(true);
         panel.setBackground(new Color(0,0,0));
 
-        ScreenFunctions.button_setup(ranking, "Ver Ranking", 0, 11*HEIGHT/20, WIDTH/3, HEIGHT/10, Screen.myActionListener, panel);
+        ScreenFunctions.button_setup(ranking, Screen.bn.getString("menu.ranking"), 0, 11*HEIGHT/20, WIDTH/3, HEIGHT/10, Screen.myActionListener, panel);
         ScreenFunctions.button_edit(ranking, new Font("Arial", Font.PLAIN, 19), new Color(112,104,83), Color.WHITE);
         ranking.addMouseListener(Screen.myMouseListener);
         //remover preenchimento automático de fundo quando clicar
@@ -52,7 +52,7 @@ public class MenuPanel {
         ranking.setContentAreaFilled(false);
         ranking.setOpaque(true);
         
-        ScreenFunctions.button_setup(play, "Buscar partida", WIDTH/3, 11*HEIGHT/20, WIDTH/3, HEIGHT/10, Screen.myActionListener, panel);
+        ScreenFunctions.button_setup(play, Screen.bn.getString("menu.match"), WIDTH/3, 11*HEIGHT/20, WIDTH/3, HEIGHT/10, Screen.myActionListener, panel);
         ScreenFunctions.button_edit(play, new Font("Arial", Font.PLAIN, 19), new Color(112,104,83), Color.WHITE);
         play.addMouseListener(Screen.myMouseListener);
         //remover preenchimento automático de fundo quando clicar
@@ -60,7 +60,7 @@ public class MenuPanel {
         play.setContentAreaFilled(false);
         play.setOpaque(true);
         
-        ScreenFunctions.button_setup(leave, "Sair", 2*WIDTH/3, 11*WIDTH/20, WIDTH/3, HEIGHT/10, Screen.myActionListener, panel);
+        ScreenFunctions.button_setup(leave, Screen.bn.getString("menu.leave"), 2*WIDTH/3, 11*WIDTH/20, WIDTH/3, HEIGHT/10, Screen.myActionListener, panel);
         ScreenFunctions.button_edit(leave, new Font("Arial", Font.PLAIN, 19), new Color(112,104,83), Color.WHITE);
         leave.addMouseListener(Screen.myMouseListener);
         //remover preenchimento automático de fundo quando clicar
@@ -68,7 +68,7 @@ public class MenuPanel {
         leave.setContentAreaFilled(false);
         leave.setOpaque(true);
 
-        ScreenFunctions.label_setup(loadingLabel, "Buscando partida", false, WIDTH/2-WIDTH/8, HEIGHT/3-HEIGHT/40, WIDTH/4, HEIGHT/40, panel);
+        ScreenFunctions.label_setup(loadingLabel, Screen.bn.getString("menu.searching"), false, WIDTH/2-WIDTH/8, HEIGHT/3-HEIGHT/40, WIDTH/4, HEIGHT/40, panel);
         loadingLabel.setOpaque(true);
         ScreenFunctions.label_edit(loadingLabel, new Font("Arial",Font.PLAIN,16), new Color(255,255,255,0), Color.WHITE);
         loadingLabel.setVisible(false);
@@ -77,7 +77,7 @@ public class MenuPanel {
         loading.start();
         loadingBar.setVisible(false);
 
-        ScreenFunctions.button_setup(stop, "Parar de procurar", WIDTH/2-WIDTH/8, HEIGHT/3+HEIGHT/40, WIDTH/4, HEIGHT/40, Screen.myActionListener, panel);
+        ScreenFunctions.button_setup(stop, Screen.bn.getString("menu.stop"), WIDTH/2-WIDTH/8, HEIGHT/3+HEIGHT/40, WIDTH/4, HEIGHT/40, Screen.myActionListener, panel);
         ScreenFunctions.button_edit(stop, new Font("Arial", Font.PLAIN, 16), new Color(112,104,83), Color.WHITE);
         stop.addMouseListener(Screen.myMouseListener);
         //remover preenchimento automático de fundo quando clicar
@@ -102,5 +102,14 @@ public class MenuPanel {
             }
         }
     }
+
+    public static void updateLanguage() {
+        ranking.setText(Screen.bn.getString("menu.ranking"));
+        play.setText(Screen.bn.getString("menu.match"));
+        leave.setText(Screen.bn.getString("menu.leave"));
+        loadingLabel.setText(Screen.bn.getString("menu.searching"));
+        stop.setText(Screen.bn.getString("menu.stop"));
+    }
+
 
 }

@@ -21,11 +21,11 @@ public class InitialPanel {
     public static JButton getEnterlogin() {return enterLogin;}
 
     public static JPanel getPanel() {return panel;}
-
+    
     public InitialPanel(){
 
         int WIDTH = Screen.getWIDTH();
-        int HEIGHT = Screen.getHEIGHT();
+        int HEIGHT = Screen.getHEIGHT()+200;
 
         //maior
         //prioridade
@@ -36,10 +36,10 @@ public class InitialPanel {
         panel.setOpaque(true);
         panel.setBackground(new Color(0,0,0));
 
-        ScreenFunctions.label_setup(title, "Xadrez Online", false, WIDTH/4, 3*HEIGHT/20, WIDTH/2, HEIGHT/10, panel);
+        ScreenFunctions.label_setup(title, Screen.bn.getString("initial.title"), false, WIDTH/4, 3*HEIGHT/20, WIDTH/2, HEIGHT/10, panel);
         ScreenFunctions.label_edit(title, new Font("Arial",Font.PLAIN,21), null, Color.WHITE);
 
-        ScreenFunctions.button_setup(createLogin, "Criar usuário", 3*WIDTH/10, 3*HEIGHT/10, 4*WIDTH/10, HEIGHT/10, Screen.myActionListener, panel);
+        ScreenFunctions.button_setup(createLogin, Screen.bn.getString("initial.create"), 3*WIDTH/10, 3*HEIGHT/10, 4*WIDTH/10, HEIGHT/10, Screen.myActionListener, panel);
         ScreenFunctions.button_edit(createLogin, new Font("Arial", Font.PLAIN, 19), new Color(112,104,83), Color.WHITE);
         createLogin.addMouseListener(Screen.myMouseListener);
         //remover preenchimento automático de fundo quando clicar
@@ -47,7 +47,7 @@ public class InitialPanel {
         createLogin.setContentAreaFilled(false);
         createLogin.setOpaque(true);
 
-        ScreenFunctions.button_setup(enterLogin, "Entrar usuário", 3*WIDTH/10, 9*HEIGHT/20, 4*WIDTH/10, HEIGHT/10, Screen.myActionListener, panel);
+        ScreenFunctions.button_setup(enterLogin, Screen.bn.getString("initial.login"), 3*WIDTH/10, 9*HEIGHT/20, 4*WIDTH/10, HEIGHT/10, Screen.myActionListener, panel);
         ScreenFunctions.button_edit(enterLogin, new Font("Arial", Font.PLAIN, 19), new Color(112,104,83), Color.WHITE);
         enterLogin.addMouseListener(Screen.myMouseListener);
         //remover preenchimento automático de fundo quando clicar
@@ -60,6 +60,12 @@ public class InitialPanel {
 
         ScreenFunctions.image_setup(backgroundImage, "./src/images/teste.png", 0, 0, WIDTH, 7*HEIGHT/10, panel);
 
+    }
+
+    public static void updateLanguage() {
+        title.setText(Screen.bn.getString("initial.title"));
+        createLogin.setText(Screen.bn.getString("initial.create"));
+        enterLogin.setText(Screen.bn.getString("initial.login"));
     }
 
 }

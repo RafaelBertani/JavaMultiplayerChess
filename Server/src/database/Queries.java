@@ -193,6 +193,38 @@ public class Queries {
         return response;
     }
 
+    public static void playerWon(String username){
+        
+        Connection c = Database.getConnection();
+        PreparedStatement pstm = null;
+        try{
+            
+            pstm = c.prepareStatement("UPDATE Users SET wins = wins + 1, games = games + 1 WHERE username = ?;");
+            pstm.setString(1, username);
+            pstm.executeUpdate();
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }finally{Database.closeConnection(c);}
+        
+    }
+
+    public static void playerLost(String username){
+
+        Connection c = Database.getConnection();
+        PreparedStatement pstm = null;
+        try{
+            
+            pstm = c.prepareStatement("UPDATE Users SET games = games + 1 WHERE username = ?;");
+            pstm.setString(1, username);
+            pstm.executeUpdate();
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }finally{Database.closeConnection(c);}
+
+    }
+
     // public static boolean addItem(Item i){
 
     //     boolean successful = true;

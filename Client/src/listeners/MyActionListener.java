@@ -1,12 +1,16 @@
 package listeners;
 
+import client.Client;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import main_panels.CreatePanel;
 import main_panels.InitialPanel;
 import main_panels.LoginPanel;
 import main_panels.MenuPanel;
+import main_panels.PlayPanel;
 import main_panels.RankingPanel;
 import screen.Screen;
 import screen.ScreenFunctions;
@@ -46,7 +50,7 @@ public class MyActionListener implements ActionListener{
                 CreatePanel.getPassword1text().getPassword().length==0 ||
                 CreatePanel.getPassword2text().getPassword().length==0
             ){
-                ScreenFunctions.error_message("Nenhum campo pode ficar em branco", "Erro!");
+                ScreenFunctions.error_message(Screen.bn.getString("create.blank.content"), Screen.bn.getString("create.blank.title"));
             }
             else if(
                 !Arrays.equals(
@@ -54,7 +58,7 @@ public class MyActionListener implements ActionListener{
                     CreatePanel.getPassword2text().getPassword()
                 )
             ){
-                ScreenFunctions.error_message("As senhas devem ser iguais", "Erro");
+                ScreenFunctions.error_message(Screen.bn.getString("create.match.content"), Screen.bn.getString("create.match.title"));
             }
             else{
                 //envia
@@ -76,7 +80,7 @@ public class MyActionListener implements ActionListener{
                 LoginPanel.getUsernametext().getText().equals("") ||
                 LoginPanel.getPasswordtext().getPassword().length==0
             ){
-                ScreenFunctions.error_message("Nenhum campo pode ficar em branco", "Erro!");
+                ScreenFunctions.error_message(Screen.bn.getString("login.blank.content"), Screen.bn.getString("login.blank.title"));
             }
             else{
                 //envia
@@ -138,6 +142,76 @@ public class MyActionListener implements ActionListener{
         else if(e.getSource()==RankingPanel.getJoined()){ //RANKINGPANEL: JOINED
             //envia
             Screen.client.sendMessage("RANKING-JOINED- ");
+        }
+        else if(e.getSource()==PlayPanel.getForfeit()){ //PLAYPANEL: FORFEIT
+            int op = ScreenFunctions.options_message(Screen.bn.getString("play.quit.content"), Screen.bn.getString("play.quit.title"), new String[]{Screen.bn.getString("play.quit.yes"),Screen.bn.getString("play.quit.no")});
+            if(op==0){
+                //envia
+                Screen.client.sendMessage("FORFEIT-"+Client.userName+"- ");
+                ScreenFunctions.information_message(Screen.bn.getString("play.lost.content"),Screen.bn.getString("play.lost.title"));
+                Screen.mainPanel.setVisible(false);
+                Screen.mainPanel.removeAll();
+                Screen.mainPanel.add(MenuPanel.getPanel());
+                Screen.mainPanel.setVisible(true);
+                Screen.menuBar.setVisible(true);
+            }
+        }
+        else if(e.getSource()==Screen.menuBar.getMenu(0).getItem(0)){ //SCREEN: PORTUGUESE
+            Screen.bn = ResourceBundle.getBundle("Resources/PACK", new Locale("pt","BR"));
+            Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
+            InitialPanel.updateLanguage();
+            CreatePanel.updateLanguage();
+            LoginPanel.updateLanguage();
+            MenuPanel.updateLanguage();
+            PlayPanel.update_language();
+            RankingPanel.updateLanguage();
+        }
+        else if(e.getSource()==Screen.menuBar.getMenu(0).getItem(1)){ //SCREEN: ENGLISH
+            Screen.bn = ResourceBundle.getBundle("Resources/PACK", Locale.US);
+            Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
+            Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
+            InitialPanel.updateLanguage();
+            CreatePanel.updateLanguage();
+            LoginPanel.updateLanguage();
+            MenuPanel.updateLanguage();
+            PlayPanel.update_language();
+            RankingPanel.updateLanguage();
+        }
+        else if(e.getSource()==Screen.menuBar.getMenu(0).getItem(2)){ //SCREEN: SPANISH
+            Screen.bn = ResourceBundle.getBundle("Resources/PACK", new Locale("es","ES"));
+            Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
+            Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
+            Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
+            InitialPanel.updateLanguage();
+            CreatePanel.updateLanguage();
+            LoginPanel.updateLanguage();
+            MenuPanel.updateLanguage();
+            PlayPanel.update_language();
+            RankingPanel.updateLanguage();    
+        }
+        else if(e.getSource()==Screen.menuBar.getMenu(0).getItem(3)){ //SCREEN: FRENCH
+            Screen.bn = ResourceBundle.getBundle("Resources/PACK", new Locale("fr","FR"));
+            Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
+            Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
+            Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
+            InitialPanel.updateLanguage();
+            CreatePanel.updateLanguage();
+            LoginPanel.updateLanguage();
+            MenuPanel.updateLanguage();
+            PlayPanel.update_language();
+            RankingPanel.updateLanguage();
+        }
+        else if(e.getSource()==Screen.menuBar.getMenu(0).getItem(4)){ //SCREEN: ITALIAN
+            Screen.bn = ResourceBundle.getBundle("Resources/PACK", new Locale("fr","FR"));
+            Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
+            Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
+            Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
+            InitialPanel.updateLanguage();
+            CreatePanel.updateLanguage();
+            LoginPanel.updateLanguage();
+            MenuPanel.updateLanguage();
+            PlayPanel.update_language();
+            RankingPanel.updateLanguage();
         }
 
     }

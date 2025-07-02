@@ -9,7 +9,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Pattern;
-
 import listeners.MyMouseListenerDragDrop;
 import main_panels.CreatePanel;
 import main_panels.LoginPanel;
@@ -86,10 +85,10 @@ public class Client{
             LoginPanel.getPasswordtext().setText("");
         }
         else if(data.get(0).equals("LOGIN FAILED")){
-            ScreenFunctions.error_message("Nome ou senha incorretos","Erro");
+            ScreenFunctions.error_message(Screen.bn.getString("login.failed.content"),Screen.bn.getString("login.failed.title"));
         }
         else if(data.get(0).equals("CREATE SUCCESSFUL")){
-            ScreenFunctions.information_message("Usuário criado com sucesso", "Sucesso!");
+            ScreenFunctions.information_message(Screen.bn.getString("create.success.content"), Screen.bn.getString("create.success.title"));
             Screen.mainPanel.setVisible(false);
             Screen.mainPanel.removeAll();
             Screen.mainPanel.add(LoginPanel.getPanel());
@@ -100,7 +99,7 @@ public class Client{
             CreatePanel.getPassword2text().setText("");
         }
         else if(data.get(0).equals("CREATE FAILED")){
-            ScreenFunctions.error_message("Nome do usuário já existe","Erro");
+            ScreenFunctions.error_message(Screen.bn.getString("create.failed.content"),Screen.bn.getString("create.failed.title"));
         }
         else if(data.get(0).equals("RANKING")){
             ArrayList<String[]> userList = new ArrayList<>();
@@ -136,14 +135,19 @@ public class Client{
         }
         else if(data.get(0).equals("QUEUE SUCCESSFUL")){
             
+            //limpa da partida anterior
+            PlayPanel.promoted.clear();
+
             player_1_or_2=Integer.parseInt(data.get(1));
-            if(player_1_or_2==1){PlayPanel.turn.setText("Sua vez");}
-            else if(player_1_or_2==2){PlayPanel.turn.setText("Vez do oponente");}
+            if(player_1_or_2==1){PlayPanel.turn.setText(Screen.bn.getString("play.yourturn"));}
+            else if(player_1_or_2==2){PlayPanel.turn.setText(Screen.bn.getString("play.otherturn"));}
             PlayPanel.position(player_1_or_2==1);
             
             MenuPanel.getLoadingLabel().setVisible(false);
             MenuPanel.getLoadingBar().setVisible(false);
             MenuPanel.getStop().setVisible(false);
+
+            Screen.menuBar.setVisible(false);
 
             Screen.mainPanel.setVisible(false);
             Screen.mainPanel.removeAll();
@@ -152,20 +156,20 @@ public class Client{
         
         }
         else if(data.get(0).equals("FLIPTURN")){
-            PlayPanel.turn.setText("Vez do oponente");
+            PlayPanel.turn.setText(Screen.bn.getString("play.otherturn"));
             // if(i.tampa.isVisible()){i.vez.setText("Sua vez");i.tampa.setVisible(false);}
             // else{i.vez.setText("Vez do oponente");i.tampa.setVisible(true);}
         }
         else if(data.get(0).equals("MOVEMENT")){
-            String[] move=line_break(data.get(1),4,'/');
+            ArrayList<String> move = line_break(data.get(1),'/');
             
             ArrayList<String> c=new ArrayList<String>(){{this.add("A");this.add("B");this.add("C");this.add("D");this.add("E");this.add("F");this.add("G");this.add("H");}};
         
-            int linhaINICIO = (Integer.parseInt(""+move[2].charAt(1))-1);
-            int colunaINICIO = c.indexOf(""+move[2].charAt(0));
+            int linhaINICIO = (Integer.parseInt(""+move.get(2).charAt(1))-1);
+            int colunaINICIO = c.indexOf(""+move.get(2).charAt(0));
         
-            int linhaFIM = (Integer.parseInt(""+move[3].charAt(1))-1);
-            int colunaFIM = c.indexOf(""+move[3].charAt(0));            
+            int linhaFIM = (Integer.parseInt(""+move.get(3).charAt(1))-1);
+            int colunaFIM = c.indexOf(""+move.get(3).charAt(0));            
 
             boolean isPlayer1 = Client.player_1_or_2==1;
 
@@ -173,8 +177,8 @@ public class Client{
 
             PlayPanel.getPanel().setVisible(false);
             Screen.myMouseListenerDragDrop.troca_imagem(
-                move[0],
-                move[1],
+                move.get(0),
+                move.get(1),
                 isPlayer1?linhaINICIO:7-linhaINICIO,
                 isPlayer1?colunaINICIO:7-colunaINICIO,
                 isPlayer1?linhaFIM:7-linhaFIM,
@@ -182,23 +186,26 @@ public class Client{
             );
             //7- porque visualmente, por coordenadas, os movimentos são espelhados
             PlayPanel.getPanel().setVisible(true);
-            PlayPanel.coordinates_field[linhaFIM][colunaFIM]=move[0];
+            PlayPanel.coordinates_field[linhaFIM][colunaFIM]=move.get(0);
             PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]=" ";
             
-            //flipturn
-            PlayPanel.turn.setText("Sua vez");
+            PlayPanel.addToHistory(""+move.get(2)+"->"+move.get(3), !isPlayer1);
 
+            //flipturn
+            PlayPanel.turn.setVisible(false);
+            PlayPanel.turn.setText(Screen.bn.getString("play.yourturn"));
+            PlayPanel.turn.setVisible(true);
         }
         else if(data.get(0).equals("PROMOTED")){
-            String[] move=line_break(data.get(1),5,'/');
+            ArrayList<String> move = line_break(data.get(1),'/');
             
             ArrayList<String> c=new ArrayList<String>(){{this.add("A");this.add("B");this.add("C");this.add("D");this.add("E");this.add("F");this.add("G");this.add("H");}};
         
-            int linhaINICIO = (Integer.parseInt(""+move[2].charAt(1))-1);
-            int colunaINICIO = c.indexOf(""+move[2].charAt(0));
+            int linhaINICIO = (Integer.parseInt(""+move.get(2).charAt(1))-1);
+            int colunaINICIO = c.indexOf(""+move.get(2).charAt(0));
         
-            int linhaFIM = (Integer.parseInt(""+move[3].charAt(1))-1);
-            int colunaFIM = c.indexOf(""+move[3].charAt(0));            
+            int linhaFIM = (Integer.parseInt(""+move.get(3).charAt(1))-1);
+            int colunaFIM = c.indexOf(""+move.get(3).charAt(0));            
 
             boolean isPlayer1 = Client.player_1_or_2==1;
 
@@ -206,58 +213,52 @@ public class Client{
 
             PlayPanel.getPanel().setVisible(false);
             Screen.myMouseListenerDragDrop.troca_imagem(
-                move[0],
-                move[1],
+                move.get(0),
+                move.get(1),
                 isPlayer1?linhaINICIO:7-linhaINICIO,
                 isPlayer1?colunaINICIO:7-colunaINICIO,
                 isPlayer1?linhaFIM:7-linhaFIM,
                 isPlayer1?colunaFIM:7-colunaFIM
             );
-            MyMouseListenerDragDrop.promotion(PlayPanel.coordinates_field[linhaINICIO][colunaINICIO],move[4]);
+            MyMouseListenerDragDrop.promotion(PlayPanel.coordinates_field[linhaINICIO][colunaINICIO],move.get(4));
             //PlayPanel.promoted.add(new String[][]{{PlayPanel.coordinates_field[linhaINICIO][colunaINICIO],move[4]}});
             //7- porque visualmente, por coordenadas, os movimentos são espelhados
             PlayPanel.getPanel().setVisible(true);
-            PlayPanel.coordinates_field[linhaFIM][colunaFIM]=move[0];
+            PlayPanel.coordinates_field[linhaFIM][colunaFIM]=move.get(0);
             PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]=" ";
             
+            PlayPanel.addToHistory(""+move.get(2)+"->"+move.get(3), !isPlayer1);
+
             //flipturn
-            PlayPanel.turn.setText("Sua vez");
+            PlayPanel.turn.setVisible(false);
+            PlayPanel.turn.setText(Screen.bn.getString("play.yourturn"));
+            PlayPanel.turn.setVisible(true);
+            
         }
         else if(data.get(0).equals("WON")){
-            ScreenFunctions.information_message("Você ganhou","Mensagem");
+            ScreenFunctions.information_message(Screen.bn.getString("play.won.content"), Screen.bn.getString("play.won.title"));
+            Screen.mainPanel.setVisible(false);
+            Screen.mainPanel.removeAll();
+            Screen.mainPanel.add(MenuPanel.getPanel());
+            Screen.mainPanel.setVisible(true);
+            Screen.menuBar.setVisible(true);
         }
         else if(data.get(0).equals("LOST")){
-            ScreenFunctions.information_message("Você perdeu","Mensagem");
+            ScreenFunctions.information_message(Screen.bn.getString("play.lost.content"), Screen.bn.getString("play.lost.title"));
+            Screen.mainPanel.setVisible(false);
+            Screen.mainPanel.removeAll();
+            Screen.mainPanel.add(MenuPanel.getPanel());
+            Screen.mainPanel.setVisible(true);
+            Screen.menuBar.setVisible(true);
         }
-    }
-
-        public static String[] line_break(String linha, int n_de_itens, char delimiter){
-
-        String[] array = new String[n_de_itens];
-        for(int j=0;j<n_de_itens;j++){
-            array[j]="";
+        else if(data.get(0).equals("FORFEIT")){
+            ScreenFunctions.information_message(Screen.bn.getString("play.won.content"), Screen.bn.getString("play.won.title"));
+            Screen.mainPanel.setVisible(false);
+            Screen.mainPanel.removeAll();
+            Screen.mainPanel.add(MenuPanel.getPanel());
+            Screen.mainPanel.setVisible(true);
+            Screen.menuBar.setVisible(true);
         }
-
-        int campo_do_array=0;
-        for(int i=0;i<linha.length();i++){
-            if(campo_do_array>=n_de_itens){System.out.println("oi"+campo_do_array+"Erro no uso da função Linebreak.lb, campo_do_array>n_de_itens");}
-            else if(linha.charAt(i)==delimiter){campo_do_array++;}
-            else if(linha.charAt(i)!=delimiter){array[campo_do_array]+=linha.charAt(i);}
-        }
-        if(campo_do_array!=(n_de_itens-1)){System.out.println("campo_do_array!=(n_de_itens-1)" + linha);}
-        return array;
-        
-    }
-
-    public static String prefixo(String linha, int quantidadeDEcaracteres){
-
-        String resultado="";
-        for(int i=quantidadeDEcaracteres;i<linha.length();i++){
-            resultado+=linha.charAt(i);
-        }
-
-        return resultado;
-
     }
 
     public void listenForMessage(Screen screen){

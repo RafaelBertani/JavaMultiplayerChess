@@ -50,7 +50,7 @@ public class RankingPanel {
     public RankingPanel(){
 
         int WIDTH = Screen.getWIDTH();
-        int HEIGHT = Screen.getHEIGHT();
+        int HEIGHT = Screen.getHEIGHT()+200;
 
         //maior
         //prioridade
@@ -61,17 +61,17 @@ public class RankingPanel {
         panel.setOpaque(true);
         panel.setBackground(new Color(0,0,0));
 
-        ScreenFunctions.label_setup(rankinglabel, "Ranking do top 100 jogadores", false, WIDTH/10, HEIGHT/40, 8*WIDTH/10, HEIGHT/10, panel);
+        ScreenFunctions.label_setup(rankinglabel, Screen.bn.getString("ranking.title"), false, WIDTH/10, HEIGHT/40, 8*WIDTH/10, HEIGHT/10, panel);
         ScreenFunctions.label_edit(rankinglabel, new Font("Arial",Font.PLAIN,26), new Color(0,0,0,224), Color.WHITE);
 
         update_table();
         
         Font f = new Font("Arial",Font.PLAIN,19);
         
-        ScreenFunctions.label_setup(order, "Obter os 100 melhores jogadores ordenados por:", false, WIDTH/10, 9*HEIGHT/20, 8*WIDTH/10, HEIGHT/20, panel);
+        ScreenFunctions.label_setup(order, Screen.bn.getString("ranking.get"), false, WIDTH/10, 9*HEIGHT/20, 8*WIDTH/10, HEIGHT/20, panel);
         ScreenFunctions.label_edit(order, new Font("Arial",Font.PLAIN,16), new Color(0,0,0,224), Color.WHITE);
         
-        ScreenFunctions.radiobutton_setup(wins, "Wins", WIDTH/10, HEIGHT/2, 2*WIDTH/10, HEIGHT/20, bg, panel);
+        ScreenFunctions.radiobutton_setup(wins, Screen.bn.getString("ranking.wins"), WIDTH/10, HEIGHT/2, 2*WIDTH/10, HEIGHT/20, bg, panel);
         ScreenFunctions.radiobutton_edit(wins, f, new Color(255,255,255,0), Color.WHITE);
         wins.addActionListener(Screen.myActionListener);
         wins.setFocusPainted(false);     // Remove o foco visual
@@ -79,7 +79,7 @@ public class RankingPanel {
         wins.setContentAreaFilled(false); // Remove fundo ao passar o mouse
         wins.setOpaque(false);           // Garante que o fundo seja transparente
 
-        ScreenFunctions.radiobutton_setup(games, "Games", 3*WIDTH/10, HEIGHT/2, 2*WIDTH/10, HEIGHT/20, bg, panel);
+        ScreenFunctions.radiobutton_setup(games, Screen.bn.getString("ranking.games"), 3*WIDTH/10, HEIGHT/2, 2*WIDTH/10, HEIGHT/20, bg, panel);
         ScreenFunctions.radiobutton_edit(games, f, new Color(255,255,255,0), Color.WHITE);
         games.addActionListener(Screen.myActionListener);
         games.setFocusPainted(false);     // Remove o foco visual
@@ -87,7 +87,7 @@ public class RankingPanel {
         games.setContentAreaFilled(false); // Remove fundo ao passar o mouse
         games.setOpaque(false);           // Garante que o fundo seja transparente
 
-        ScreenFunctions.radiobutton_setup(winrate, "Win/Rate", 5*WIDTH/10, HEIGHT/2, 2*WIDTH/10, HEIGHT/20, bg, panel);
+        ScreenFunctions.radiobutton_setup(winrate, Screen.bn.getString("ranking.winrate"), 5*WIDTH/10, HEIGHT/2, 2*WIDTH/10, HEIGHT/20, bg, panel);
         ScreenFunctions.radiobutton_edit(winrate, f, new Color(255,255,255,0), Color.WHITE);
         winrate.addActionListener(Screen.myActionListener);
         winrate.setFocusPainted(false);     // Remove o foco visual
@@ -95,7 +95,7 @@ public class RankingPanel {
         winrate.setContentAreaFilled(false); // Remove fundo ao passar o mouse
         winrate.setOpaque(false);           // Garante que o fundo seja transparente
 
-        ScreenFunctions.radiobutton_setup(joined, "Date of join", 7*WIDTH/10, HEIGHT/2, 2*WIDTH/10, HEIGHT/20, bg, panel);
+        ScreenFunctions.radiobutton_setup(joined, Screen.bn.getString("ranking.date"), 7*WIDTH/10, HEIGHT/2, 2*WIDTH/10, HEIGHT/20, bg, panel);
         ScreenFunctions.radiobutton_edit(joined, f, new Color(255,255,255,0), Color.WHITE);
         joined.addActionListener(Screen.myActionListener);
         joined.setFocusPainted(false);     // Remove o foco visual
@@ -103,7 +103,7 @@ public class RankingPanel {
         joined.setContentAreaFilled(false); // Remove fundo ao passar o mouse
         joined.setOpaque(false);           // Garante que o fundo seja transparente
 
-        ScreenFunctions.button_setup(back, "Voltar", WIDTH/3, 25*HEIGHT/40, WIDTH/3, HEIGHT/20, Screen.myActionListener, panel);
+        ScreenFunctions.button_setup(back, Screen.bn.getString("ranking.back"), WIDTH/3, 25*HEIGHT/40, WIDTH/3, HEIGHT/20, Screen.myActionListener, panel);
         ScreenFunctions.button_edit(back, new Font("Arial", Font.PLAIN, 19), new Color(112,104,83), Color.WHITE);
         back.addMouseListener(Screen.myMouseListener);
         //remover preenchimento automático de fundo quando clicar
@@ -121,11 +121,11 @@ public class RankingPanel {
         panelTABLE.removeAll();
         data.clear();
 
-        String[] columnsName = {"ID","Username","Wins","Games","Win/Rate","Joined"};
+        String[] columnsName = {Screen.bn.getString("ranking.table.id"),Screen.bn.getString("ranking.table.username"),Screen.bn.getString("ranking.table.wins"),Screen.bn.getString("ranking.table.games"),Screen.bn.getString("ranking.table.winrate"),Screen.bn.getString("ranking.table.joined")};
         int[] columnsWidth = {50,100,100,100,100,100};
 
         for(String[] str : userList){
-            Object item[] = {str[0],str[1],str[2],str[3],(""+(Double.parseDouble(str[2])/Double.parseDouble(str[3]))),str[4]};
+            Object item[] = {str[0],str[1],str[2],str[3],String.format("%.2f", Double.parseDouble(str[2]) / Double.parseDouble(str[3])),str[4]};
             data.add(item);
         }
 
@@ -158,5 +158,26 @@ public class RankingPanel {
         table.setForeground(Color.WHITE);
 
     }
+
+    public static void updateLanguage() {
+        // Atualiza o texto do título
+        rankinglabel.setText(Screen.bn.getString("ranking.title"));
+
+        // Atualiza o texto da label de "Ordenar por"
+        order.setText(Screen.bn.getString("ranking.get"));
+
+        // Atualiza os textos dos botões de filtro
+        wins.setText(Screen.bn.getString("ranking.wins"));
+        games.setText(Screen.bn.getString("ranking.games"));
+        winrate.setText(Screen.bn.getString("ranking.winrate"));
+        joined.setText(Screen.bn.getString("ranking.date"));
+
+        // Atualiza o texto do botão de voltar
+        back.setText(Screen.bn.getString("ranking.back"));
+
+        // Atualiza a tabela de dados com os novos nomes de colunas
+        update_table();
+    }
+
 
 }

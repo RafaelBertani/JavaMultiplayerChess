@@ -1,5 +1,6 @@
 package server;
 
+import database.Queries;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -18,12 +19,18 @@ public class Server{
     //counter for id
     public static int rooms=0;
 
-    public static boolean endROOM(int ID){
-        boolean q=false;
+    public static boolean endROOM(int ID, int victoriousPlayer){
+        boolean success = false;
         for(Room room : roomLIST){
-            if(room.ID==ID){roomLIST.remove(room);q=true;break;}
+            if(room.ID==ID){
+                Queries.playerWon(victoriousPlayer==1?room.p1.getName():room.p2.getName());
+                Queries.playerLost(victoriousPlayer==1?room.p2.getName():room.p1.getName());
+                roomLIST.remove(room);
+                success=true;
+                break;
+            }
         }
-        return q;
+        return success;
     }
 
     public static void printROOMS(){

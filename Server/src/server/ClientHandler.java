@@ -247,6 +247,7 @@ public class ClientHandler implements Runnable{
         else if(data.get(0).equals("END")){
             
             int ID=0;
+            int victoriousPlayer=0;
 
             for(Room room : Server.roomLIST){
                 if(room.p1.getName().equals(data.get(1))){
@@ -260,7 +261,8 @@ public class ClientHandler implements Runnable{
                         room.p2.getClientHandler().getBufferedWriter().flush();
                     }catch(Exception e){
                         e.printStackTrace();
-                    }                    
+                    }
+                    victoriousPlayer=1;
                 }
                 else if(room.p2.getName().equals(data.get(1))){
                     ID=room.ID;
@@ -274,10 +276,40 @@ public class ClientHandler implements Runnable{
                     }catch(Exception e){
                         e.printStackTrace();
                     }
-
+                    victoriousPlayer=2;
                 }
             }
-            Server.endROOM(ID);
+            Server.endROOM(ID,victoriousPlayer);
+        }
+        else if(data.get(0).equals("FORFEIT")){
+            int ID=0;
+            int victoriousPlayer=0;
+
+            for(Room room : Server.roomLIST){
+                if(room.p1.getName().equals(data.get(1))){
+                    ID=room.ID;
+                    try{
+                        room.p2.getClientHandler().getBufferedWriter().write("FORFEIT- - ");
+                        room.p2.getClientHandler().getBufferedWriter().newLine();
+                        room.p2.getClientHandler().getBufferedWriter().flush();
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    victoriousPlayer=2;
+                }
+                else if(room.p2.getName().equals(data.get(1))){
+                    ID=room.ID;
+                    try{
+                        room.p1.getClientHandler().getBufferedWriter().write("FORFEIT- - ");
+                        room.p1.getClientHandler().getBufferedWriter().newLine();
+                        room.p1.getClientHandler().getBufferedWriter().flush();
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    victoriousPlayer=1;
+                }
+            }
+            Server.endROOM(ID,victoriousPlayer);
         }
     }
 

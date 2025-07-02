@@ -1,12 +1,11 @@
 package listeners;
 
 import client.Client;
+import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -47,7 +46,7 @@ public class MyMouseListenerDragDrop implements MouseListener{
         if(!holding.equals("") && !subs.equals("") && !holding.equals(subs)){
             
             //System.out.println("\u001B[33m"+holding+" put in the slot of "+subs+"\u001B[0m");
-            if(!PlayPanel.turn.getText().equals("Sua vez")){
+            if(!PlayPanel.turn.getText().equals(Screen.bn.getString("play.yourturn"))){
                 //nada
             }
             //conferir jogada, se possível, manda, caso contrário manda aviso e em todos os casos, reverte troca
@@ -82,7 +81,16 @@ public class MyMouseListenerDragDrop implements MouseListener{
                         //System.out.println(PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]);
                         int option = -1;
                         do{
-                            option = ScreenFunctions.options_message("Escolha uma peça para o peão se tornar","Promoção",new String[]{"Dama","Bispo","Torre","Cavalo"});
+                            option = ScreenFunctions.options_message(
+                                Screen.bn.getString("play.promotion.content"),
+                                Screen.bn.getString("play.promotion.title"),
+                                new String[]{
+                                    Screen.bn.getString("play.queen"),
+                                    Screen.bn.getString("play.bishop"),
+                                    Screen.bn.getString("play.rook"),
+                                    Screen.bn.getString("play.knight")
+                                }
+                            );
                         }while(option==-1);
                         String[] type = new String[]{"Queen","Bishop","Rook","Knight"};
                         troca_imagem(
@@ -118,6 +126,8 @@ public class MyMouseListenerDragDrop implements MouseListener{
                         PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]=" ";
                     }
 
+                    PlayPanel.addToHistory(""+holding+"->"+subs, isPlayer1);
+
                 }
 
                 for(int i=0;i<8;i++){
@@ -132,7 +142,7 @@ public class MyMouseListenerDragDrop implements MouseListener{
 
             }
             else{
-                ScreenFunctions.error_message("Jogada inválida","Erro");
+                ScreenFunctions.error_message(Screen.bn.getString("play.error.content"),Screen.bn.getString("play.error.title"));
             }
         }
         holding="";
