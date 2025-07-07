@@ -449,16 +449,4 @@ public class MyMouseListenerDragDrop implements MouseListener{
             peca.setIcon(new ImageIcon(scaledImage));
     }
 
-    public static String sufixo(String linha, int quantidadeDEcaracteres){
-     
-        String resultado="";
-        for(int i=0;i<linha.length()-quantidadeDEcaracteres;i++){
-            resultado+=linha.charAt(i);
-        }
-
-        return resultado;
-
-    }
-
-
 }

@@ -27,10 +27,6 @@ public class InitialPanel {
         int WIDTH = Screen.getWIDTH();
         int HEIGHT = Screen.getHEIGHT()+200;
 
-        //maior
-        //prioridade
-        //menor
-
         panel.setBounds(0,0,WIDTH,HEIGHT);
         panel.setLayout(null);
         panel.setOpaque(true);

@@ -97,10 +97,6 @@ public class MyActionListener implements ActionListener{
         else if(e.getSource()==MenuPanel.getPlay() && !MenuPanel.getLoadingLabel().isVisible()){ //MENUPANEL: PLAY
             //envia
             Screen.client.sendMessage("QUEUE- - ");
-            // MenuPanel.getLoadingLabel().setVisible(true);
-            // MenuPanel.getLoadingBar().setVisible(true);
-            // MenuPanel.getLoadingBar().setValue(0);
-            // MenuPanel.getStop().setVisible(true);
         }
         else if(e.getSource()==MenuPanel.getLeave()){ //MENUPANEL: LEAVE
             Screen.mainPanel.setVisible(false);
@@ -116,9 +112,6 @@ public class MyActionListener implements ActionListener{
 
             //envia
             Screen.client.sendMessage("DEQUEUE- - ");
-            // MenuPanel.getLoadingLabel().setVisible(false);
-            // MenuPanel.getLoadingBar().setVisible(false);
-            // MenuPanel.getStop().setVisible(false);
 
         }
         else if(e.getSource()==RankingPanel.getBack()){ //RANKINGPANEL: BACK

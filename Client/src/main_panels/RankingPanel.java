@@ -27,7 +27,7 @@ public class RankingPanel {
     private static ArrayList<Object[]> data = new ArrayList<>();
     private static ArrayList<String[]> userList = new ArrayList<>();
     private static final JLabel rankinglabel = new JLabel();
-    private static final JLabel order = new JLabel();
+    private static final JLabel sort = new JLabel();
     private static final ButtonGroup bg = new ButtonGroup();
     private static final JRadioButton wins = new JRadioButton();
     private static final JRadioButton games = new JRadioButton();
@@ -68,8 +68,8 @@ public class RankingPanel {
         
         Font f = new Font("Arial",Font.PLAIN,19);
         
-        ScreenFunctions.label_setup(order, Screen.bn.getString("ranking.get"), false, WIDTH/10, 9*HEIGHT/20, 8*WIDTH/10, HEIGHT/20, panel);
-        ScreenFunctions.label_edit(order, new Font("Arial",Font.PLAIN,16), new Color(0,0,0,224), Color.WHITE);
+        ScreenFunctions.label_setup(sort, Screen.bn.getString("ranking.get"), false, WIDTH/10, 9*HEIGHT/20, 8*WIDTH/10, HEIGHT/20, panel);
+        ScreenFunctions.label_edit(sort, new Font("Arial",Font.PLAIN,16), new Color(0,0,0,224), Color.WHITE);
         
         ScreenFunctions.radiobutton_setup(wins, Screen.bn.getString("ranking.wins"), WIDTH/10, HEIGHT/2, 2*WIDTH/10, HEIGHT/20, bg, panel);
         ScreenFunctions.radiobutton_edit(wins, f, new Color(255,255,255,0), Color.WHITE);
@@ -148,8 +148,6 @@ public class RankingPanel {
         panelTABLE.add(table);
         panelTABLE.add(new JScrollPane(table));
         panelTABLE.setBounds(Screen.getWIDTH()/10, 3*Screen.getHEIGHT()/20, (int) ((8*Screen.getWIDTH()/10)*1.03), (int) ((5*Screen.getHEIGHT()/20)*1.15));
-        // panel.setOpaque(true);
-        // panel.setBackground(new Color(255,255,255,0));
         panel.add(panelTABLE);
         
         table.getTableHeader().setBackground(new Color(48,48,48));
@@ -160,22 +158,13 @@ public class RankingPanel {
     }
 
     public static void updateLanguage() {
-        // Atualiza o texto do título
         rankinglabel.setText(Screen.bn.getString("ranking.title"));
-
-        // Atualiza o texto da label de "Ordenar por"
-        order.setText(Screen.bn.getString("ranking.get"));
-
-        // Atualiza os textos dos botões de filtro
+        sort.setText(Screen.bn.getString("ranking.get"));
         wins.setText(Screen.bn.getString("ranking.wins"));
         games.setText(Screen.bn.getString("ranking.games"));
         winrate.setText(Screen.bn.getString("ranking.winrate"));
         joined.setText(Screen.bn.getString("ranking.date"));
-
-        // Atualiza o texto do botão de voltar
         back.setText(Screen.bn.getString("ranking.back"));
-
-        // Atualiza a tabela de dados com os novos nomes de colunas
         update_table();
     }
 
