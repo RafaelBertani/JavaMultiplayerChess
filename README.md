@@ -18,5 +18,13 @@ O jogo permite que multiplos jogadores se conectem a um servidor e sejam redirec
 
 ## Instruções para rodar
 
+Para rodar a aplicação em sua máquina, você deve editar o arquivo em `Server/src/database/Database.java` e colocar seu usuário e senha MySQL local.
+
+Exemplo:
+
+```java
+private static final String USER = "root";
+private static final String PASSWORD = "your_mysql_password_here";
+
 - Inicialize o servidor e um terminal separado
 - Inicialize quantas aplicações de cliente quiser, crie ou faça login e jogue
