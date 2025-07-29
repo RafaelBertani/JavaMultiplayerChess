@@ -76,18 +76,16 @@ public class PlayPanel {
         label.setForeground(isPlayer1?Color.BLACK:new Color(200,200,200));
         history.setVisible(false);
         history.add(label);
-        // Atualizar a altura do painel history de acordo com o número de componentes
         int totalHeight = history.getComponentCount() * (Screen.getHEIGHT() - 200) / 25;
         history.setPreferredSize(new Dimension(Screen.getWIDTH() / 4, totalHeight));
-        // Forçar o reflow do JScrollPane
         history.revalidate();
         history.repaint();
-        // Garantir que a barra de rolagem do JScrollPane seja atualizada
         scrollPane.revalidate();
         scrollPane.repaint();
         history.setVisible(true);
     }
 
+    // função para posicionar mais facilmente os labels das peças
     public static void coordinates(JLabel image, int line, String column){
         ArrayList<String> c = new ArrayList<String>(){{this.add("A");this.add("B");this.add("C");this.add("D");this.add("E");this.add("F");this.add("G");this.add("H");}};
         int x = c.indexOf(column);
@@ -184,7 +182,8 @@ public class PlayPanel {
         ScreenFunctions.label_setup(turn, "", true, 7*WIDTH/10, 50, WIDTH/4, HEIGHT/20, panel);
         ScreenFunctions.label_edit(turn, new Font("Arial",Font.PLAIN,19), new Color(0,0,0,200), Color.WHITE);
 
-        ScreenFunctions.panel_edit(history, false, new Color(0,0,0,200));
+        //painel de histórico
+        ScreenFunctions.panel_edit(history, false, new Color(32,32,32,200));
         //history.setLayout(new BoxLayout(history, BoxLayout.Y_AXIS));
         history.setLayout(null);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -209,6 +208,7 @@ public class PlayPanel {
 
     }
 
+    // posiciona todas as camadas do tabuleiro
     public static void position(boolean isPlayer1){
 
         //posicionar letras e números

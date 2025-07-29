@@ -16,8 +16,8 @@ public class Server{
 
     public static List<Room> roomLIST = new ArrayList<>();
 
-    //counter for id
-    public static int rooms=0;
+    //contador para o id da sala
+    public static int rooms = 0;
 
     public static boolean endROOM(int ID, int victoriousPlayer){
         boolean success = false;
@@ -48,6 +48,8 @@ public class Server{
 
         try{
 
+            System.out.println("Server running...");
+
             while(!serverSocket.isClosed()){
                 Socket socket = serverSocket.accept();
                 //System.out.println("A new client has connected");
@@ -58,9 +60,7 @@ public class Server{
             }
         
         }
-        catch(IOException e){
-
-        }
+        catch(IOException e){}
 
     }
 

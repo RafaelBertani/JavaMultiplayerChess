@@ -19,33 +19,24 @@ public class MyMouseListenerDragDrop implements MouseListener{
     public String holding = "";
     public String subs = "";
 
-    //CLICKED E RELEASED SÓ FUNCIONAM COM (MOUSEPRESSED)TransferHandler.MOVE, ENQUANTO COM (MOUSEPRESSED)TransferHandler.COPY FUNCIONAM ENTERED E EXITED
     @Override
-    public void mouseClicked(MouseEvent e){
-        //System.out.println("Mouse clicked in: "+((JLabel)e.getSource()).getName());
-    }
+    public void mouseClicked(MouseEvent e){}
     @Override
-    public void mouseReleased(MouseEvent e){
-        //System.out.println("Mouse released in: "+((JLabel)e.getSource()).getName());
-    }
+    public void mouseReleased(MouseEvent e){}
     @Override
     public void mousePressed(MouseEvent e){
         JComponent jc = (JComponent)e.getSource();
         TransferHandler th = jc.getTransferHandler();
         th.exportAsDrag(jc,e,TransferHandler.COPY);
-        //System.out.println("Mouse holding: "+((JLabel)e.getSource()).getName());
         
         holding=""+((JLabel)e.getSource()).getName();
     }
     @Override
     public void mouseEntered(MouseEvent e){
-        //System.out.println("Mouse entered in: "+((JLabel)e.getSource()).getName());
         
         subs=""+((JLabel)e.getSource()).getName();
-        //001B[30m ~ 001B[37m sendo o \u001B[0m o reset
         if(!holding.equals("") && !subs.equals("") && !holding.equals(subs)){
             
-            //System.out.println("\u001B[33m"+holding+" put in the slot of "+subs+"\u001B[0m");
             if(!PlayPanel.turn.getText().equals(Screen.bn.getString("play.yourturn"))){
                 //nada
             }
@@ -59,9 +50,7 @@ public class MyMouseListenerDragDrop implements MouseListener{
     
                 int linhaFIM = Integer.parseInt(""+subs.charAt(1))-1;
                 int colunaFIM = c.indexOf(""+subs.charAt(0));
-              
-                //System.out.println(linhaINICIO+""+c.get(colunaINICIO)+" "+linhaFIM+""+c.get(colunaFIM)+" "+PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]);
-
+        
                 boolean isPlayer1 = Client.player_1_or_2==1;
 
                 if(PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains("King")){Screen.client.sendMessage("END-"+Screen.client.userName+"- ");}
@@ -131,13 +120,13 @@ public class MyMouseListenerDragDrop implements MouseListener{
                 }
 
                 for(int i=0;i<8;i++){
-                        for(int j=0;j<8;j++){
-                            ArrayList<String> letters = new ArrayList<String>(){{this.add("A");this.add("B");this.add("C");this.add("D");this.add("E");this.add("F");this.add("G");this.add("H");}};
-                            PlayPanel.transparent[i][j].setVisible(false);
-                            PlayPanel.transparent[i][j].setName(""+letters.get(isPlayer1?j:7-j)+""+(isPlayer1?7-i+1:i+1));
-                            PlayPanel.transparent[i][j].setBounds(50+(550/9)*j, 50+(550/9)*i, (550/9), (550/9));
-                            PlayPanel.transparent[i][j].setVisible(true);
-                        }
+                    for(int j=0;j<8;j++){
+                        ArrayList<String> letters = new ArrayList<String>(){{this.add("A");this.add("B");this.add("C");this.add("D");this.add("E");this.add("F");this.add("G");this.add("H");}};
+                        PlayPanel.transparent[i][j].setVisible(false);
+                        PlayPanel.transparent[i][j].setName(""+letters.get(isPlayer1?j:7-j)+""+(isPlayer1?7-i+1:i+1));
+                        PlayPanel.transparent[i][j].setBounds(50+(550/9)*j, 50+(550/9)*i, (550/9), (550/9));
+                        PlayPanel.transparent[i][j].setVisible(true);
+                    }
                 }
 
             }
@@ -149,12 +138,11 @@ public class MyMouseListenerDragDrop implements MouseListener{
         subs="";
     }
     @Override
-    public void mouseExited(MouseEvent e){
-        //System.out.println("Mouse exited in: "+((JLabel)e.getSource()).getName());
-    }
+    public void mouseExited(MouseEvent e){}
 
+    // função para conferir se a jogada é válida
     public boolean confere(String holding, String subs){
-        ArrayList<String> c=new ArrayList<String>(){{this.add("A");this.add("B");this.add("C");this.add("D");this.add("E");this.add("F");this.add("G");this.add("H");}};
+        ArrayList<String> c = new ArrayList<String>(){{this.add("A");this.add("B");this.add("C");this.add("D");this.add("E");this.add("F");this.add("G");this.add("H");}};
         
         int linhaINICIO = Integer.parseInt(""+holding.charAt(1))-1;
         int colunaINICIO = c.indexOf(""+holding.charAt(0));
@@ -164,15 +152,19 @@ public class MyMouseListenerDragDrop implements MouseListener{
         int colunaFIM = c.indexOf(""+subs.charAt(0));
         String nomeFIM=PlayPanel.coordinates_field[linhaFIM][colunaFIM];       
 
-        //System.out.println(nomeINICIO);
-
         boolean isPlayer1 = Client.player_1_or_2==1;
         
-        if(nomeINICIO.equals(" ")){return false;}
-        //else if(nomeINICIO.contains("Rook") && ( (nomeFIM.contains(isPlayer1?"Black":"White")) || nomeFIM.equals(" ") )){
+        // se o jogador está tentando mover um quadrado sem nenhuma peça ou se o destino dessa peça é um lugar já ocupado por outra peça sua
+        if(
+            nomeINICIO.equals(" ") ||
+            PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black")
+        ){
+            return false;
+        }
+        // se é uma torre ou um peão promovido a torre
         else if(
-            (nomeINICIO.contains("Rook") && !PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black")) ||
-            (nomeINICIO.contains("Pawn") && PlayPanel.promoted.contains(Arrays.asList(nomeINICIO,"Rook")) && !PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black"))       
+            nomeINICIO.contains("Rook") ||
+            (nomeINICIO.contains("Pawn") && PlayPanel.promoted.contains(Arrays.asList(nomeINICIO,"Rook")))
         ){
             
             boolean jogada1=false;
@@ -222,9 +214,10 @@ public class MyMouseListenerDragDrop implements MouseListener{
             }
             else{return false;}
         }
+        // se é uma cavalo ou um peão promovido a cavalo
         else if(
-            (nomeINICIO.contains("Knight") && !PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black")) ||
-            (nomeINICIO.contains("Pawn") && PlayPanel.promoted.contains(Arrays.asList(nomeINICIO,"Knight")) && !PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black"))
+            nomeINICIO.contains("Knight") ||
+            (nomeINICIO.contains("Pawn") && PlayPanel.promoted.contains(Arrays.asList(nomeINICIO,"Knight")))
         ){
             
             //jogada 1
@@ -238,9 +231,10 @@ public class MyMouseListenerDragDrop implements MouseListener{
             else{return false;}
         
         }
+        // se é uma bispo ou um peão promovido a bispo
         else if(
-            (nomeINICIO.contains("Bishop") && !PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black")) ||
-            (nomeINICIO.contains("Pawn") && PlayPanel.promoted.contains(Arrays.asList(nomeINICIO,"Bishop")) && !PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black"))
+            nomeINICIO.contains("Bishop") ||
+            (nomeINICIO.contains("Pawn") && PlayPanel.promoted.contains(Arrays.asList(nomeINICIO,"Bishop")))
         ){
             
             boolean jogada1=false;
@@ -281,9 +275,10 @@ public class MyMouseListenerDragDrop implements MouseListener{
             else{return false;}
 
         }
+        // se é uma rainha ou um peão promovido a rainha
         else if(
-            (nomeINICIO.contains("Queen") && !PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black")) ||
-            (nomeINICIO.contains("Pawn") && PlayPanel.promoted.contains(Arrays.asList(nomeINICIO,"Queen")) && !PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black"))
+            nomeINICIO.contains("Queen") ||
+            (nomeINICIO.contains("Pawn") && PlayPanel.promoted.contains(Arrays.asList(nomeINICIO,"Queen")))
         ){
 
             int deltaLinha = linhaFIM - linhaINICIO;
@@ -312,7 +307,8 @@ public class MyMouseListenerDragDrop implements MouseListener{
 
             return true; // movimento válido
         }
-        else if(nomeINICIO.contains("King") && !PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black")){
+        // se é um rei
+        else if(nomeINICIO.contains("King")){
             
             //jogada 1
             if(linhaINICIO==linhaFIM+1 && colunaINICIO==colunaFIM){return true;}
@@ -333,7 +329,7 @@ public class MyMouseListenerDragDrop implements MouseListener{
             else{return false;}
         
         }
-        //se o peão avança para um espaço com um adversário ou para um espaço vazio (ou seja, se ele não avança para um aliado)
+        // se o peão avança para um espaço com um adversário ou para um espaço vazio (ou seja, se ele não avança para um aliado)
         else if(nomeINICIO.contains("Pawn") && ( (nomeFIM.contains(isPlayer1?"Black":"White")) || nomeFIM.equals(" ") ) ){
             
             //se peão chegou ao fim sem comer
@@ -352,6 +348,7 @@ public class MyMouseListenerDragDrop implements MouseListener{
         else{return false;}
     }
 
+    // função para trocar a imagem de um jlabel
     public void troca_imagem(String nomeINICIO,String nomeFIM,int linhaINICIO,int colunaINICIO,int linhaFIM,int colunaFIM){
         ArrayList<String> c=new ArrayList<String>(){{this.add("A");this.add("B");this.add("C");this.add("D");this.add("E");this.add("F");this.add("G");this.add("H");}};
         if(nomeINICIO.equals("Pawn_White_A")){PlayPanel.coordinates(PlayPanel.Pawn_White_A,linhaFIM+1,c.get(colunaFIM));}
@@ -423,6 +420,7 @@ public class MyMouseListenerDragDrop implements MouseListener{
         }
     }
 
+    // função que realiza a promoção
     public static void promotion(String nomeINICIO, String option){
         boolean isPlayer1 = nomeINICIO.contains("White");
         if(nomeINICIO.equals("Pawn_White_A")){change(PlayPanel.Pawn_White_A,option,isPlayer1);}
@@ -443,6 +441,7 @@ public class MyMouseListenerDragDrop implements MouseListener{
         else if(nomeINICIO.equals("Pawn_Black_H")){change(PlayPanel.Pawn_Black_H,option,isPlayer1);}
     }
 
+    // função que troca a imagem de um label em uma promoção
     public static void change(JLabel peca, String option, boolean isPlayer1){
             ImageIcon icon = new ImageIcon("./src/images/"+option+"_"+(isPlayer1?"White":"Black")+".png");
             Image scaledImage = icon.getImage().getScaledInstance(550/15, 550/15, Image.SCALE_SMOOTH);

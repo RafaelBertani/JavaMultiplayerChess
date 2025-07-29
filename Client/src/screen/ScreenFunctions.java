@@ -1,15 +1,9 @@
 package screen;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.MouseInfo;
-import java.awt.PointerInfo;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
-import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
@@ -17,24 +11,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.TransferHandler;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.DefaultTableModel;
 import listeners.MyActionListener;
 
 public class ScreenFunctions{
@@ -109,7 +94,7 @@ public class ScreenFunctions{
         if(fore!=null){textfield_name.setForeground(fore);}
     }
 
-        public static void passwordfield_setup(JPasswordField passwordfield_name, int x, int y, int height, int width, boolean border, JPanel passwordfield_panel){
+    public static void passwordfield_setup(JPasswordField passwordfield_name, int x, int y, int height, int width, boolean border, JPanel passwordfield_panel){
 
         passwordfield_name.setBounds(x, y, height, width);
         passwordfield_name.setEditable(true);
@@ -135,65 +120,6 @@ public class ScreenFunctions{
 
         panel_button.add(button_name);
 
-    }
-
-    public static void textarea_setup(JTextArea textarea_name, String texto_textarea, int x, int y, int width, int height, boolean editable, boolean borda, JPanel painel_do_textarea){
-
-        textarea_name.setText(texto_textarea);
-        textarea_name.setBounds(x, y, width, height);
-        textarea_name.setEditable(editable);
-        if(borda==false){textarea_name.setBorder(null);}
-    
-        painel_do_textarea.add(textarea_name);
-
-    }
-
-    public static void textarea_edit(JTextArea textarea_name, Font f, Color back, Color fore){
-        if(f!=null){textarea_name.setFont(f);}
-        if(back!=null){textarea_name.setBackground(back);}
-        if(fore!=null){textarea_name.setForeground(fore);}
-    }
-
-    public static void scrollpane_setup(JTextArea textarea_name, JFrame scroll_frame, String scrollpane_text, int lines, int columns, int x, int y, int width, int height){
-        
-        textarea_name.setRows(lines);
-        textarea_name.setColumns(columns);
-        textarea_name.setText(scrollpane_text);
-        JPanel panel_do_scroll = new JPanel();
-        
-        //panel.setBorder(new TitledBorder(new EtchedBorder(),"Display area"));
-        panel_do_scroll.setBounds(x,y,width,height);
-        //panel.setBackground(new Color(255,255,0));
-
-        JScrollPane scrollPane = new JScrollPane(textarea_name);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        panel_do_scroll.add(scrollPane);
-
-        scroll_frame.add(panel_do_scroll);
-
-    }
-
-    public static void scrollpane_in_separated_panel_setup(JTextArea textarea_name, JPanel scroll_panel, JFrame scroll_frame, String scrollpane_text, int lines, int columns, int x, int y, int width, int height){
-        
-        textarea_name.setRows(lines);
-        textarea_name.setColumns(columns);
-        textarea_name.setText(scrollpane_text);
-        
-        //panel.setBorder(new TitledBorder(new EtchedBorder(),"Display area"));
-        scroll_panel.setBounds(x,y,width,height);
-        //panel.setBackground(new Color(255,255,0));
-
-        JScrollPane scrollPane = new JScrollPane(textarea_name);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scroll_panel.add(scrollPane);
-
-        scroll_frame.add(scroll_panel);
-    }
-
-    public static void scrollpane_edit(JTextArea nome_textarea, Font f, Color back, Color fore){
-        if(f!=null){nome_textarea.setFont(f);}
-        if(back!=null){nome_textarea.setBackground(back);}
-        if(fore!=null){nome_textarea.setForeground(fore);}
     }
 
     public static void button_edit(JButton button_name, Font f, Color back, Color fore){
@@ -246,39 +172,6 @@ public class ScreenFunctions{
 
     }
 
-        public static void table_setup(List<Object[]> object_list, JTable table, String[] columns_name, int x, int y, int width, int height, int[] columns_width, JPanel table_panel, JFrame table_frame){
-
-        DefaultTableModel modelTABLE = new DefaultTableModel(null, columns_name);
-        for(int i=0;i<object_list.size();i++){
-            modelTABLE.addRow(object_list.get(i));
-        }
-        table = new JTable(modelTABLE);
-
-        table.setPreferredScrollableViewportSize(new Dimension(width,height));
-        table.setFillsViewportHeight(true);
-        table.setDefaultEditor(Object.class, null);
-        for(int i=0;i<columns_width.length;i++){table.getColumnModel().getColumn(i).setPreferredWidth(columns_width[i]);}
-
-        table_panel.add(table);
-        table_panel.add(new JScrollPane(table));
-        table_panel.setBounds(x,y,width+50,height+50);
-        table_frame.add(table_panel);
-
-    }
-
-    public static void table_update(List<Object[]> object_list, JTable table, String[] columns_name, int[] columns_width, JPanel table_panel, JFrame table_frame){
-        
-        // DefaultTableModel modelTABLE = new DefaultTableModel(null, columns_name);
-        // for(int i=0;i<lista_objetos.size();i++){
-        //     modelTABLE.addRow(lista_objetos.get(i));
-        // }
-        // table.setModel(modelTABLE);
-
-        table_panel.removeAll();
-        table_setup(object_list,table,columns_name,table_panel.getBounds().x,table_panel.getBounds().y,table_panel.getBounds().width-50,table_panel.getBounds().height-50,columns_width,table_panel,table_frame);
-
-    }
-
     public static void image_setup_no_resize(JLabel label_name, String complete_path, int x, int y, int width, int height, JPanel label_panel) {
 
         label_name.setBounds(x, y, width, height);
@@ -314,93 +207,6 @@ public class ScreenFunctions{
         label_name.addMouseListener(ml);
         label_name.setTransferHandler(new TransferHandler("icon"));
         label_panel.add(label_name);
-
-    }
-
-    public static void free_drag_dop_setup(JLabel label_name, String complete_path, String label_title, int initial_x, int initial_y, int width, int height, JPanel label_panel){
-
-        label_name.setName(label_title);
-        label_name.setBounds(initial_x,initial_y,width,height);
-        label_name.setIcon(new ImageIcon(complete_path));
-
-        MouseListener ml = new MouseListener() {
-
-            PointerInfo a = MouseInfo.getPointerInfo();
-
-            int initial_X = -1;
-            int initial_Y = -1;
-            int final_X = -1;
-            int final_Y = -1;
-            
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                a = MouseInfo.getPointerInfo();
-                initial_X = (int) a.getLocation().getX();
-                initial_Y = (int) a.getLocation().getY();
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                a = MouseInfo.getPointerInfo();
-                final_X = (int) a.getLocation().getX();
-                final_Y = (int) a.getLocation().getY();
-                
-                if(initial_X>=label_name.getX() && initial_X<=label_name.getX()+label_name.getWidth() && initial_Y>=label_name.getY() && initial_Y-60<=label_name.getY()+label_name.getHeight()){
-                    if(final_X>=label_panel.getX() && final_X<=label_panel.getX()+label_panel.getWidth() && final_Y>=label_panel.getY() && final_Y<=label_panel.getY()+label_panel.getHeight()){
-                        label_name.setBounds(final_X-25, final_Y-70, label_name.getWidth(), label_name.getHeight());
-                    }
-                }
-            
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {}
-
-            @Override
-            public void mouseExited(MouseEvent e) {}
-        
-        };
-
-        label_name.addMouseListener(ml);
-        label_panel.add(label_name);
-
-    }
-
-    public static void menubar_setup(JMenuBar nome_menubar, String[] principais, List<String[]> secundarios, List<String[]> terciario, MyActionListener actionclass, JFrame jframe_da_menubar){
-        
-        int contador = 0;
-        int subitemEmenu = -1; //localização da linha no terceario com os subsubitens
-        for(String item : principais){
-            JMenu menu = new JMenu(item);
-            for(String subitem : secundarios.get(contador)){    
-                
-                subitemEmenu = -1;
-                // key1,value,value,value
-                // key2,value,value,value
-                for(int k=0;k<terciario.size();k++){if(terciario.get(k)[0].equals(subitem)){subitemEmenu=k;}}
-
-                if(subitemEmenu!=-1){ //se item é menu e possui subitens
-                    JMenu i = new JMenu(subitem); //item é um menu
-                    for(int j=1;j<terciario.get(subitemEmenu).length;j++){ //percorre todos os subitens do menu que foi descoberto
-                        JMenuItem subsubitem = new JMenuItem(terciario.get(subitemEmenu)[j]); //item do menu descoberto
-                        i.add(subsubitem); //adiciona item no menu (ou em outras palavras, subitem no submenu)
-                        subsubitem.addActionListener(actionclass); //actionlistener no subitem
-                    }
-                    menu.add(i); //menu principal recebe o menu (agora arrumado) descoberto
-                }
-                else{JMenuItem i = new JMenuItem(subitem);menu.add(i);i.addActionListener(actionclass);}
-                subitemEmenu=-1;
-
-            }
-            nome_menubar.add(menu);
-            contador++;
-        }
-
-
-        jframe_da_menubar.setJMenuBar(nome_menubar);
 
     }
 
@@ -445,46 +251,6 @@ public class ScreenFunctions{
         if(font!=null){checkbox_name.setFont(font);}
         if(back!=null){checkbox_name.setBackground(back);}
         if(fore!=null){checkbox_name.setForeground(fore);}
-    }
-
-    public static File filechooser_setup(String title, boolean any_archive_type, boolean only_images, String archive_type){
-
-        JFileChooser j = new JFileChooser();
-        j.setDialogTitle(title);
-        if(any_archive_type==false){
-            j.setAcceptAllFileFilterUsed(false);
-
-            
-            FileNameExtensionFilter t;
-
-            if(only_images){
-                t = new FileNameExtensionFilter("Image Files", "jpg", "jpeg", "png", "gif", "bmp");
-            }
-            else{
-                //FileNameExtensionFilter t = new FileNameExtensionFilter("Only .txt files","txt"); //"JPEG file", "jpg", "jpeg"
-                t = new FileNameExtensionFilter("Only ."+archive_type+" files",archive_type);
-            }
-            
-            j.addChoosableFileFilter(t);
-
-        }
-
-        j.showOpenDialog(null);
-        
-        return j.getSelectedFile();
-
-    }
-
-    public static File folderchooser_setup(String title){
-        
-        JFileChooser j = new JFileChooser();
-        j.setDialogTitle(title);
-        j.setAcceptAllFileFilterUsed(false);
-        j.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        j.showOpenDialog(null);
-    
-        return j.getSelectedFile();
-    
     }
 
     public static void error_message(String message, String title){

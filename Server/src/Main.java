@@ -16,7 +16,6 @@ public class Main {
         ServerSocket serverSocket = new ServerSocket(1234);
         Server server = new Server(serverSocket);
         server.startServer();
-
     }
 
 }

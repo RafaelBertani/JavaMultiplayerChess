@@ -40,34 +40,14 @@ public class Client{
 
     public void sendMessage(String msg){
         try{
-                bufferedWriter.write(msg);
-                bufferedWriter.newLine();
-                bufferedWriter.flush();
+            bufferedWriter.write(msg);
+            bufferedWriter.newLine();
+            bufferedWriter.flush();
         }
         catch(IOException e){
             closeEverything(socket, bufferedReader, bufferedWriter);
         }
     }
-
-    // public void sendMessage(){
-    //     try{
-    //         bufferedWriter.write(userName);
-    //         bufferedWriter.newLine();
-    //         bufferedWriter.flush();
-
-    //         Scanner scanner = new Scanner(System.in);
-    //         while(socket.isConnected()){
-    //             String messageToSend = scanner.nextLine();
-    //             //bufferedWriter.write(userName+": "+messageToSend);
-    //             bufferedWriter.write(messageToSend);
-    //             bufferedWriter.newLine();
-    //             bufferedWriter.flush();
-    //         }
-    //     }
-    //     catch(IOException e){
-    //         closeEverything(socket, bufferedReader, bufferedWriter);
-    //     }
-    // }
     
     public static int player_1_or_2 = 0;
 
@@ -289,9 +269,7 @@ public class Client{
             if(socket != null){
                 socket.close();
             }
-        }catch(IOException e){
-            e.printStackTrace();
-        }
+        }catch(IOException e){}
     }
 
     public static ArrayList<String> line_break(String line, char delimiter){

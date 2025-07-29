@@ -137,7 +137,7 @@ public class ClientHandler implements Runnable{
                 
                 Server.rooms++;
                 
-                Server.printROOMS();
+                // Server.printROOMS();
                 
             }
 
@@ -318,7 +318,6 @@ public class ClientHandler implements Runnable{
             this.socket = socket;
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            
         }
         catch(IOException e){
             closeEverything(socket, bufferedReader, bufferedWriter);
@@ -330,10 +329,9 @@ public class ClientHandler implements Runnable{
         while(socket.isConnected()){
             try{
                 String message =  bufferedReader.readLine();
-                System.out.println(message);
-                ArrayList<String> data = line_break(message,'-');
+                //System.out.println(message);
+                ArrayList<String> data = line_break(message,'-'); //type-content1-content2
                 dealer(data);
-
             }
             catch(IOException e){
                 closeEverything(socket, bufferedReader, bufferedWriter);
