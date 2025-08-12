@@ -18,8 +18,7 @@ import main_panels.RankingPanel;
 public class Screen extends JFrame{
 
     public static ResourceBundle bn = ResourceBundle.getBundle("Resources/PACK", new Locale("pt","BR"));
-    //bn.getString("initial.title")
-
+    
     public static JFrame mainFrame = new JFrame();
     public static JPanel mainPanel = new JPanel();
     public static JMenuBar menuBar = new JMenuBar();

@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import queue.Queue;
+import screen.Screen;
 
 public class Server{
     
@@ -48,7 +49,7 @@ public class Server{
 
         try{
 
-            System.out.println("Server running...");
+            Screen.setAreaText(Screen.getAreaText()+"\nServer: Server running...");
 
             while(!serverSocket.isClosed()){
                 Socket socket = serverSocket.accept();

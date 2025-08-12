@@ -122,26 +122,35 @@ public class MyActionListener implements ActionListener{
         }
         else if(e.getSource()==RankingPanel.getWins()){ //RANKINGPANEL: WINS
             //envia
-            Screen.client.sendMessage("RANKING-WINS- ");
+            Screen.client.sendMessage("RANKING-WINS-"+(RankingPanel.selectOrder.getSelectedIndex()==0?"ASC":"DESC"));
         }
         else if(e.getSource()==RankingPanel.getGames()){ //RANKINGPANEL: GAMES
             //envia
-            Screen.client.sendMessage("RANKING-GAMES- ");
+            Screen.client.sendMessage("RANKING-GAMES-"+(RankingPanel.selectOrder.getSelectedIndex()==0?"ASC":"DESC"));
         }
         else if(e.getSource()==RankingPanel.getWinrate()){ //RANKINGPANEL: WINRATE
             //envia
-            Screen.client.sendMessage("RANKING-WINRATE- ");
+            Screen.client.sendMessage("RANKING-WINRATE-"+(RankingPanel.selectOrder.getSelectedIndex()==0?"ASC":"DESC"));
         }
         else if(e.getSource()==RankingPanel.getJoined()){ //RANKINGPANEL: JOINED
             //envia
-            Screen.client.sendMessage("RANKING-JOINED- ");
+            Screen.client.sendMessage("RANKING-JOINED-"+(RankingPanel.selectOrder.getSelectedIndex()==0?"ASC":"DESC"));
         }
         else if(e.getSource()==PlayPanel.getForfeit()){ //PLAYPANEL: FORFEIT
             int op = ScreenFunctions.options_message(Screen.bn.getString("play.quit.content"), Screen.bn.getString("play.quit.title"), new String[]{Screen.bn.getString("play.quit.yes"),Screen.bn.getString("play.quit.no")});
             if(op==0){
                 //envia
                 Screen.client.sendMessage("FORFEIT-"+Client.userName+"- ");
-                ScreenFunctions.information_message(Screen.bn.getString("play.lost.content"),Screen.bn.getString("play.lost.title"));
+                //ScreenFunctions.information_message(Screen.bn.getString("play.lost.content"),Screen.bn.getString("play.lost.title"));
+                int option = -1;
+                do{
+                    option = ScreenFunctions.options_message(
+                        Screen.bn.getString("play.lost.content"),
+                        Screen.bn.getString("play.lost.title"),
+                        new String[]{Screen.bn.getString("play.after.leave"),Screen.bn.getString("play.after.leavesave")}
+                    );
+                }while(option==-1);
+                if(option==1){ ScreenFunctions.save_history(); }
                 Screen.mainPanel.setVisible(false);
                 Screen.mainPanel.removeAll();
                 Screen.mainPanel.add(MenuPanel.getPanel());
@@ -152,6 +161,7 @@ public class MyActionListener implements ActionListener{
         else if(e.getSource()==Screen.menuBar.getMenu(0).getItem(0)){ //SCREEN: PORTUGUESE
             Screen.bn = ResourceBundle.getBundle("Resources/PACK", new Locale("pt","BR"));
             Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
+            Screen.lenguage.setText(Screen.bn.getString("screen.lenguages"));
             InitialPanel.updateLanguage();
             CreatePanel.updateLanguage();
             LoginPanel.updateLanguage();
@@ -162,7 +172,7 @@ public class MyActionListener implements ActionListener{
         else if(e.getSource()==Screen.menuBar.getMenu(0).getItem(1)){ //SCREEN: ENGLISH
             Screen.bn = ResourceBundle.getBundle("Resources/PACK", Locale.US);
             Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
-            Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
+            Screen.lenguage.setText(Screen.bn.getString("screen.lenguages"));
             InitialPanel.updateLanguage();
             CreatePanel.updateLanguage();
             LoginPanel.updateLanguage();
@@ -173,8 +183,7 @@ public class MyActionListener implements ActionListener{
         else if(e.getSource()==Screen.menuBar.getMenu(0).getItem(2)){ //SCREEN: SPANISH
             Screen.bn = ResourceBundle.getBundle("Resources/PACK", new Locale("es","ES"));
             Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
-            Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
-            Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
+            Screen.lenguage.setText(Screen.bn.getString("screen.lenguages"));
             InitialPanel.updateLanguage();
             CreatePanel.updateLanguage();
             LoginPanel.updateLanguage();
@@ -185,8 +194,7 @@ public class MyActionListener implements ActionListener{
         else if(e.getSource()==Screen.menuBar.getMenu(0).getItem(3)){ //SCREEN: FRENCH
             Screen.bn = ResourceBundle.getBundle("Resources/PACK", new Locale("fr","FR"));
             Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
-            Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
-            Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
+            Screen.lenguage.setText(Screen.bn.getString("screen.lenguages"));
             InitialPanel.updateLanguage();
             CreatePanel.updateLanguage();
             LoginPanel.updateLanguage();
@@ -195,10 +203,9 @@ public class MyActionListener implements ActionListener{
             RankingPanel.updateLanguage();
         }
         else if(e.getSource()==Screen.menuBar.getMenu(0).getItem(4)){ //SCREEN: ITALIAN
-            Screen.bn = ResourceBundle.getBundle("Resources/PACK", new Locale("fr","FR"));
+            Screen.bn = ResourceBundle.getBundle("Resources/PACK", new Locale("it","IT"));
             Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
-            Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
-            Screen.mainFrame.setTitle(Screen.bn.getString("screen.title"));
+            Screen.lenguage.setText(Screen.bn.getString("screen.lenguages"));
             InitialPanel.updateLanguage();
             CreatePanel.updateLanguage();
             LoginPanel.updateLanguage();

@@ -86,7 +86,7 @@ public class MenuPanel {
         stop.setOpaque(true);
         stop.setVisible(false);
 
-        ScreenFunctions.image_setup(backgroundImage, "./src/images/teste.png", 0, 0, WIDTH, 7*HEIGHT/10, panel);
+        ScreenFunctions.image_setup(backgroundImage, "./src/Images/main.png", 0, 0, WIDTH, 7*HEIGHT/10, panel);
 
     }
 

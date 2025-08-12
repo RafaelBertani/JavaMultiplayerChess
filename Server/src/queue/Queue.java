@@ -30,7 +30,7 @@ public class Queue{
     public Player dequeue(){
                 
         if(this.QueueLength==0){
-            System.out.println("Empty queue");
+            //System.out.println("Empty queue");
             return null;
         }
         else if(this.QueueLength==1){ 
@@ -114,14 +114,16 @@ public class Queue{
     }
 
     public void print_queue(){
-        if(this.QueueLength==0){System.out.println("\nEmpty List");}
-        System.out.print("Queue start: ");
+        if(this.QueueLength==0){
+            //System.out.println("\nEmpty List");
+        }
+        //System.out.print("Queue start: ");
         Node percorre=this.head;
         while(percorre!=null){
             System.out.print(percorre.player.getName()+" ");
             percorre=percorre.after;
         }
-        System.out.println();
+        //System.out.println();
     }
 
 }

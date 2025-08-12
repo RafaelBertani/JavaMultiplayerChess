@@ -1,6 +1,7 @@
 package database;
 
 import java.sql.*;
+import screen.Screen;
 
 public class Database {
 
@@ -40,15 +41,15 @@ public class Database {
             try{
                 statement.executeUpdate(sql);
                 //statement.close();
-                System.out.println("Database created");
+                Screen.setAreaText(Screen.getAreaText()+"\nServer: Database created.");
             }catch(SQLException e){
-                System.out.println("Database already exists");
+                Screen.setAreaText(Screen.getAreaText()+"\nServer: Database already exists.");
             }
 
             String use = "USE " + databaseName;
             statement.executeUpdate(use);
             statement.close();
-            System.out.println("Database selected");
+            Screen.setAreaText(Screen.getAreaText()+"\nServer: Database selected.");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -75,13 +76,13 @@ public class Database {
                 Statement statement = connection.createStatement();
                 statement.executeUpdate(sql);
                 statement.close();
-                System.out.println("Table 'Users' created");
+                Screen.setAreaText(Screen.getAreaText()+"\nServer: Database selected.");
             }
             else{
-                System.out.println("Table 'Users' already created");
+                Screen.setAreaText(Screen.getAreaText()+"\nServer: Table 'Users' already created.");
             }
         } catch (SQLException e) {
-            System.out.println("Table 'Users' already exists");
+            Screen.setAreaText(Screen.getAreaText()+"\nServer: Table 'Users' already exists.");
         }
     }
     

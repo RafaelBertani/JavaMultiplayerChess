@@ -2,6 +2,7 @@ package client;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -117,6 +118,7 @@ public class Client{
             
             //limpa da partida anterior
             PlayPanel.promoted.clear();
+            PlayPanel.historyList.clear();
 
             player_1_or_2=Integer.parseInt(data.get(1));
             if(player_1_or_2==1){PlayPanel.turn.setText(Screen.bn.getString("play.yourturn"));}
@@ -189,8 +191,6 @@ public class Client{
 
             boolean isPlayer1 = Client.player_1_or_2==1;
 
-            //System.out.println("Recebi "+linhaINICIO+" "+colunaINICIO+" "+linhaFIM+" "+colunaFIM+" que é o: "+PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]);
-
             PlayPanel.getPanel().setVisible(false);
             Screen.myMouseListenerDragDrop.troca_imagem(
                 move.get(0),
@@ -216,7 +216,16 @@ public class Client{
             
         }
         else if(data.get(0).equals("WON")){
-            ScreenFunctions.information_message(Screen.bn.getString("play.won.content"), Screen.bn.getString("play.won.title"));
+            //ScreenFunctions.information_message(Screen.bn.getString("play.won.content"), Screen.bn.getString("play.won.title"));
+            int option = -1;
+            do{
+                option = ScreenFunctions.options_message(
+                    Screen.bn.getString("play.won.content"),
+                    Screen.bn.getString("play.won.title"),
+                    new String[]{Screen.bn.getString("play.after.leave"),Screen.bn.getString("play.after.leavesave")}
+                );
+            }while(option==-1);
+            if(option==1){ ScreenFunctions.save_history(); }
             Screen.mainPanel.setVisible(false);
             Screen.mainPanel.removeAll();
             Screen.mainPanel.add(MenuPanel.getPanel());
@@ -224,7 +233,16 @@ public class Client{
             Screen.menuBar.setVisible(true);
         }
         else if(data.get(0).equals("LOST")){
-            ScreenFunctions.information_message(Screen.bn.getString("play.lost.content"), Screen.bn.getString("play.lost.title"));
+            //ScreenFunctions.information_message(Screen.bn.getString("play.lost.content"), Screen.bn.getString("play.lost.title"));
+            int option = -1;
+            do{
+                option = ScreenFunctions.options_message(
+                    Screen.bn.getString("play.lost.content"),
+                    Screen.bn.getString("play.lost.title"),
+                    new String[]{Screen.bn.getString("play.after.leave"),Screen.bn.getString("play.after.leavesave")}
+                );
+            }while(option==-1);
+            if(option==1){ ScreenFunctions.save_history(); }
             Screen.mainPanel.setVisible(false);
             Screen.mainPanel.removeAll();
             Screen.mainPanel.add(MenuPanel.getPanel());
@@ -232,7 +250,16 @@ public class Client{
             Screen.menuBar.setVisible(true);
         }
         else if(data.get(0).equals("FORFEIT")){
-            ScreenFunctions.information_message(Screen.bn.getString("play.won.content"), Screen.bn.getString("play.won.title"));
+            //ScreenFunctions.information_message(Screen.bn.getString("play.won.content"), Screen.bn.getString("play.won.title"));
+            int option = -1;
+            do{
+                option = ScreenFunctions.options_message(
+                    Screen.bn.getString("play.won.content"),
+                    Screen.bn.getString("play.won.title"),
+                    new String[]{Screen.bn.getString("play.after.leave"),Screen.bn.getString("play.after.leavesave")}
+                );
+            }while(option==-1);
+            if(option==1){ ScreenFunctions.save_history(); }
             Screen.mainPanel.setVisible(false);
             Screen.mainPanel.removeAll();
             Screen.mainPanel.add(MenuPanel.getPanel());

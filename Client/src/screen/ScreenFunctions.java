@@ -4,6 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
@@ -11,6 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -21,6 +26,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.TransferHandler;
 import listeners.MyActionListener;
+import main_panels.PlayPanel;
 
 public class ScreenFunctions{
 
@@ -182,19 +188,11 @@ public class ScreenFunctions{
     }
 
     public static void image_setup(JLabel label_name, String complete_path, int x, int y, int width, int height, JPanel label_panel) {
-        // Define os limites do JLabel
         label_name.setBounds(x, y, width, height);
-
-        // Carrega a imagem do caminho fornecido
         ImageIcon icon = new ImageIcon(complete_path);
-
-        // Redimensiona a imagem para as dimensões especificadas
         Image scaledImage = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
-
-        // Define o novo ícone redimensionado no JLabel
         label_name.setIcon(new ImageIcon(scaledImage));
 
-        // Adiciona o JLabel ao painel
         label_panel.add(label_name);
     }
 
@@ -221,25 +219,6 @@ public class ScreenFunctions{
         bar_panel.add(bar_name);
     }
 
-    public static void bar_update_color(JProgressBar bar_name, int value, double[] maximum_percentage_color, Color[] colors){
-        
-        if(maximum_percentage_color.length==colors.length){
-            bar_name.setValue(value);
-        
-            double porcentagem = (
-                Float.parseFloat(""+ (bar_name.getValue()-bar_name.getMinimum()) )
-                /
-                Float.parseFloat(""+ (bar_name.getMaximum()-bar_name.getMinimum()) )
-            );
-            for(int i=0;i<maximum_percentage_color.length;i++){
-                if(porcentagem<=maximum_percentage_color[i]){bar_name.setForeground(colors[i]);break;}
-            }
-                
-        }
-        bar_name.setValue(value);
-        
-    }
-
     public static void checkbox_setup(JCheckBox checkbox_name, String text, int x, int y, int width, int height, boolean selected, JPanel checkbox_panel){
         checkbox_name.setText(text);
         checkbox_name.setBounds(x, y, width, height);
@@ -251,6 +230,18 @@ public class ScreenFunctions{
         if(font!=null){checkbox_name.setFont(font);}
         if(back!=null){checkbox_name.setBackground(back);}
         if(fore!=null){checkbox_name.setForeground(fore);}
+    }
+
+    public static File folderchooser_setup(String title){
+        
+        JFileChooser j = new JFileChooser();
+        j.setDialogTitle(title);
+        j.setAcceptAllFileFilterUsed(false);
+        j.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        j.showOpenDialog(null);
+    
+        return j.getSelectedFile();
+    
     }
 
     public static void error_message(String message, String title){
@@ -265,4 +256,25 @@ public class ScreenFunctions{
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
+    public static boolean write_file(String path_plus_name, ArrayList<String> lines){
+        try{
+            FileWriter myWriter = new FileWriter(path_plus_name);
+            for(String line : lines){
+                myWriter.write(line);
+                myWriter.write("\n");
+            }
+            myWriter.close();
+            return true;
+        }catch(IOException e){return false;}
+    }
+
+    public static void save_history(){
+        File path;
+        do{
+            path = ScreenFunctions.folderchooser_setup(Screen.bn.getString("play.after.directory"));
+        }while(path==null);
+        boolean success = ScreenFunctions.write_file(path.toString()+("/Chess_Match_"+System.currentTimeMillis())+".txt", PlayPanel.historyList);
+        if(success){ScreenFunctions.information_message(Screen.bn.getString("play.after.saved.content"),Screen.bn.getString("play.after.saved.title"));}
+        else{ScreenFunctions.information_message(Screen.bn.getString("play.after.error.content"),Screen.bn.getString("play.after.error.title"));}
+    }
 }

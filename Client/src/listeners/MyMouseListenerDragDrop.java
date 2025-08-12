@@ -443,7 +443,7 @@ public class MyMouseListenerDragDrop implements MouseListener{
 
     // função que troca a imagem de um label em uma promoção
     public static void change(JLabel peca, String option, boolean isPlayer1){
-            ImageIcon icon = new ImageIcon("./src/images/"+option+"_"+(isPlayer1?"White":"Black")+".png");
+            ImageIcon icon = new ImageIcon("./src/Images/"+option+"_"+(isPlayer1?"White":"Black")+".png");
             Image scaledImage = icon.getImage().getScaledInstance(550/15, 550/15, Image.SCALE_SMOOTH);
             peca.setIcon(new ImageIcon(scaledImage));
     }

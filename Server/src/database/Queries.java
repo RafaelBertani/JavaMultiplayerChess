@@ -77,7 +77,7 @@ public class Queries {
         
     }
 
-    public static String getRankingWins(){
+    public static String getRankingWins(String ASC_DESC){
         
         String response = "";
 
@@ -86,7 +86,7 @@ public class Queries {
         ResultSet resultQUERY = null;
         try{
             
-            pstm = c.prepareStatement("SELECT id, username, wins, games, joined FROM Users ORDER BY wins DESC LIMIT 100;");
+            pstm = c.prepareStatement("SELECT id, username, wins, games, joined FROM Users ORDER BY wins "+ASC_DESC+" LIMIT 100;");
             resultQUERY=pstm.executeQuery();
             while(resultQUERY.next()){
                 response+=
@@ -106,7 +106,7 @@ public class Queries {
         return response;
     }
 
-    public static String getRankingGames(){
+    public static String getRankingGames(String ASC_DESC){
         
         String response = "";
 
@@ -115,7 +115,7 @@ public class Queries {
         ResultSet resultQUERY = null;
         try{
             
-            pstm = c.prepareStatement("SELECT id, username, wins, games, joined FROM Users ORDER BY games DESC LIMIT 100;");
+            pstm = c.prepareStatement("SELECT id, username, wins, games, joined FROM Users ORDER BY games "+ASC_DESC+" LIMIT 100;");
             resultQUERY=pstm.executeQuery();
             while(resultQUERY.next()){
                 response+=
@@ -135,7 +135,7 @@ public class Queries {
         return response;
     }
 
-    public static String getRankingWinrate(){
+    public static String getRankingWinrate(String ASC_DESC){
         
         String response = "";
 
@@ -144,7 +144,7 @@ public class Queries {
         ResultSet resultQUERY = null;
         try{
             
-            pstm = c.prepareStatement("SELECT id, username, wins, games, joined, (wins * 1.0 / games) AS win_rate FROM Users ORDER BY win_rate DESC LIMIT 100;");
+            pstm = c.prepareStatement("SELECT id, username, wins, games, joined, (wins * 1.0 / games) AS win_rate FROM Users ORDER BY win_rate "+ASC_DESC+" LIMIT 100;");
             resultQUERY=pstm.executeQuery();
             while(resultQUERY.next()){
                 response+=
@@ -164,7 +164,7 @@ public class Queries {
         return response;
     }
 
-    public static String getRankingDate(){
+    public static String getRankingDate(String ASC_DESC){
         
         String response = "";
 
@@ -173,7 +173,7 @@ public class Queries {
         ResultSet resultQUERY = null;
         try{
             
-            pstm = c.prepareStatement("SELECT id, username, wins, games, joined FROM Users ORDER BY joined DESC;");
+            pstm = c.prepareStatement("SELECT id, username, wins, games, joined FROM Users ORDER BY joined "+ASC_DESC+";");
             resultQUERY=pstm.executeQuery();
             while(resultQUERY.next()){
                 response+=

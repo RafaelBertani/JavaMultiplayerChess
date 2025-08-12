@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.regex.Pattern;
 import queue.Node;
 import queue.Player;
+import screen.Screen;
 import sha256.Sha256;
 
 public class ClientHandler implements Runnable{
@@ -37,8 +38,8 @@ public class ClientHandler implements Runnable{
             if(Queries.loginValid(data.get(1), Sha256.hash(data.get(2)))){
                 this.clientUsername=data.get(1);
                 clientHandlers.add(this);
-                System.out.println("Login");
                 try {
+                    Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.clientUsername+"): LOGIN SUCCESSFUL-"+data.get(1)+"- ");
                     this.bufferedWriter.write("LOGIN SUCCESSFUL-"+data.get(1)+"- ");
                     this.bufferedWriter.newLine();
                     this.bufferedWriter.flush();
@@ -47,11 +48,11 @@ public class ClientHandler implements Runnable{
             }
             else{
                 try{
+                    Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.clientUsername+"): LOGIN FAILED- - ");
                     this.bufferedWriter.write("LOGIN FAILED- - ");
                     this.bufferedWriter.newLine();
                     this.bufferedWriter.flush();
                 }catch(Exception e){}
-                System.out.println("Login failed");
             }
 
         }
@@ -59,53 +60,56 @@ public class ClientHandler implements Runnable{
 
             if(Queries.usernameExists(data.get(1))){ //confirmar se username já existe
                 try{
+                    Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.clientUsername+"): CREATE FAILED- - ");
                     this.bufferedWriter.write("CREATE FAILED- - ");
                     this.bufferedWriter.newLine();
                     this.bufferedWriter.flush();
                 }catch(Exception e){}
-                System.out.println("Not Created");
             }
             else{
+                Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.clientUsername+"): CREATE SUCCESSFUL- - ");
                 this.clientUsername=data.get(1);
                 clientHandlers.add(this);
                 Queries.createUser(data.get(1),Sha256.hash(data.get(2)));
-                System.out.println("Created");
                 sendMessage("CREATE SUCCESSFUL- - ");
             }
             
         }
         else if(data.get(0).equals("LOGOUT")){
             clientHandlers.remove(this);
-            System.out.println(this.clientUsername+" has left");
         }
         else if(data.get(0).equals("RANKING")){
             if(data.get(1).equals("WINS")){
-                String response = Queries.getRankingWins();
+                String response = Queries.getRankingWins(data.get(2));
                 try {
+                    Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.clientUsername+"): RANKING-"+response+"- ");
                     this.bufferedWriter.write("RANKING-"+response+"- ");
                     this.bufferedWriter.newLine();
                     this.bufferedWriter.flush();
                 } catch (IOException e) {}
             }
             else if (data.get(1).equals("GAMES")) {
-                String response = Queries.getRankingGames();
+                String response = Queries.getRankingGames(data.get(2));
                 try {
+                    Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.clientUsername+"): RANKING-"+response+"- ");
                     this.bufferedWriter.write("RANKING-"+response+"- ");
                     this.bufferedWriter.newLine();
                     this.bufferedWriter.flush();
                 } catch (IOException e) {}
             }
             else if (data.get(1).equals("WINRATE")) {
-                String response = Queries.getRankingWinrate();
+                String response = Queries.getRankingWinrate(data.get(2));
                 try {
+                    Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.clientUsername+"): RANKING-"+response+"- ");
                     this.bufferedWriter.write("RANKING-"+response+"- ");
                     this.bufferedWriter.newLine();
                     this.bufferedWriter.flush();
                 } catch (IOException e) {}
             }
             else if (data.get(1).equals("JOINED")) {
-                String response = Queries.getRankingDate();
+                String response = Queries.getRankingDate(data.get(2));
                 try {
+                    Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.clientUsername+"): RANKING-"+response+"- ");
                     this.bufferedWriter.write("RANKING-"+response+"- ");
                     this.bufferedWriter.newLine();
                     this.bufferedWriter.flush();
@@ -114,20 +118,24 @@ public class ClientHandler implements Runnable{
         }
         else if(data.get(0).equals("DEQUEUE")){
             Server.q.dequeue();
+            Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.clientUsername+"): DEQUEUE SUCCESSFUL- - ");
             sendMessage("DEQUEUE SUCCESSFUL- - ");
         }
         else if(data.get(0).equals("QUEUE")){
             Server.q.enqueue(new Node(new Player(this.clientUsername,this)));
-            Server.q.print_queue();
+            //Server.q.print_queue();
+            Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.clientUsername+"): QUEUE WAITING- - ");
             sendMessage("QUEUE WAITING- - ");
         
             if(Server.q.QueueLength>=2){
                 p1 = Server.q.dequeue();
                 p2 = Server.q.dequeue();
                 try{
+                    Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.clientUsername+"): QUEUE SUCCESSFUL-1- ");
                     p1.getClientHandler().getBufferedWriter().write("QUEUE SUCCESSFUL-1- ");
                     p1.getClientHandler().getBufferedWriter().newLine();
                     p1.getClientHandler().getBufferedWriter().flush();
+                    Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.clientUsername+"): QUEUE SUCCESSFUL-2- ");
                     p2.getClientHandler().getBufferedWriter().write("QUEUE SUCCESSFUL-2- ");
                     p2.getClientHandler().getBufferedWriter().newLine();
                     p2.getClientHandler().getBufferedWriter().flush();
@@ -157,9 +165,11 @@ public class ClientHandler implements Runnable{
 
                         //MANDA RETORNO PARA O ADVERSÁRIO
                         try{
+                            Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.p1.getName()+"): FLIPTURN- - ");
                             p1.getClientHandler().getBufferedWriter().write("FLIPTURN- - ");
                             p1.getClientHandler().getBufferedWriter().newLine();
                             p1.getClientHandler().getBufferedWriter().flush();
+                            Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.p2.getName()+"): MOVEMENT-"+data.get(2)+"- ");
                             p2.getClientHandler().getBufferedWriter().write("MOVEMENT-"+data.get(2)+"- ");
                             p2.getClientHandler().getBufferedWriter().newLine();
                             p2.getClientHandler().getBufferedWriter().flush();
@@ -175,9 +185,11 @@ public class ClientHandler implements Runnable{
 
                         //MANDA RETORNO PARA O ADVERSÁRIO
                         try{
+                            Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.p1.getName()+"): MOVEMENT-"+data.get(2)+"- ");
                             p1.getClientHandler().getBufferedWriter().write("MOVEMENT-"+data.get(2)+"- ");
                             p1.getClientHandler().getBufferedWriter().newLine();
                             p1.getClientHandler().getBufferedWriter().flush();
+                            Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.p2.getName()+"): MOVEMENT-"+data.get(2)+"- ");
                             p2.getClientHandler().getBufferedWriter().write("FLIPTURN- - ");
                             p2.getClientHandler().getBufferedWriter().newLine();
                             p2.getClientHandler().getBufferedWriter().flush();
@@ -208,9 +220,11 @@ public class ClientHandler implements Runnable{
 
                         //MANDA RETORNO PARA O ADVERSÁRIO
                         try{
+                            Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.p1.getName()+"): FLIPTURN- - ");
                             p1.getClientHandler().getBufferedWriter().write("FLIPTURN- - ");
                             p1.getClientHandler().getBufferedWriter().newLine();
                             p1.getClientHandler().getBufferedWriter().flush();
+                            Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.p2.getName()+"): PROMOTED-"+data.get(2)+"- ");
                             p2.getClientHandler().getBufferedWriter().write("PROMOTED-"+data.get(2)+"- ");
                             p2.getClientHandler().getBufferedWriter().newLine();
                             p2.getClientHandler().getBufferedWriter().flush();
@@ -226,9 +240,11 @@ public class ClientHandler implements Runnable{
 
                         //MANDA RETORNO PARA O ADVERSÁRIO
                         try{
+                            Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.p1.getName()+"): PROMOTED-"+data.get(2)+"- ");
                             p1.getClientHandler().getBufferedWriter().write("PROMOTED-"+data.get(2)+"- ");
                             p1.getClientHandler().getBufferedWriter().newLine();
                             p1.getClientHandler().getBufferedWriter().flush();
+                            Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.p2.getName()+"): FLIPTURN- - ");
                             p2.getClientHandler().getBufferedWriter().write("FLIPTURN- - ");
                             p2.getClientHandler().getBufferedWriter().newLine();
                             p2.getClientHandler().getBufferedWriter().flush();
@@ -253,9 +269,11 @@ public class ClientHandler implements Runnable{
                 if(room.p1.getName().equals(data.get(1))){
                     ID=room.ID;
                     try{
+                        Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.p1.getName()+"): WON- - ");
                         room.p1.getClientHandler().getBufferedWriter().write("WON- - ");
                         room.p1.getClientHandler().getBufferedWriter().newLine();
                         room.p1.getClientHandler().getBufferedWriter().flush();
+                        Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.p2.getName()+"): LOST- - ");
                         room.p2.getClientHandler().getBufferedWriter().write("LOST- - ");
                         room.p2.getClientHandler().getBufferedWriter().newLine();
                         room.p2.getClientHandler().getBufferedWriter().flush();
@@ -267,9 +285,11 @@ public class ClientHandler implements Runnable{
                 else if(room.p2.getName().equals(data.get(1))){
                     ID=room.ID;
                     try{
+                        Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.p1.getName()+"): LOST- - ");
                         room.p1.getClientHandler().getBufferedWriter().write("LOST- - ");
                         room.p1.getClientHandler().getBufferedWriter().newLine();
                         room.p1.getClientHandler().getBufferedWriter().flush();
+                        Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.p2.getName()+"): WON- - ");
                         room.p2.getClientHandler().getBufferedWriter().write("WON- - ");
                         room.p2.getClientHandler().getBufferedWriter().newLine();
                         room.p2.getClientHandler().getBufferedWriter().flush();    
@@ -289,6 +309,7 @@ public class ClientHandler implements Runnable{
                 if(room.p1.getName().equals(data.get(1))){
                     ID=room.ID;
                     try{
+                        Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.p2.getName()+"): FORFEIT- - ");
                         room.p2.getClientHandler().getBufferedWriter().write("FORFEIT- - ");
                         room.p2.getClientHandler().getBufferedWriter().newLine();
                         room.p2.getClientHandler().getBufferedWriter().flush();
@@ -300,6 +321,7 @@ public class ClientHandler implements Runnable{
                 else if(room.p2.getName().equals(data.get(1))){
                     ID=room.ID;
                     try{
+                        Screen.setAreaText(Screen.getAreaText()+"\nServer to client ("+this.p1.getName()+"): FORFEIT- - ");
                         room.p1.getClientHandler().getBufferedWriter().write("FORFEIT- - ");
                         room.p1.getClientHandler().getBufferedWriter().newLine();
                         room.p1.getClientHandler().getBufferedWriter().flush();
@@ -330,6 +352,7 @@ public class ClientHandler implements Runnable{
             try{
                 String message =  bufferedReader.readLine();
                 //System.out.println(message);
+                Screen.setAreaText(Screen.getAreaText()+"\nClient("+this.clientUsername+"): "+message);
                 ArrayList<String> data = line_break(message,'-'); //type-content1-content2
                 dealer(data);
             }

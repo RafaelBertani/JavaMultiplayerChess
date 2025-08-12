@@ -58,6 +58,7 @@ public class PlayPanel {
     
     public static JLabel turn = new JLabel();
     private static JPanel history = new JPanel();
+    public static ArrayList<String> historyList = new ArrayList<>();
     private static JScrollPane scrollPane = new JScrollPane(history);
     private static final JButton forfeit = new JButton();
     public static JButton getForfeit() {return forfeit;}
@@ -68,6 +69,8 @@ public class PlayPanel {
 
     
     public static void addToHistory(String str, boolean isPlayer1){
+        historyList.add(""+(isPlayer1?"Player 1: ":"Player 2: ")+str);
+        
         JLabel label = new JLabel();
         ScreenFunctions.label_setup(label, str, false, 0, history.getComponentCount()*(Screen.getHEIGHT()-200)/25, Screen.getWIDTH()/4, (Screen.getHEIGHT()-200)/25, panel);
         label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
@@ -129,42 +132,42 @@ public class PlayPanel {
 
         final int size = (550/15);
         //segunda camada, com as peças
-        ScreenFunctions.image_setup(Pawn_White_A,"./src/images/Pawn_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_White_B,"./src/images/Pawn_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_White_C,"./src/images/Pawn_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_White_D,"./src/images/Pawn_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_White_E,"./src/images/Pawn_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_White_F,"./src/images/Pawn_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_White_G,"./src/images/Pawn_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_White_H,"./src/images/Pawn_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_Black_A,"./src/images/Pawn_Black.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_Black_B,"./src/images/Pawn_Black.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_Black_C,"./src/images/Pawn_Black.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_Black_D,"./src/images/Pawn_Black.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_Black_E,"./src/images/Pawn_Black.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_Black_F,"./src/images/Pawn_Black.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_Black_G,"./src/images/Pawn_Black.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_Black_H,"./src/images/Pawn_Black.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Pawn_White_A,"./src/Images/Pawn_White.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Pawn_White_B,"./src/Images/Pawn_White.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Pawn_White_C,"./src/Images/Pawn_White.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Pawn_White_D,"./src/Images/Pawn_White.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Pawn_White_E,"./src/Images/Pawn_White.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Pawn_White_F,"./src/Images/Pawn_White.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Pawn_White_G,"./src/Images/Pawn_White.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Pawn_White_H,"./src/Images/Pawn_White.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Pawn_Black_A,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Pawn_Black_B,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Pawn_Black_C,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Pawn_Black_D,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Pawn_Black_E,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Pawn_Black_F,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Pawn_Black_G,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Pawn_Black_H,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
 
-        ScreenFunctions.image_setup(King_White_E,"./src/images/King_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Queen_White_D,"./src/images/Queen_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(King_Black_E,"./src/images/King_Black.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Queen_Black_D,"./src/images/Queen_Black.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(King_White_E,"./src/Images/King_White.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Queen_White_D,"./src/Images/Queen_White.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(King_Black_E,"./src/Images/King_Black.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Queen_Black_D,"./src/Images/Queen_Black.png",0,0,size,size,panel);
         
-        ScreenFunctions.image_setup(Bishop_White_C,"./src/images/Bishop_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Bishop_White_F,"./src/images/Bishop_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Bishop_Black_C,"./src/images/Bishop_Black.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Bishop_Black_F,"./src/images/Bishop_Black.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Bishop_White_C,"./src/Images/Bishop_White.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Bishop_White_F,"./src/Images/Bishop_White.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Bishop_Black_C,"./src/Images/Bishop_Black.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Bishop_Black_F,"./src/Images/Bishop_Black.png",0,0,size,size,panel);
 
-        ScreenFunctions.image_setup(Knight_White_B,"./src/images/Knight_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Knight_White_G,"./src/images/Knight_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Knight_Black_B,"./src/images/Knight_Black.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Knight_Black_G,"./src/images/Knight_Black.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Knight_White_B,"./src/Images/Knight_White.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Knight_White_G,"./src/Images/Knight_White.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Knight_Black_B,"./src/Images/Knight_Black.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Knight_Black_G,"./src/Images/Knight_Black.png",0,0,size,size,panel);
 
-        ScreenFunctions.image_setup(Rook_White_A,"./src/images/Rook_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Rook_White_H,"./src/images/Rook_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Rook_Black_A,"./src/images/Rook_Black.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Rook_Black_H,"./src/images/Rook_Black.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Rook_White_A,"./src/Images/Rook_White.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Rook_White_H,"./src/Images/Rook_White.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Rook_Black_A,"./src/Images/Rook_Black.png",0,0,size,size,panel);
+        ScreenFunctions.image_setup(Rook_Black_H,"./src/Images/Rook_Black.png",0,0,size,size,panel);
         
         //terceira camada, com o tabuleiro
         for(int i=7;i>=0;i--){
@@ -204,7 +207,7 @@ public class PlayPanel {
         panel.setOpaque(true);
         panel.setBackground(new Color(0,0,0));
 
-        ScreenFunctions.image_setup(backgroundImage, "./src/images/field.jpg", 0, 0, WIDTH, 7*HEIGHT/10, panel);
+        ScreenFunctions.image_setup(backgroundImage, "./src/Images/field.jpg", 0, 0, WIDTH, 7*HEIGHT/10, panel);
 
     }
 

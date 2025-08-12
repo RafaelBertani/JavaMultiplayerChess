@@ -95,7 +95,7 @@ public class CreatePanel {
         ScreenFunctions.panel_on_panel_setup(backarea, panel, WIDTH/4, 3*HEIGHT/20, WIDTH/2, HEIGHT/2);
         ScreenFunctions.panel_edit(backarea, false, new Color(0,0,0,200));
 
-        ScreenFunctions.image_setup(backgroundImage, "./src/images/teste.png", 0, 0, WIDTH, 7*HEIGHT/10, panel);
+        ScreenFunctions.image_setup(backgroundImage, "./src/Images/main.png", 0, 0, WIDTH, 7*HEIGHT/10, panel);
 
     }
 
