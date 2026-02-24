@@ -10,6 +10,10 @@ import javax.swing.border.TitledBorder;
 
 public class Screen extends JFrame{
     
+    /*
+     * Apenas para vizualização
+    */
+
     private static final JFrame frame = new JFrame();
     private static JTextArea area = new JTextArea();
 

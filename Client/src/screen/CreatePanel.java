@@ -1,4 +1,4 @@
-package main_panels;
+package screen;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -7,8 +7,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import screen.Screen;
-import screen.ScreenFunctions;
 
 public class CreatePanel {
     
@@ -39,63 +37,59 @@ public class CreatePanel {
         int WIDTH = Screen.getWIDTH();
         int HEIGHT = Screen.getHEIGHT()+200;
 
-        //maior
-        //prioridade
-        //menor
-
         panel.setBounds(0,0,WIDTH,HEIGHT);
         panel.setLayout(null);
         panel.setOpaque(true);
         panel.setBackground(new Color(0,0,0));
 
         //title
-        ScreenFunctions.label_setup(title, Screen.bn.getString("create.title"), false, WIDTH/4, 3*HEIGHT/20, WIDTH/2, HEIGHT/10, panel);
-        ScreenFunctions.label_edit(title, new Font("Arial",Font.PLAIN,21), null, Color.WHITE);
+        ComponentCreator.labelSetup(title, Screen.bn.getString("create.title"), false, WIDTH/4, 3*HEIGHT/20, WIDTH/2, HEIGHT/10, panel);
+        ComponentCreator.labelEdit(title, new Font("Arial",Font.PLAIN,21), null, Color.WHITE);
 
         //label username
-        ScreenFunctions.label_setup(usernameLabel, Screen.bn.getString("create.username"), false, WIDTH/4, 6*HEIGHT/20, WIDTH/5, HEIGHT/20, panel);
-        ScreenFunctions.label_edit(usernameLabel, new Font("Arial",Font.PLAIN,16), null, Color.WHITE);
+        ComponentCreator.labelSetup(usernameLabel, Screen.bn.getString("create.username"), false, WIDTH/4, 6*HEIGHT/20, WIDTH/5, HEIGHT/20, panel);
+        ComponentCreator.labelEdit(usernameLabel, new Font("Arial",Font.PLAIN,16), null, Color.WHITE);
 
         //text username
-        ScreenFunctions.textfield_setup(usernameText, "", 9*WIDTH/20, 6*HEIGHT/20, 5*WIDTH/20, HEIGHT/20, true, true, panel);
-        ScreenFunctions.textfield_edit(usernameText, new Font("Arial",Font.PLAIN,16), new Color(32,32,32), Color.WHITE);
+        ComponentCreator.textfieldSetup(usernameText, "", 9*WIDTH/20, 6*HEIGHT/20, 5*WIDTH/20, HEIGHT/20, true, true, panel);
+        ComponentCreator.textfieldEdit(usernameText, new Font("Arial",Font.PLAIN,16), new Color(32,32,32), Color.WHITE);
 
         //label password1
-        ScreenFunctions.label_setup(password1Label, Screen.bn.getString("create.password"), false, WIDTH/4, 15*HEIGHT/40, WIDTH/5, HEIGHT/20, panel);
-        ScreenFunctions.label_edit(password1Label, new Font("Arial",Font.PLAIN,16), null, Color.WHITE);
+        ComponentCreator.labelSetup(password1Label, Screen.bn.getString("create.password"), false, WIDTH/4, 15*HEIGHT/40, WIDTH/5, HEIGHT/20, panel);
+        ComponentCreator.labelEdit(password1Label, new Font("Arial",Font.PLAIN,16), null, Color.WHITE);
 
         //text password1
-        ScreenFunctions.passwordfield_setup(password1Text, 9*WIDTH/20, 15*HEIGHT/40, 5*WIDTH/20, HEIGHT/20, true, panel);
-        ScreenFunctions.passwordfield_edit(password1Text, new Font("Arial",Font.PLAIN,16), new Color(32,32,32), Color.WHITE);
+        ComponentCreator.passwordfieldSetup(password1Text, 9*WIDTH/20, 15*HEIGHT/40, 5*WIDTH/20, HEIGHT/20, true, panel);
+        ComponentCreator.passwordfieldEdit(password1Text, new Font("Arial",Font.PLAIN,16), new Color(32,32,32), Color.WHITE);
 
         //label password2
-        ScreenFunctions.label_setup(password2Label, Screen.bn.getString("create.passwordagain"), false, WIDTH/4, 18*HEIGHT/40, WIDTH/5, HEIGHT/20, panel);
-        ScreenFunctions.label_edit(password2Label, new Font("Arial",Font.PLAIN,16), null, Color.WHITE);
+        ComponentCreator.labelSetup(password2Label, Screen.bn.getString("create.passwordagain"), false, WIDTH/4, 18*HEIGHT/40, WIDTH/5, HEIGHT/20, panel);
+        ComponentCreator.labelEdit(password2Label, new Font("Arial",Font.PLAIN,16), null, Color.WHITE);
 
         //text password2
-        ScreenFunctions.passwordfield_setup(password2Text, 9*WIDTH/20, 18*HEIGHT/40, 5*WIDTH/20, HEIGHT/20, true, panel);
-        ScreenFunctions.passwordfield_edit(password2Text, new Font("Arial",Font.PLAIN,16), new Color(32,32,32), Color.WHITE);
+        ComponentCreator.passwordfieldSetup(password2Text, 9*WIDTH/20, 18*HEIGHT/40, 5*WIDTH/20, HEIGHT/20, true, panel);
+        ComponentCreator.passwordfieldEdit(password2Text, new Font("Arial",Font.PLAIN,16), new Color(32,32,32), Color.WHITE);
 
-        ScreenFunctions.button_setup(back, Screen.bn.getString("create.back"), 3*WIDTH/10, 22*HEIGHT/40, 4*WIDTH/20, HEIGHT/20, Screen.myActionListener, panel);
-        ScreenFunctions.button_edit(back, new Font("Arial", Font.PLAIN, 19), new Color(112,104,83), Color.WHITE);
+        ComponentCreator.buttonSetup(back, Screen.bn.getString("create.back"), 3*WIDTH/10, 22*HEIGHT/40, 4*WIDTH/20, HEIGHT/20, Screen.myActionListener, panel);
+        ComponentCreator.buttonEdit(back, new Font("Arial", Font.PLAIN, 19), new Color(112,104,83), Color.WHITE);
         back.addMouseListener(Screen.myMouseListener);
         //remover preenchimento automático de fundo quando clicar
         back.setFocusPainted(false);
         back.setContentAreaFilled(false);
         back.setOpaque(true);
 
-        ScreenFunctions.button_setup(create, Screen.bn.getString("create.ok"), 5*WIDTH/10, 22*HEIGHT/40, 4*WIDTH/20, HEIGHT/20, Screen.myActionListener, panel);
-        ScreenFunctions.button_edit(create, new Font("Arial", Font.PLAIN, 19), new Color(112,104,83), Color.WHITE);
+        ComponentCreator.buttonSetup(create, Screen.bn.getString("create.ok"), 5*WIDTH/10, 22*HEIGHT/40, 4*WIDTH/20, HEIGHT/20, Screen.myActionListener, panel);
+        ComponentCreator.buttonEdit(create, new Font("Arial", Font.PLAIN, 19), new Color(112,104,83), Color.WHITE);
         create.addMouseListener(Screen.myMouseListener);
         //remover preenchimento automático de fundo quando clicar
         create.setFocusPainted(false);
         create.setContentAreaFilled(false);
         create.setOpaque(true);
 
-        ScreenFunctions.panel_on_panel_setup(backarea, panel, WIDTH/4, 3*HEIGHT/20, WIDTH/2, HEIGHT/2);
-        ScreenFunctions.panel_edit(backarea, false, new Color(0,0,0,200));
+        ComponentCreator.panelOnPanelSetup(backarea, panel, WIDTH/4, 3*HEIGHT/20, WIDTH/2, HEIGHT/2);
+        ComponentCreator.panelEdit(backarea, false, new Color(0,0,0,200));
 
-        ScreenFunctions.image_setup(backgroundImage, "./src/Images/main.png", 0, 0, WIDTH, 7*HEIGHT/10, panel);
+        ComponentCreator.imageSetup(backgroundImage, "./src/Images/main.png", 0, 0, WIDTH, 7*HEIGHT/10, panel);
 
     }
 

@@ -30,7 +30,6 @@ public class Queue{
     public Player dequeue(){
                 
         if(this.QueueLength==0){
-            //System.out.println("Empty queue");
             return null;
         }
         else if(this.QueueLength==1){ 
@@ -82,7 +81,7 @@ public class Queue{
         Node atual = this.head;
         while (atual != null) {
             if (atual.player.equals(p)) {
-                // Reutiliza a lógica de remoção direta
+
                 if (atual == this.head) {
                     this.head = atual.after;
                     if (this.head != null) this.head.before = null;
@@ -104,26 +103,13 @@ public class Queue{
                     this.tail = null;
                 }
 
-                return true; // Remoção feita
+                return true;
             }
 
             atual = atual.after;
         }
 
-        return false; // Player não encontrado
-    }
-
-    public void print_queue(){
-        if(this.QueueLength==0){
-            //System.out.println("\nEmpty List");
-        }
-        //System.out.print("Queue start: ");
-        Node percorre=this.head;
-        while(percorre!=null){
-            System.out.print(percorre.player.getName()+" ");
-            percorre=percorre.after;
-        }
-        //System.out.println();
+        return false;
     }
 
 }

@@ -6,7 +6,7 @@ import screen.Screen;
 public class Database {
 
     public static String url = "jdbc:mysql://localhost:3306/";
-    public static String databaseName = "my_db_projeto";
+    public static String databaseName = "my_chess_db";
     public static String userName = "root";
     public static String password = "db#1post"; // "imtdb" SENHA NOS COMPUTADORES IMT
 
@@ -72,11 +72,11 @@ public class Database {
             }
 
             if(!tabelaPresente) {
-                String sql = "CREATE TABLE Users (id INT AUTO_INCREMENT NOT NULL, username VARCHAR(50) NOT NULL, password CHAR(64) NOT NULL, wins INT NOT NULL, games INT NOT NULL, joined DATE NOT NULL, PRIMARY KEY (id) )";
+                String sql = "CREATE TABLE Users (id INT AUTO_INCREMENT NOT NULL, username VARCHAR(50) NOT NULL, password TEXT NOT NULL, wins INT NOT NULL, games INT NOT NULL, joined DATE NOT NULL, secretkey TEXT NOT NULL, PRIMARY KEY (id) )";
                 Statement statement = connection.createStatement();
                 statement.executeUpdate(sql);
                 statement.close();
-                Screen.setAreaText(Screen.getAreaText()+"\nServer: Database selected.");
+                Screen.setAreaText(Screen.getAreaText()+"\nServer: Table 'Users' created.");
             }
             else{
                 Screen.setAreaText(Screen.getAreaText()+"\nServer: Table 'Users' already created.");

@@ -2,7 +2,6 @@ package client;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -11,15 +10,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 import listeners.MyMouseListenerDragDrop;
-import main_panels.CreatePanel;
-import main_panels.LoginPanel;
-import main_panels.MenuPanel;
-import main_panels.PlayPanel;
-import main_panels.RankingPanel;
+import screen.CreatePanel;
+import screen.LoginPanel;
+import screen.MenuPanel;
+import screen.PlayPanel;
+import screen.RankingPanel;
 import screen.Screen;
-import screen.ScreenFunctions;
+import screen.ComponentCreator;
 
-public class Client{
+public class Client {
+
+    /*
+     * Esta classe representa um cliente,
+     * para realização da comunicação
+     * com o servidor, ela é responsável
+     * por receber as respostas do servidor
+     * e agir de acordo
+    */
 
     private Socket socket;
     private BufferedReader bufferedReader;
@@ -52,7 +59,10 @@ public class Client{
     
     public static int player_1_or_2 = 0;
 
-    public void dealer(ArrayList<String> data){ //recebe a mensagem e age de acordo
+    /*
+     * O método 'dealer' lida com as respostas recebidas do servidor
+    */
+    public void dealer(ArrayList<String> data){
         if(data.get(0).equals("LOGIN SUCCESSFUL")){
             Screen.mainPanel.setVisible(false);
             Screen.mainPanel.removeAll();
@@ -66,10 +76,13 @@ public class Client{
             LoginPanel.getPasswordtext().setText("");
         }
         else if(data.get(0).equals("LOGIN FAILED")){
-            ScreenFunctions.error_message(Screen.bn.getString("login.failed.content"),Screen.bn.getString("login.failed.title"));
+            ComponentCreator.errorMessage(Screen.bn.getString("login.failed.content"),Screen.bn.getString("login.failed.title"));
+        }
+        else if(data.get(0).equals("LOGIN DENIED")){
+            ComponentCreator.errorMessage(Screen.bn.getString("login.denied.content"),Screen.bn.getString("login.denied.title"));
         }
         else if(data.get(0).equals("CREATE SUCCESSFUL")){
-            ScreenFunctions.information_message(Screen.bn.getString("create.success.content"), Screen.bn.getString("create.success.title"));
+            ComponentCreator.informationMessage(Screen.bn.getString("create.success.content"), Screen.bn.getString("create.success.title"));
             Screen.mainPanel.setVisible(false);
             Screen.mainPanel.removeAll();
             Screen.mainPanel.add(LoginPanel.getPanel());
@@ -80,14 +93,14 @@ public class Client{
             CreatePanel.getPassword2text().setText("");
         }
         else if(data.get(0).equals("CREATE FAILED")){
-            ScreenFunctions.error_message(Screen.bn.getString("create.failed.content"),Screen.bn.getString("create.failed.title"));
+            ComponentCreator.errorMessage(Screen.bn.getString("create.failed.content"),Screen.bn.getString("create.failed.title"));
         }
         else if(data.get(0).equals("RANKING")){
             ArrayList<String[]> userList = new ArrayList<>();
             String[] item = new String[5];
             int counter = 0;
-            for (String line : line_break(data.get(1), '*')) {
-                for (String  conlumn: line_break(line, '|')) {
+            for (String line : lineBreak(data.get(1), '*')) {
+                for (String  conlumn: lineBreak(line, '|')) {
                     item[counter]=conlumn;
                     counter++;
                 }
@@ -119,10 +132,15 @@ public class Client{
             //limpa da partida anterior
             PlayPanel.promoted.clear();
             PlayPanel.historyList.clear();
+            PlayPanel.history.removeAll();
 
             player_1_or_2=Integer.parseInt(data.get(1));
-            if(player_1_or_2==1){PlayPanel.turn.setText(Screen.bn.getString("play.yourturn"));}
-            else if(player_1_or_2==2){PlayPanel.turn.setText(Screen.bn.getString("play.otherturn"));}
+            if(player_1_or_2==1){
+                PlayPanel.turn.setText(Screen.bn.getString("play.yourturn"));
+            }
+            else if(player_1_or_2==2){
+                PlayPanel.turn.setText(Screen.bn.getString("play.otherturn"));
+            }
             PlayPanel.position(player_1_or_2==1);
             
             MenuPanel.getLoadingLabel().setVisible(false);
@@ -139,11 +157,9 @@ public class Client{
         }
         else if(data.get(0).equals("FLIPTURN")){
             PlayPanel.turn.setText(Screen.bn.getString("play.otherturn"));
-            // if(i.tampa.isVisible()){i.vez.setText("Sua vez");i.tampa.setVisible(false);}
-            // else{i.vez.setText("Vez do oponente");i.tampa.setVisible(true);}
         }
         else if(data.get(0).equals("MOVEMENT")){
-            ArrayList<String> move = line_break(data.get(1),'/');
+            ArrayList<String> move = lineBreak(data.get(1),'/');
             
             ArrayList<String> c=new ArrayList<String>(){{this.add("A");this.add("B");this.add("C");this.add("D");this.add("E");this.add("F");this.add("G");this.add("H");}};
         
@@ -154,8 +170,6 @@ public class Client{
             int colunaFIM = c.indexOf(""+move.get(3).charAt(0));            
 
             boolean isPlayer1 = Client.player_1_or_2==1;
-
-            //System.out.println("Recebi "+linhaINICIO+" "+colunaINICIO+" "+linhaFIM+" "+colunaFIM+" que é o: "+PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]);
 
             PlayPanel.getPanel().setVisible(false);
             Screen.myMouseListenerDragDrop.troca_imagem(
@@ -179,7 +193,7 @@ public class Client{
             PlayPanel.turn.setVisible(true);
         }
         else if(data.get(0).equals("PROMOTED")){
-            ArrayList<String> move = line_break(data.get(1),'/');
+            ArrayList<String> move = lineBreak(data.get(1),'/');
             
             ArrayList<String> c=new ArrayList<String>(){{this.add("A");this.add("B");this.add("C");this.add("D");this.add("E");this.add("F");this.add("G");this.add("H");}};
         
@@ -216,16 +230,15 @@ public class Client{
             
         }
         else if(data.get(0).equals("WON")){
-            //ScreenFunctions.information_message(Screen.bn.getString("play.won.content"), Screen.bn.getString("play.won.title"));
             int option = -1;
             do{
-                option = ScreenFunctions.options_message(
+                option = ComponentCreator.optionsMessage(
                     Screen.bn.getString("play.won.content"),
                     Screen.bn.getString("play.won.title"),
                     new String[]{Screen.bn.getString("play.after.leave"),Screen.bn.getString("play.after.leavesave")}
                 );
             }while(option==-1);
-            if(option==1){ ScreenFunctions.save_history(); }
+            if(option==1){ ComponentCreator.saveHistory(); }
             Screen.mainPanel.setVisible(false);
             Screen.mainPanel.removeAll();
             Screen.mainPanel.add(MenuPanel.getPanel());
@@ -233,16 +246,15 @@ public class Client{
             Screen.menuBar.setVisible(true);
         }
         else if(data.get(0).equals("LOST")){
-            //ScreenFunctions.information_message(Screen.bn.getString("play.lost.content"), Screen.bn.getString("play.lost.title"));
             int option = -1;
             do{
-                option = ScreenFunctions.options_message(
+                option = ComponentCreator.optionsMessage(
                     Screen.bn.getString("play.lost.content"),
                     Screen.bn.getString("play.lost.title"),
                     new String[]{Screen.bn.getString("play.after.leave"),Screen.bn.getString("play.after.leavesave")}
                 );
             }while(option==-1);
-            if(option==1){ ScreenFunctions.save_history(); }
+            if(option==1){ ComponentCreator.saveHistory(); }
             Screen.mainPanel.setVisible(false);
             Screen.mainPanel.removeAll();
             Screen.mainPanel.add(MenuPanel.getPanel());
@@ -250,22 +262,22 @@ public class Client{
             Screen.menuBar.setVisible(true);
         }
         else if(data.get(0).equals("FORFEIT")){
-            //ScreenFunctions.information_message(Screen.bn.getString("play.won.content"), Screen.bn.getString("play.won.title"));
             int option = -1;
             do{
-                option = ScreenFunctions.options_message(
+                option = ComponentCreator.optionsMessage(
                     Screen.bn.getString("play.won.content"),
                     Screen.bn.getString("play.won.title"),
                     new String[]{Screen.bn.getString("play.after.leave"),Screen.bn.getString("play.after.leavesave")}
                 );
             }while(option==-1);
-            if(option==1){ ScreenFunctions.save_history(); }
+            if(option==1){ ComponentCreator.saveHistory(); }
             Screen.mainPanel.setVisible(false);
             Screen.mainPanel.removeAll();
             Screen.mainPanel.add(MenuPanel.getPanel());
             Screen.mainPanel.setVisible(true);
             Screen.menuBar.setVisible(true);
         }
+
     }
 
     public void listenForMessage(Screen screen){
@@ -276,7 +288,7 @@ public class Client{
                 while(socket.isConnected()){
                     try{
                         msg = bufferedReader.readLine();
-                        dealer(line_break(msg,'-'));
+                        dealer(lineBreak(msg,'-'));
                     }catch(IOException e){
                         closeEverything(socket, bufferedReader, bufferedWriter);
                     }
@@ -299,7 +311,11 @@ public class Client{
         }catch(IOException e){}
     }
 
-    public static ArrayList<String> line_break(String line, char delimiter){
+    /*
+     * Método para quebra de linha
+     * "info1-info2-info3" -> info1, info2, info3
+    */
+    public static ArrayList<String> lineBreak(String line, char delimiter){
 
         String delimiterRegex = Character.toString(delimiter);
         String[] items = line.split(Pattern.quote(delimiterRegex));

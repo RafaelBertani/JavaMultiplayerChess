@@ -33,13 +33,6 @@ public class Server{
         }
         return success;
     }
-
-    public static void printROOMS(){
-        System.out.println("Rooms: ");
-        for(Room room : roomLIST){
-            room.printROOM();
-        }
-    }
     
     public Server(ServerSocket serverSocket){
         this.serverSocket = serverSocket;
@@ -54,6 +47,7 @@ public class Server{
             while(!serverSocket.isClosed()){
                 Socket socket = serverSocket.accept();
                 //System.out.println("A new client has connected");
+                
                 ClientHandler clientHandler = new ClientHandler(socket);
 
                 Thread thread = new Thread(clientHandler);
@@ -71,9 +65,7 @@ public class Server{
                 serverSocket.close();
             }
         }
-        catch(IOException e){
-            e.printStackTrace();
-        }
+        catch(IOException e){}
     }
 
 }

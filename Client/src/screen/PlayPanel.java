@@ -1,4 +1,4 @@
-package main_panels;
+package screen;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,8 +9,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import screen.Screen;
-import screen.ScreenFunctions;
 
 public class PlayPanel {
     
@@ -57,7 +55,7 @@ public class PlayPanel {
     public static JLabel Queen_Black_D = new JLabel();
     
     public static JLabel turn = new JLabel();
-    private static JPanel history = new JPanel();
+    public static JPanel history = new JPanel();
     public static ArrayList<String> historyList = new ArrayList<>();
     private static JScrollPane scrollPane = new JScrollPane(history);
     private static final JButton forfeit = new JButton();
@@ -72,7 +70,7 @@ public class PlayPanel {
         historyList.add(""+(isPlayer1?"Player 1: ":"Player 2: ")+str);
         
         JLabel label = new JLabel();
-        ScreenFunctions.label_setup(label, str, false, 0, history.getComponentCount()*(Screen.getHEIGHT()-200)/25, Screen.getWIDTH()/4, (Screen.getHEIGHT()-200)/25, panel);
+        ComponentCreator.labelSetup(label, str, false, 0, history.getComponentCount()*(Screen.getHEIGHT()-200)/25, Screen.getWIDTH()/4, (Screen.getHEIGHT()-200)/25, panel);
         label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         label.setOpaque(true);
         label.setBackground(isPlayer1?new Color(200,200,200):Color.BLACK);
@@ -103,18 +101,14 @@ public class PlayPanel {
         int WIDTH = Screen.getWIDTH();
         int HEIGHT = Screen.getHEIGHT()+200;
 
-        //maior
-        //prioridade
-        //menor
-
         //letras e números
         for(int j=0;j<8;j++){
             numbersLabel[j] = new JLabel();
             lettersLabel[j] = new JLabel();
-            ScreenFunctions.label_setup(numbersLabel[j], ""+(j+1), false, 0, 50+(550/9)*j, 50, 550/9, panel);
-            ScreenFunctions.label_edit(numbersLabel[j], new Font("Arial",Font.BOLD,16), null, Color.WHITE);
-            ScreenFunctions.label_setup(lettersLabel[j], letters[j], false, 50+(550/9)*j, 0, 550/9, 50, panel);
-            ScreenFunctions.label_edit(lettersLabel[j], new Font("Arial",Font.BOLD,16), null, Color.WHITE);
+            ComponentCreator.labelSetup(numbersLabel[j], ""+(j+1), false, 0, 50+(550/9)*j, 50, 550/9, panel);
+            ComponentCreator.labelEdit(numbersLabel[j], new Font("Arial",Font.BOLD,16), null, Color.WHITE);
+            ComponentCreator.labelSetup(lettersLabel[j], letters[j], false, 50+(550/9)*j, 0, 550/9, 50, panel);
+            ComponentCreator.labelEdit(lettersLabel[j], new Font("Arial",Font.BOLD,16), null, Color.WHITE);
         }
 
 
@@ -126,67 +120,68 @@ public class PlayPanel {
                 transparent[i][j].setBackground(new Color(255,255,255,0));
                 //transparent[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
                 ArrayList<String> c = new ArrayList<String>(){{this.add("A");this.add("B");this.add("C");this.add("D");this.add("E");this.add("F");this.add("G");this.add("H");}};
-                ScreenFunctions.drag_drop_setup(transparent[i][j], "", ""+c.get(j)+""+(i+1), 50+(550/9)*j, 50+(550/9)*i, (550/9), (550/9), Screen.myMouseListenerDragDrop, panel);
+                ComponentCreator.dragAndDropSetup(transparent[i][j], "", ""+c.get(j)+""+(i+1), 50+(550/9)*j, 50+(550/9)*i, (550/9), (550/9), Screen.myMouseListenerDragDrop, panel);
             }
         }
 
         final int size = (550/15);
         //segunda camada, com as peças
-        ScreenFunctions.image_setup(Pawn_White_A,"./src/Images/Pawn_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_White_B,"./src/Images/Pawn_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_White_C,"./src/Images/Pawn_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_White_D,"./src/Images/Pawn_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_White_E,"./src/Images/Pawn_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_White_F,"./src/Images/Pawn_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_White_G,"./src/Images/Pawn_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_White_H,"./src/Images/Pawn_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_Black_A,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_Black_B,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_Black_C,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_Black_D,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_Black_E,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_Black_F,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_Black_G,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Pawn_Black_H,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Pawn_White_A,"./src/Images/Pawn_White.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Pawn_White_B,"./src/Images/Pawn_White.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Pawn_White_C,"./src/Images/Pawn_White.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Pawn_White_D,"./src/Images/Pawn_White.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Pawn_White_E,"./src/Images/Pawn_White.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Pawn_White_F,"./src/Images/Pawn_White.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Pawn_White_G,"./src/Images/Pawn_White.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Pawn_White_H,"./src/Images/Pawn_White.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Pawn_Black_A,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Pawn_Black_B,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Pawn_Black_C,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Pawn_Black_D,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Pawn_Black_E,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Pawn_Black_F,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Pawn_Black_G,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Pawn_Black_H,"./src/Images/Pawn_Black.png",0,0,size,size,panel);
 
-        ScreenFunctions.image_setup(King_White_E,"./src/Images/King_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Queen_White_D,"./src/Images/Queen_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(King_Black_E,"./src/Images/King_Black.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Queen_Black_D,"./src/Images/Queen_Black.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(King_White_E,"./src/Images/King_White.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Queen_White_D,"./src/Images/Queen_White.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(King_Black_E,"./src/Images/King_Black.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Queen_Black_D,"./src/Images/Queen_Black.png",0,0,size,size,panel);
         
-        ScreenFunctions.image_setup(Bishop_White_C,"./src/Images/Bishop_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Bishop_White_F,"./src/Images/Bishop_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Bishop_Black_C,"./src/Images/Bishop_Black.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Bishop_Black_F,"./src/Images/Bishop_Black.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Bishop_White_C,"./src/Images/Bishop_White.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Bishop_White_F,"./src/Images/Bishop_White.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Bishop_Black_C,"./src/Images/Bishop_Black.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Bishop_Black_F,"./src/Images/Bishop_Black.png",0,0,size,size,panel);
 
-        ScreenFunctions.image_setup(Knight_White_B,"./src/Images/Knight_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Knight_White_G,"./src/Images/Knight_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Knight_Black_B,"./src/Images/Knight_Black.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Knight_Black_G,"./src/Images/Knight_Black.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Knight_White_B,"./src/Images/Knight_White.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Knight_White_G,"./src/Images/Knight_White.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Knight_Black_B,"./src/Images/Knight_Black.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Knight_Black_G,"./src/Images/Knight_Black.png",0,0,size,size,panel);
 
-        ScreenFunctions.image_setup(Rook_White_A,"./src/Images/Rook_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Rook_White_H,"./src/Images/Rook_White.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Rook_Black_A,"./src/Images/Rook_Black.png",0,0,size,size,panel);
-        ScreenFunctions.image_setup(Rook_Black_H,"./src/Images/Rook_Black.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Rook_White_A,"./src/Images/Rook_White.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Rook_White_H,"./src/Images/Rook_White.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Rook_Black_A,"./src/Images/Rook_Black.png",0,0,size,size,panel);
+        ComponentCreator.imageSetup(Rook_Black_H,"./src/Images/Rook_Black.png",0,0,size,size,panel);
         
         //terceira camada, com o tabuleiro
         for(int i=7;i>=0;i--){
             for(int j=0;j<8;j++){
                 field[7-i][j] = new JLabel();
                 if( ((7-i)*(j+1))%2==0 && (j*((7-i)+1))%2==0 ){ //brancas if( (i*(j+1))%2==0 && (j*(i+1))%2==0 ){
-                    ScreenFunctions.label_setup(field[7-i][j], "", false, 50+(550/9)*i, 50+(550/9)*j, 550/9, 550/9, panel);
+                    ComponentCreator.labelSetup(field[7-i][j], "", false, 50+(550/9)*i, 50+(550/9)*j, 550/9, 550/9, panel);
                 }
+                // else
                 if( ((7-i)*(j+1))%2==1 || (j*((7-i)+1))%2==1 ){ //pretas if( (i*(j+1))%2==1 || (j*(i+1))%2==1 ){
-                    ScreenFunctions.label_setup(field[7-i][j], "", false, 50+(550/9)*i, 50+(550/9)*j, 550/9, 550/9, panel);
+                    ComponentCreator.labelSetup(field[7-i][j], "", false, 50+(550/9)*i, 50+(550/9)*j, 550/9, 550/9, panel);
                 }
             }
         }
 
-        ScreenFunctions.label_setup(turn, "", true, 7*WIDTH/10, 50, WIDTH/4, HEIGHT/20, panel);
-        ScreenFunctions.label_edit(turn, new Font("Arial",Font.PLAIN,19), new Color(0,0,0,200), Color.WHITE);
+        ComponentCreator.labelSetup(turn, "", true, 7*WIDTH/10, 50, WIDTH/4, HEIGHT/20, panel);
+        ComponentCreator.labelEdit(turn, new Font("Arial",Font.PLAIN,19), new Color(0,0,0,200), Color.WHITE);
 
         //painel de histórico
-        ScreenFunctions.panel_edit(history, false, new Color(32,32,32,200));
+        ComponentCreator.panelEdit(history, false, new Color(32,32,32,200));
         //history.setLayout(new BoxLayout(history, BoxLayout.Y_AXIS));
         history.setLayout(null);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -196,8 +191,9 @@ public class PlayPanel {
         scrollPane.setBackground(new Color(0,0,0,255));
         panel.add(scrollPane);
 
-        ScreenFunctions.button_setup(forfeit, Screen.bn.getString("play.forfeit"), 7*WIDTH/10, HEIGHT-300, WIDTH/4, HEIGHT/20, Screen.myActionListener, panel);
-        ScreenFunctions.button_edit(forfeit, new Font("Arial",Font.PLAIN,19), Color.WHITE, Color.BLACK);
+        //botão de desistir
+        ComponentCreator.buttonSetup(forfeit, Screen.bn.getString("play.forfeit"), 7*WIDTH/10, HEIGHT-300, WIDTH/4, HEIGHT/20, Screen.myActionListener, panel);
+        ComponentCreator.buttonEdit(forfeit, new Font("Arial",Font.PLAIN,19), Color.WHITE, Color.BLACK);
         forfeit.setFocusPainted(false);
         forfeit.setContentAreaFilled(false);
         forfeit.setOpaque(true);
@@ -207,7 +203,7 @@ public class PlayPanel {
         panel.setOpaque(true);
         panel.setBackground(new Color(0,0,0));
 
-        ScreenFunctions.image_setup(backgroundImage, "./src/Images/field.jpg", 0, 0, WIDTH, 7*HEIGHT/10, panel);
+        ComponentCreator.imageSetup(backgroundImage, "./src/Images/field.jpg", 0, 0, WIDTH, 7*HEIGHT/10, panel);
 
     }
 
@@ -313,10 +309,10 @@ public class PlayPanel {
         for(int i=7;i>=0;i--){
             for(int j=0;j<8;j++){
                 if( ((7-i)*(j+1))%2==0 && (j*((7-i)+1))%2==0 ){ //brancas if( (i*(j+1))%2==0 && (j*(i+1))%2==0 ){
-                    ScreenFunctions.label_edit(field[7-i][j], null, Color.BLACK, null);
+                    ComponentCreator.labelEdit(field[7-i][j], null, Color.BLACK, null);
                 }
                 if( ((7-i)*(j+1))%2==1 || (j*((7-i)+1))%2==1 ){ //pretas if( (i*(j+1))%2==1 || (j*(i+1))%2==1 ){
-                    ScreenFunctions.label_edit(field[7-i][j], null, new Color(200,200,200), null);
+                    ComponentCreator.labelEdit(field[7-i][j], null, new Color(200,200,200), null);
                 }
             }
         }

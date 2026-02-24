@@ -10,14 +10,23 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.TransferHandler;
-import main_panels.PlayPanel;
+import screen.ComponentCreator;
+import screen.PlayPanel;
 import screen.Screen;
-import screen.ScreenFunctions;
 
-public class MyMouseListenerDragDrop implements MouseListener{
+public class MyMouseListenerDragDrop implements MouseListener {
     
-    public String holding = "";
-    public String subs = "";
+    /*
+     * Essa classe cuida do arrastar e soltar
+     * quando clica em um JLabel, o nome dele fica
+     * armazenado em 'holding', e quando soltar sobre
+     * outro LJabel, o nome deste outro ficará guardado
+     * em 'subs', após isso, 'holding' e 'subs' são passadas
+     * para uma função de validação da jogada realizada
+    */
+
+    public String holding = ""; //nome (coordenadas A5) do JLabel que está sendo arrastado
+    public String subs = ""; //nome (coordenadas A5) do JLabel que foi JLabel foi solto em cima
 
     @Override
     public void mouseClicked(MouseEvent e){}
@@ -41,7 +50,7 @@ public class MyMouseListenerDragDrop implements MouseListener{
                 //nada
             }
             //conferir jogada, se possível, manda, caso contrário manda aviso e em todos os casos, reverte troca
-            else if(confere(holding, subs)){
+            else if(check(holding, subs)){
                 
                 ArrayList<String> c=new ArrayList<String>(){{this.add("A");this.add("B");this.add("C");this.add("D");this.add("E");this.add("F");this.add("G");this.add("H");}};
     
@@ -67,10 +76,10 @@ public class MyMouseListenerDragDrop implements MouseListener{
                             isPlayer1?linhaFIM:7-linhaFIM,
                             isPlayer1?colunaFIM:7-colunaFIM
                         );
-                        //System.out.println(PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]);
+                        
                         int option = -1;
                         do{
-                            option = ScreenFunctions.options_message(
+                            option = ComponentCreator.optionsMessage(
                                 Screen.bn.getString("play.promotion.content"),
                                 Screen.bn.getString("play.promotion.title"),
                                 new String[]{
@@ -108,7 +117,7 @@ public class MyMouseListenerDragDrop implements MouseListener{
                             isPlayer1?linhaFIM:7-linhaFIM,
                             isPlayer1?colunaFIM:7-colunaFIM
                         );
-                        //System.out.println(PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]);
+                        
                         Screen.client.sendMessage("MOVEMENT-"+Screen.client.userName+"-"+PlayPanel.coordinates_field[linhaINICIO][colunaINICIO]+"/"+PlayPanel.coordinates_field[linhaFIM][colunaFIM]+"/"+holding+"/"+subs);
 
                         PlayPanel.coordinates_field[linhaFIM][colunaFIM]=PlayPanel.coordinates_field[linhaINICIO][colunaINICIO];
@@ -131,7 +140,7 @@ public class MyMouseListenerDragDrop implements MouseListener{
 
             }
             else{
-                ScreenFunctions.error_message(Screen.bn.getString("play.error.content"),Screen.bn.getString("play.error.title"));
+                ComponentCreator.errorMessage(Screen.bn.getString("play.error.content"),Screen.bn.getString("play.error.title"));
             }
         }
         holding="";
@@ -141,7 +150,8 @@ public class MyMouseListenerDragDrop implements MouseListener{
     public void mouseExited(MouseEvent e){}
 
     // função para conferir se a jogada é válida
-    public boolean confere(String holding, String subs){
+    public boolean check(String holding, String subs){
+        
         ArrayList<String> c = new ArrayList<String>(){{this.add("A");this.add("B");this.add("C");this.add("D");this.add("E");this.add("F");this.add("G");this.add("H");}};
         
         int linhaINICIO = Integer.parseInt(""+holding.charAt(1))-1;
@@ -157,6 +167,7 @@ public class MyMouseListenerDragDrop implements MouseListener{
         // se o jogador está tentando mover um quadrado sem nenhuma peça ou se o destino dessa peça é um lugar já ocupado por outra peça sua
         if(
             nomeINICIO.equals(" ") ||
+            PlayPanel.coordinates_field[linhaINICIO][colunaINICIO].contains(isPlayer1?"Black":"White") ||
             PlayPanel.coordinates_field[linhaFIM][colunaFIM].contains(isPlayer1?"White":"Black")
         ){
             return false;
@@ -346,6 +357,7 @@ public class MyMouseListenerDragDrop implements MouseListener{
 
         }
         else{return false;}
+
     }
 
     // função para trocar a imagem de um jlabel
@@ -443,9 +455,9 @@ public class MyMouseListenerDragDrop implements MouseListener{
 
     // função que troca a imagem de um label em uma promoção
     public static void change(JLabel peca, String option, boolean isPlayer1){
-            ImageIcon icon = new ImageIcon("./src/Images/"+option+"_"+(isPlayer1?"White":"Black")+".png");
-            Image scaledImage = icon.getImage().getScaledInstance(550/15, 550/15, Image.SCALE_SMOOTH);
-            peca.setIcon(new ImageIcon(scaledImage));
+        ImageIcon icon = new ImageIcon("./src/Images/"+option+"_"+(isPlayer1?"White":"Black")+".png");
+        Image scaledImage = icon.getImage().getScaledInstance(550/15, 550/15, Image.SCALE_SMOOTH);
+        peca.setIcon(new ImageIcon(scaledImage));
     }
 
 }

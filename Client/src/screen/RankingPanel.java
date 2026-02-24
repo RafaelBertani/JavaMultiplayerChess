@@ -1,4 +1,4 @@
-package main_panels;
+package screen;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,8 +15,6 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import screen.Screen;
-import screen.ScreenFunctions;
 
 public class RankingPanel {
     
@@ -35,7 +33,7 @@ public class RankingPanel {
     private static final JRadioButton winrate = new JRadioButton();
     private static final JRadioButton joined = new JRadioButton();
     private static final JLabel order = new JLabel();
-    public static JComboBox<String> selectOrder = new JComboBox<>(new String[]{Screen.bn.getString("ranking.order.asc"),Screen.bn.getString("ranking.order.desc")});
+    public static JComboBox<String> selectOrder = new JComboBox<>();
 
     public static JButton getBack() {return back;}
 
@@ -55,72 +53,69 @@ public class RankingPanel {
         int WIDTH = Screen.getWIDTH();
         int HEIGHT = Screen.getHEIGHT()+200;
 
-        //maior
-        //prioridade
-        //menor
-
         panel.setBounds(0,0,WIDTH,HEIGHT);
         panel.setLayout(null);
         panel.setOpaque(true);
         panel.setBackground(new Color(0,0,0));
 
-        ScreenFunctions.label_setup(rankinglabel, Screen.bn.getString("ranking.title"), false, WIDTH/10, HEIGHT/40, 8*WIDTH/10, HEIGHT/12, panel);
-        ScreenFunctions.label_edit(rankinglabel, new Font("Arial",Font.PLAIN,26), new Color(0,0,0,224), Color.WHITE);
+        ComponentCreator.labelSetup(rankinglabel, Screen.bn.getString("ranking.title"), false, WIDTH/10, HEIGHT/40, 8*WIDTH/10, HEIGHT/12, panel);
+        ComponentCreator.labelEdit(rankinglabel, new Font("Arial",Font.PLAIN,26), new Color(0,0,0,224), Color.WHITE);
 
         update_table();
         
-        ScreenFunctions.label_setup(order, Screen.bn.getString("ranking.order"), false, WIDTH/10, 7*HEIGHT/20, 8*WIDTH/10, HEIGHT/20, panel);
-        ScreenFunctions.label_edit(order, new Font("Arial",Font.PLAIN,16), new Color(0,0,0,224), Color.WHITE);
+        ComponentCreator.labelSetup(order, Screen.bn.getString("ranking.order"), false, WIDTH/10, 7*HEIGHT/20, 8*WIDTH/10, HEIGHT/20, panel);
+        ComponentCreator.labelEdit(order, new Font("Arial",Font.PLAIN,16), new Color(0,0,0,224), Color.WHITE);
 
         Font f = new Font("Arial",Font.PLAIN,15);
 
-        ScreenFunctions.combobox_setup(selectOrder, 4*WIDTH/10, 8*HEIGHT/20, 2*WIDTH/10, HEIGHT/20,2,1,panel);
-        ScreenFunctions.combobox_edit(selectOrder, f, new Color(64,64,64), Color.WHITE);
+        selectOrder = new JComboBox<String>(new String[]{Screen.bn.getString("ranking.order.asc"),Screen.bn.getString("ranking.order.desc")});
+        ComponentCreator.comboboxSetup(selectOrder, 4*WIDTH/10, 8*HEIGHT/20, 2*WIDTH/10, HEIGHT/20,2,1,panel);
+        ComponentCreator.comboboxEdit(selectOrder, f, new Color(64,64,64), Color.WHITE);
 
-        ScreenFunctions.label_setup(sort, Screen.bn.getString("ranking.get"), false, WIDTH/10, 10*HEIGHT/20, 8*WIDTH/10, HEIGHT/20, panel);
-        ScreenFunctions.label_edit(sort, new Font("Arial",Font.PLAIN,16), new Color(0,0,0,224), Color.WHITE);
+        ComponentCreator.labelSetup(sort, Screen.bn.getString("ranking.get"), false, WIDTH/10, 10*HEIGHT/20, 8*WIDTH/10, HEIGHT/20, panel);
+        ComponentCreator.labelEdit(sort, new Font("Arial",Font.PLAIN,16), new Color(0,0,0,224), Color.WHITE);
         
-        ScreenFunctions.radiobutton_setup(wins, Screen.bn.getString("ranking.wins"), WIDTH/10, 11*HEIGHT/20, 2*WIDTH/10, HEIGHT/20, bg, panel);
-        ScreenFunctions.radiobutton_edit(wins, f, new Color(255,255,255,0), Color.WHITE);
+        ComponentCreator.radiobuttonSetup(wins, Screen.bn.getString("ranking.wins"), WIDTH/10, 11*HEIGHT/20, 2*WIDTH/10, HEIGHT/20, bg, panel);
+        ComponentCreator.radiobuttonEdit(wins, f, new Color(255,255,255,0), Color.WHITE);
         wins.addActionListener(Screen.myActionListener);
         wins.setFocusPainted(false);     // Remove o foco visual
         wins.setBorderPainted(false);    // Remove borda no hover
         wins.setContentAreaFilled(false); // Remove fundo ao passar o mouse
         wins.setOpaque(false);           // Garante que o fundo seja transparente
 
-        ScreenFunctions.radiobutton_setup(games, Screen.bn.getString("ranking.games"), 3*WIDTH/10, 11*HEIGHT/20, 2*WIDTH/10, HEIGHT/20, bg, panel);
-        ScreenFunctions.radiobutton_edit(games, f, new Color(255,255,255,0), Color.WHITE);
+        ComponentCreator.radiobuttonSetup(games, Screen.bn.getString("ranking.games"), 3*WIDTH/10, 11*HEIGHT/20, 2*WIDTH/10, HEIGHT/20, bg, panel);
+        ComponentCreator.radiobuttonEdit(games, f, new Color(255,255,255,0), Color.WHITE);
         games.addActionListener(Screen.myActionListener);
         games.setFocusPainted(false);     // Remove o foco visual
         games.setBorderPainted(false);    // Remove borda no hover
         games.setContentAreaFilled(false); // Remove fundo ao passar o mouse
         games.setOpaque(false);           // Garante que o fundo seja transparente
 
-        ScreenFunctions.radiobutton_setup(winrate, Screen.bn.getString("ranking.winrate"), 5*WIDTH/10, 11*HEIGHT/20, 2*WIDTH/10, HEIGHT/20, bg, panel);
-        ScreenFunctions.radiobutton_edit(winrate, f, new Color(255,255,255,0), Color.WHITE);
+        ComponentCreator.radiobuttonSetup(winrate, Screen.bn.getString("ranking.winrate"), 5*WIDTH/10, 11*HEIGHT/20, 2*WIDTH/10, HEIGHT/20, bg, panel);
+        ComponentCreator.radiobuttonEdit(winrate, f, new Color(255,255,255,0), Color.WHITE);
         winrate.addActionListener(Screen.myActionListener);
         winrate.setFocusPainted(false);     // Remove o foco visual
         winrate.setBorderPainted(false);    // Remove borda no hover
         winrate.setContentAreaFilled(false); // Remove fundo ao passar o mouse
         winrate.setOpaque(false);           // Garante que o fundo seja transparente
 
-        ScreenFunctions.radiobutton_setup(joined, Screen.bn.getString("ranking.date"), 7*WIDTH/10, 11*HEIGHT/20, 2*WIDTH/10, HEIGHT/20, bg, panel);
-        ScreenFunctions.radiobutton_edit(joined, f, new Color(255,255,255,0), Color.WHITE);
+        ComponentCreator.radiobuttonSetup(joined, Screen.bn.getString("ranking.date"), 7*WIDTH/10, 11*HEIGHT/20, 2*WIDTH/10, HEIGHT/20, bg, panel);
+        ComponentCreator.radiobuttonEdit(joined, f, new Color(255,255,255,0), Color.WHITE);
         joined.addActionListener(Screen.myActionListener);
         joined.setFocusPainted(false);     // Remove o foco visual
         joined.setBorderPainted(false);    // Remove borda no hover
         joined.setContentAreaFilled(false); // Remove fundo ao passar o mouse
         joined.setOpaque(false);           // Garante que o fundo seja transparente
 
-        ScreenFunctions.button_setup(back, Screen.bn.getString("ranking.back"), WIDTH/3, 49*HEIGHT/80, WIDTH/3, HEIGHT/20, Screen.myActionListener, panel);
-        ScreenFunctions.button_edit(back, new Font("Arial", Font.PLAIN, 19), new Color(112,104,83), Color.WHITE);
+        ComponentCreator.buttonSetup(back, Screen.bn.getString("ranking.back"), WIDTH/3, 49*HEIGHT/80, WIDTH/3, HEIGHT/20, Screen.myActionListener, panel);
+        ComponentCreator.buttonEdit(back, new Font("Arial", Font.PLAIN, 19), new Color(112,104,83), Color.WHITE);
         back.addMouseListener(Screen.myMouseListener);
         //remover preenchimento automático de fundo quando clicar
         back.setFocusPainted(false);
         back.setContentAreaFilled(false);
         back.setOpaque(true);
         
-        ScreenFunctions.image_setup(backgroundImage, "./src/Images/main.png", 0, 0, WIDTH, 7*HEIGHT/10, panel);
+        ComponentCreator.imageSetup(backgroundImage, "./src/Images/main.png", 0, 0, WIDTH, 7*HEIGHT/10, panel);
 
     }
 
@@ -175,7 +170,12 @@ public class RankingPanel {
         joined.setText(Screen.bn.getString("ranking.date"));
         back.setText(Screen.bn.getString("ranking.back"));
         order.setText(Screen.bn.getString("ranking.order"));
-        selectOrder = new JComboBox<>(new String[]{Screen.bn.getString("ranking.order.asc"),Screen.bn.getString("ranking.order.desc")});
+        
+        selectOrder.removeAllItems();
+        selectOrder.addItem(Screen.bn.getString("ranking.order.asc"));
+        selectOrder.addItem(Screen.bn.getString("ranking.order.desc"));
+        panel.repaint();
+        
         update_table();
     }
 

@@ -5,12 +5,19 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.JButton;
-import main_panels.CreatePanel;
-import main_panels.InitialPanel;
-import main_panels.LoginPanel;
-import main_panels.MenuPanel;
+import screen.CreatePanel;
+import screen.InitialPanel;
+import screen.LoginPanel;
+import screen.MenuPanel;
 
-public class MyMouseListener implements MouseListener{
+public class MyMouseListener implements MouseListener {
+
+    /*
+     * Esta classe existe para mudar levemente a
+     * cor dos botões quando o mouse clicar ou
+     * passar por cima e fazer a cor voltar ao
+     * padrão quando soltar o mouse ou sair
+    */
 
     @Override
     public void mouseClicked(MouseEvent e) {

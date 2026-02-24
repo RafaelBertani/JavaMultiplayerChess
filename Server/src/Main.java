@@ -12,7 +12,6 @@ public class Main {
         try {
             Database.createDatabase(); //cria base de dados, caso ainda não exista
         } catch (Exception e) {
-            //System.out.println("Erro ao criar base de dados");
             Screen.setAreaText(Screen.getAreaText()+"\nServer: Erro ao criar base de dados.");
         }
         Database.createTable_Users(); //cria tabela, caso ainda não exista

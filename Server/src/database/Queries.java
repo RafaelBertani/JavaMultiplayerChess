@@ -1,9 +1,13 @@
 package database;
 
+import aes.CryptoAES;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Base64;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 public class Queries {
     
@@ -27,7 +31,7 @@ public class Queries {
         
     }
 
-    public static boolean createUser(String username, String password){
+    public static boolean createUser(String username, String password, String secretkey){
         
         boolean successful = true;
 
@@ -35,12 +39,13 @@ public class Queries {
         PreparedStatement pstm = null;
         ResultSet resultQUERY = null;
         try{ 
-            pstm = c.prepareStatement("insert into Users (username, password, wins, games, joined) values (?,?,?,?,?)");
+            pstm = c.prepareStatement("insert into Users (username, password, wins, games, joined, secretkey) values (?,?,?,?,?,?)");
             pstm.setString(1, username);
             pstm.setString(2, password);
             pstm.setInt(3, 0);
             pstm.setInt(4, 0);
             pstm.setDate(5, new java.sql.Date(System.currentTimeMillis()));
+            pstm.setString(6, secretkey);
             pstm.execute();
 
             pstm = c.prepareStatement("SELECT MAX( id ) FROM Users;");
@@ -56,19 +61,36 @@ public class Queries {
         
     }
 
-    public static boolean loginValid(String username, String password){
+    public static boolean loginValid(String username, String password) throws Exception{
         
         Connection c = Database.getConnection();
         PreparedStatement pstm = null;
         ResultSet resultQUERY = null;
         try{
-            
-            pstm = c.prepareStatement("SELECT 1 FROM Users WHERE username = ? AND password = ? LIMIT 1");
+
+            pstm = c.prepareStatement("SELECT secretkey, password FROM Users WHERE username = ? LIMIT 1");
             pstm.setString(1, username);
-            pstm.setString(2, password);
             resultQUERY=pstm.executeQuery();
-            
-            return resultQUERY.next();
+            if (resultQUERY.next()) {
+                
+                String db_key = resultQUERY.getString("secretkey");
+                String db_aes_password = resultQUERY.getString("password");
+                
+                CryptoAES aes = new CryptoAES();
+                byte[] decodedKey = Base64.getDecoder().decode(db_key);
+                SecretKey secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+                aes.setSecretKey(secretKey);
+                
+                if(aes.geraCifra(password,aes.getSecretKey()).equals(db_aes_password)){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+
+            } else {
+                return false;
+            }
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -223,6 +245,29 @@ public class Queries {
             e.printStackTrace();
         }finally{Database.closeConnection(c);}
 
+    }
+
+    public static String getPublicKeyByUsername(String username){
+        Connection c = Database.getConnection();
+        PreparedStatement pstm = null;
+        ResultSet resultQUERY = null;
+        try {
+            pstm = c.prepareStatement("SELECT secretkey FROM Users WHERE username = ? LIMIT 1");
+            pstm.setString(1, username);
+            resultQUERY = pstm.executeQuery();
+            
+            if (resultQUERY.next()) {
+                return resultQUERY.getString("secretkey");
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            Database.closeConnection(c);
+        }
     }
 
 }

@@ -1,12 +1,10 @@
-package main_panels;
+package screen;
 
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import screen.Screen;
-import screen.ScreenFunctions;
 
 public class InitialPanel {
     
@@ -32,29 +30,29 @@ public class InitialPanel {
         panel.setOpaque(true);
         panel.setBackground(new Color(0,0,0));
 
-        ScreenFunctions.label_setup(title, Screen.bn.getString("initial.title"), false, WIDTH/4, 3*HEIGHT/20, WIDTH/2, HEIGHT/10, panel);
-        ScreenFunctions.label_edit(title, new Font("Arial",Font.PLAIN,21), null, Color.WHITE);
+        ComponentCreator.labelSetup(title, Screen.bn.getString("initial.title"), false, WIDTH/4, 3*HEIGHT/20, WIDTH/2, HEIGHT/10, panel);
+        ComponentCreator.labelEdit(title, new Font("Arial",Font.PLAIN,21), null, Color.WHITE);
 
-        ScreenFunctions.button_setup(createLogin, Screen.bn.getString("initial.create"), 3*WIDTH/10, 3*HEIGHT/10, 4*WIDTH/10, HEIGHT/10, Screen.myActionListener, panel);
-        ScreenFunctions.button_edit(createLogin, new Font("Arial", Font.PLAIN, 19), new Color(112,104,83), Color.WHITE);
+        ComponentCreator.buttonSetup(createLogin, Screen.bn.getString("initial.create"), 3*WIDTH/10, 3*HEIGHT/10, 4*WIDTH/10, HEIGHT/10, Screen.myActionListener, panel);
+        ComponentCreator.buttonEdit(createLogin, new Font("Arial", Font.PLAIN, 19), new Color(112,104,83), Color.WHITE);
         createLogin.addMouseListener(Screen.myMouseListener);
         //remover preenchimento automático de fundo quando clicar
         createLogin.setFocusPainted(false);
         createLogin.setContentAreaFilled(false);
         createLogin.setOpaque(true);
 
-        ScreenFunctions.button_setup(enterLogin, Screen.bn.getString("initial.login"), 3*WIDTH/10, 9*HEIGHT/20, 4*WIDTH/10, HEIGHT/10, Screen.myActionListener, panel);
-        ScreenFunctions.button_edit(enterLogin, new Font("Arial", Font.PLAIN, 19), new Color(112,104,83), Color.WHITE);
+        ComponentCreator.buttonSetup(enterLogin, Screen.bn.getString("initial.login"), 3*WIDTH/10, 9*HEIGHT/20, 4*WIDTH/10, HEIGHT/10, Screen.myActionListener, panel);
+        ComponentCreator.buttonEdit(enterLogin, new Font("Arial", Font.PLAIN, 19), new Color(112,104,83), Color.WHITE);
         enterLogin.addMouseListener(Screen.myMouseListener);
         //remover preenchimento automático de fundo quando clicar
         enterLogin.setFocusPainted(false);
         enterLogin.setContentAreaFilled(false);
         enterLogin.setOpaque(true);
 
-        ScreenFunctions.panel_on_panel_setup(back, panel, WIDTH/4, 3*HEIGHT/20, WIDTH/2, HEIGHT/2);
-        ScreenFunctions.panel_edit(back, false, new Color(0,0,0,200));
+        ComponentCreator.panelOnPanelSetup(back, panel, WIDTH/4, 3*HEIGHT/20, WIDTH/2, HEIGHT/2);
+        ComponentCreator.panelEdit(back, false, new Color(0,0,0,200));
 
-        ScreenFunctions.image_setup(backgroundImage, "./src/Images/main.png", 0, 0, WIDTH, 7*HEIGHT/10, panel);
+        ComponentCreator.imageSetup(backgroundImage, "./src/Images/main.png", 0, 0, WIDTH, 7*HEIGHT/10, panel);
 
     }
 
