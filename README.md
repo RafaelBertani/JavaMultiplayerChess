@@ -25,6 +25,14 @@ Exemplo:
 ```java
 private static final String USER = "root";
 private static final String PASSWORD = "your_mysql_password_here";
+```
 
 - Inicialize o servidor e um terminal separado
 - Inicialize quantas aplicações de cliente quiser, crie ou faça login e jogue
+
+## Imagens do Projeto
+
+![Imagem1](assets/Imagem1.png)
+![Imagem2](assets/Imagem2.png)
+![Imagem3](assets/Imagem3.png)
+![Imagem4](assets/Imagem4.png)
