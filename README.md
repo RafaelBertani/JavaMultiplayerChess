@@ -8,7 +8,7 @@ Este é um projeto de um **jogo de xadrez multiplayer** desenvolvido em Java com
 
 O jogo permite que multiplos jogadores se conectem a um servidor e sejam redirecionados a salas e joguem xadrez em tempo real. Também estão incluídas funcionalidades como ranking geral dos jogadores e suporte a cinco idiomas.
 
-## ⚙️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 - Java (JDK 8+)
 - Java Swing
