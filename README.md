@@ -4,7 +4,7 @@ Este é um projeto de um **jogo de xadrez multiplayer** desenvolvido em Java com
 - Interface gráfica com **Java Swing**
 - Comunicação cliente/servidor com **Sockets**
 - Persistência de dados com **MySQL (banco de dados relacional)**, cujo código é executado automaticamente ao iniciar o servidor
-- Suporte a **múltiplos idiomas**
+- Suporte a **cinco idiomas**
 
 O jogo permite que multiplos jogadores se conectem a um servidor e sejam redirecionados a salas e joguem xadrez em tempo real, com fila de espera. Também estão incluídas funcionalidades como ranking geral dos jogadores e suporte a cinco idiomas.
 
