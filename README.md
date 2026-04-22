@@ -1,4 +1,4 @@
-# JavaMultiplayerChess - Jogo de Xadrez Multiplayer - Cliente/Servidor
+# JavaMultiplayerChess - Jogo de Xadrez Multiplayer Local - Cliente/Servidor
 
 Este é um projeto de um **jogo de xadrez multiplayer** desenvolvido em Java como **trabalho semestral de programação da faculdade**, utilizando, de acordo com os requisitos:
 - Interface gráfica com **Java Swing**
